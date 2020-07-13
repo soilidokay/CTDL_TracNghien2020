@@ -1,0 +1,29 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (De Tai CTDL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  CompareData.cpp
+D:\DeTaiCTDL\De Tai CTDL\CompareData.cpp(5,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  console.cpp
+D:\DeTaiCTDL\De Tai CTDL\console.cpp(193,10): warning C4101: 'hConsoleOut': unreferenced local variable
+  DBSet.cpp
+  EventController.cpp
+  EventMouseOrKey.cpp
+  Form.cpp
+D:\DeTaiCTDL\De Tai CTDL\Database.h(14,18): warning C4309: 'initializing': truncation of constant value
+D:\DeTaiCTDL\De Tai CTDL\Button.h(34,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\InPutBox.h(45,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\outbuf.h(22,28): warning C4244: 'argument': conversion from 'std::streamsize' to 'DWORD', possible loss of data
+  InPutBox.cpp
+D:\DeTaiCTDL\De Tai CTDL\InPutBox.h(45,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\InPutBox.cpp(21,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\InPutBox.cpp(38,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Source.cpp
+D:\DeTaiCTDL\De Tai CTDL\Database.h(14,18): warning C4309: 'initializing': truncation of constant value
+D:\DeTaiCTDL\De Tai CTDL\Button.h(34,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\InPutBox.h(45,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\outbuf.h(22,28): warning C4244: 'argument': conversion from 'std::streamsize' to 'DWORD', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\Source.cpp(99,7): warning C4101: 'Checklogin': unreferenced local variable
+D:\DeTaiCTDL\De Tai CTDL\ListBox.h(65,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\ListBox.h(63): message : while compiling class template member function 'void ListBox<Monhoc>::show(void)'
+D:\DeTaiCTDL\De Tai CTDL\ImpObject.h(19): message : see reference to class template instantiation 'ListBox<Monhoc>' being compiled
+  Window.cpp
+  Generating Code...
+  De Tai CTDL.vcxproj -> D:\DeTaiCTDL\x64\Debug\DeTaiCTDL.exe

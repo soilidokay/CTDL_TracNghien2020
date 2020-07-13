@@ -1,0 +1,248 @@
+//----------------
+#pragma warning(disable:4996)
+
+#ifndef DataBase_H
+#define DataBase_H
+
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include "List.h"
+#include "TreeAVL.h"
+#include "CompareData.h"
+const char lim = 179;
+
+class EntityQuestion {
+protected:
+	int _idquest = '-1';
+	char _Quest[100] = "";
+	char _answerA[100] = "";
+	char _answerB[100] = "";
+	char _answerC[100] = "";
+	char _answerD[100] = "";
+	char _answer = '\0';
+};
+class Question : public EntityQuestion, public CompareData<int>
+{
+public:
+	Question() {}
+	Question(int idquest, std::string Quest, std::string answerA, std::string answerB,
+		std::string answerC, std::string answerD, char answer)
+	{
+		_idquest = idquest;
+		_strcopy(_Quest, 100, Quest);
+		_strcopy(_answerA, 100, answerA);
+		_strcopy(_answerB, 100, answerB);
+		_strcopy(_answerC, 100, answerC);
+		_strcopy(_answerD, 100, answerD);
+		_answer = answer;
+	};
+	void setId(int idquest) { _idquest = idquest; }
+	void setQuest(std::string Quest) { _strcopy(_Quest, 100, Quest); }
+	void setanswerA(std::string answerA) { _strcopy(_answerA, 100, answerA); }
+	void setanswerB(std::string answerB) { _strcopy(_answerB, 100, answerB); }
+	void setanswerC(std::string answerC) { _strcopy(_answerC, 100, answerC); }
+	void setanswerD(std::string answerD) { _strcopy(_answerD, 100, answerD); }
+	void setanswer(char answer) { _answer = answer; }
+	friend std::ostream& operator<<(std::ostream& output, Question* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(20)
+				<< Obj->getId()
+				<< lim
+				<< std::setw(50)
+				<< Obj->getQuest() << lim;
+		}
+		else
+		{
+			output << std::setw(20) << ' ' << lim
+				<< std::setw(50) << ' ' << lim;
+		}
+		return output;
+	}
+	int getId()override { return _idquest; }
+	std::string getQuest() { return _Quest; }
+	std::string getanswerA() { return _answerA; }
+	std::string getanswerB() { return _answerB; }
+	std::string getanswerC() { return _answerC; }
+	std::string getanswerD() { return _answerD; }
+	char getAnserw() { return _answer; }
+	~Question() {};
+};
+
+class EntityMonHoc {
+protected:
+	char _idObject[10] = "";
+	char _nameobj[30] = "";
+	TreeAVL<Question>* treeQuest = NULL;
+};
+
+class Monhoc : public EntityMonHoc, public CompareData<std::string>
+{
+public:
+	Monhoc() {
+	}
+	Monhoc(std::string idobject, std::string nameObj) {
+		_strcopy(_idObject, 10, idobject);
+		_strcopy(_nameobj, 30, nameObj);
+	}
+
+	void setidobject(std::string idobject) { _strcopy(_idObject, 10, idobject); }
+	void setname(std::string nameobj) { _strcopy(_nameobj, 30, nameobj); }
+
+	std::string getId()override { return _idObject; }
+	std::string getName() { return _nameobj; }
+	TreeAVL<Question>* GetTree() { return treeQuest; }
+	~Monhoc() {}
+	friend std::ostream& operator<<(std::ostream& output, Monhoc* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(20)
+				<< Obj->getId()
+				<< lim
+				<< std::setw(30)
+				<< Obj->getName() << lim;
+		}
+		else
+		{
+			output << std::setw(20) << ' ' << lim
+				<< std::setw(30) << ' ' << lim;
+		}
+		return output;
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ');
+		std::cout << std::setw(3) << ' ' << lim
+			<< std::setw(20) << "       ID" << lim
+			<< std::setw(30) << "             Mon hoc" << lim;
+	}
+
+};
+
+class EntiySinhvien {
+protected:
+	char _idStudent[20] = "";
+	char _lastname[30] = "";
+	char _firstname[10] = "";
+	bool _sex = false;
+	char _passWord[15] = "";
+	List<Monhoc>* _LMonHoc = NULL;
+};
+
+class Sinhvien : public EntiySinhvien, public CompareData<std::string>
+{
+public:
+	friend std::ostream& operator<<(std::ostream& output, Sinhvien* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(15) << Obj->_idStudent << lim
+				<< std::setw(20) << Obj->_lastname << lim
+				<< std::setw(10) << Obj->_firstname << lim;
+			if (Obj->_sex) output << std::setw(10) << "Nam" << lim;
+			else output << std::setw(10) << "Nu" << lim;
+			output << std::setw(15) << Obj->_passWord << lim;
+		}
+		else
+		{
+			output << std::setw(15) << " " << lim
+				<< std::setw(20) << " " << lim
+				<< std::setw(10) << " " << lim
+				<< std::setw(10) << " " << lim
+				<< std::setw(15) << " " << lim;
+		}
+		return output;
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ');
+		std::cout << std::setw(3) << ' ' << lim
+			<< std::setw(15) << "     ID" << lim
+			<< std::setw(20) << "        HO" << lim
+			<< std::setw(10) << " Ten" << lim
+			<< std::setw(10) << "Gioi Tinh" << lim
+			<< std::setw(15) << "    PassWord" << lim;
+	}
+	enum SEX
+	{
+		nam = 1, nu = 0
+	};
+	Sinhvien() {}
+	Sinhvien(std::string idstudent, std::string lastname, std::string firstname, bool sex, std::string pass) {
+		_strcopy(_idStudent, 20, idstudent);
+		_strcopy(_lastname, 20, lastname);
+		_strcopy(_firstname, 10, firstname);
+		_strcopy(_passWord, 30, pass);
+		_sex = sex;
+		_LMonHoc = new List<Monhoc>;
+	}
+	void setidstudent(std::string idstudent) { _strcopy(_idStudent, 20, idstudent); }
+	void setlastname(std::string lastname) { _strcopy(_lastname, 20, lastname); }
+	void setfirstname(std::string firstname) { _strcopy(_firstname, 10, firstname); }
+	void setsex(bool sex) { _sex = sex; }
+	void setLMonhoc(List<Monhoc>* LMonhoc) { _LMonHoc = LMonhoc; }
+	void SetPass(std::string pass) { _strcopy(_passWord, 30, pass); }
+
+	std::string getId() { return _idStudent; }
+	std::string getlastname() { return _lastname; }
+	std::string getfirstname() { return _firstname; }
+	bool getsex() { return _sex; }
+	std::string getPass() { return _passWord; }
+
+	List<Monhoc>* getLMonhoc() { return _LMonHoc; }
+	~Sinhvien() {}
+};
+class EntityLopHoc {
+protected:
+	char _idclass[10] = "";
+	char _NameClass[10] = "";
+	List<Sinhvien>* _LSinhvien = NULL;
+};
+class LopHoc :public EntityLopHoc, public CompareData<std::string>
+{
+public:
+	friend std::ostream& operator<<(std::ostream& output, LopHoc* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(20) << Obj->getId() << lim
+				<< std::setw(30) << Obj->getName() << lim;
+		}
+		else
+		{
+			output << std::setw(20) << ' ' << lim
+				<< std::setw(30) << ' ' << lim;
+		}
+		return output;
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ')
+			<< std::setw(3) << ' ' << lim
+			<< std::setw(20) << "         ID" << lim
+			<< std::setw(30) << "         Lop hoc" << lim;
+
+	}
+	LopHoc() {}
+	LopHoc(std::string idclass, std::string nameclass) {
+		_strcopy(_idclass, 10, idclass);
+		_strcopy(_NameClass, 10, nameclass);
+		_LSinhvien = new  List<Sinhvien>;
+	}
+	void setid(std::string idclass) { _strcopy(_idclass, 10, idclass); }
+	void setnameclass(std::string nameclass) { _strcopy(_NameClass, 10, nameclass); }
+	void setLSinhvien(List<Sinhvien>* LSinhvien) { _LSinhvien = LSinhvien; }
+
+	std::string getId() { return _idclass; }
+	std::string getName() { return _NameClass; }
+	List<Sinhvien>* getLSinhvien() { return _LSinhvien; }
+
+	~LopHoc() {}
+
+
+};
+
+
+
+#endif // !DataBase_H

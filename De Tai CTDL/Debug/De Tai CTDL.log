@@ -1,0 +1,6 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (De Tai CTDL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Source.cpp
+D:\DeTaiCTDL\De Tai CTDL\Database.h(14,18): warning C4309: 'initializing': truncation of constant value
+D:\DeTaiCTDL\De Tai CTDL\outbuf.h(22,28): warning C4244: 'argument': conversion from 'std::streamsize' to 'DWORD', possible loss of data
+D:\DeTaiCTDL\De Tai CTDL\Source.cpp(99,7): warning C4101: 'Checklogin': unreferenced local variable
+  De Tai CTDL.vcxproj -> D:\DeTaiCTDL\Debug\DeTaiCTDL.exe
