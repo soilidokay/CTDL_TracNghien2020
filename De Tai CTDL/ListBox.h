@@ -69,6 +69,7 @@ public:
 			setUpBtn(getcolor());
 			setDwBtn(getcolor());
 		}
+		showLObj();
 	}
 	int BclickBtn(EventConsole& evt) {
 		int mx = evt._Smouse.x;
@@ -98,12 +99,12 @@ public:
 	void setActionButton(const ACTIONBUTTON& func) {
 		actionButton = func;
 	}
-	void setposPrint(node<_T>* pos) { posPrint = pos; }
+	void setposPrint(node<_T>* pos) {  }
 	node<_T>* getPosPrint() { return posPrint; }
 	void setListObj(List<_T>* listObj) {
 		_listObj = listObj;
 		//selected = posPrint = _listObj->getfirst();
-		showLObj();
+		//showLObj();
 		posPrintInt = 0;
 	}
 	node<_T>* getSelected() { return selected; }
@@ -142,17 +143,19 @@ public:
 	void addNode(_T* Dat) {
 		if (_listObj->search(Dat) == NULL) {
 			node<_T>* temp = _listObj->insertConst(Dat);
-			//setposPrint(temp);
 			setchose(temp);
 			showLObj();
 		}
 	}
-	void DelNode() {
+	_T* DelNode() {
 		if (selected != NULL) {
 			//temp = selected->info;
+			_T* temp = selected->info;
 			_listObj->DelCen(selected->info);
 			showLObj();
+			return temp;
 		}
+		return NULL;
 	}
 	void DrawHight(_T* Obj, int trav) {
 		TextColor(_hScreen, colorbk_cyan | color_white);

@@ -76,7 +76,6 @@ class EntityMonHoc {
 protected:
 	char _idObject[10] = "";
 	char _nameobj[30] = "";
-	TreeAVL<Question>* treeQuest = NULL;
 };
 
 class Monhoc : public EntityMonHoc, public CompareData<std::string>
@@ -119,7 +118,8 @@ public:
 			<< std::setw(20) << "       ID" << lim
 			<< std::setw(30) << "             Mon hoc" << lim;
 	}
-
+private:
+	TreeAVL<Question>* treeQuest = NULL;
 };
 
 class EntiySinhvien {
@@ -129,7 +129,6 @@ protected:
 	char _firstname[10] = "";
 	bool _sex = false;
 	char _passWord[15] = "";
-	List<Monhoc>* _LMonHoc = NULL;
 };
 
 class Sinhvien : public EntiySinhvien, public CompareData<std::string>
@@ -193,12 +192,13 @@ public:
 
 	List<Monhoc>* getLMonhoc() { return _LMonHoc; }
 	~Sinhvien() {}
+private:
+	List<Monhoc>* _LMonHoc = NULL;
 };
 class EntityLopHoc {
 protected:
 	char _idclass[10] = "";
 	char _NameClass[10] = "";
-	List<Sinhvien>* _LSinhvien = NULL;
 };
 class LopHoc :public EntityLopHoc, public CompareData<std::string>
 {
@@ -239,8 +239,8 @@ public:
 	List<Sinhvien>* getLSinhvien() { return _LSinhvien; }
 
 	~LopHoc() {}
-
-
+private:
+	List<Sinhvien>* _LSinhvien = NULL;
 };
 
 

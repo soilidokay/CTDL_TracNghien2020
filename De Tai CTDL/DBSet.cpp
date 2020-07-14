@@ -90,8 +90,8 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Update(T* data)
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 List<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToList()
 {
-	if (_dataId->isempty()) return nullptr;
 	List<T>* data = new List<T>;
+	if (_dataId->isempty()) return data;
 
 	T** dataptr = ReadDataPtr();
 

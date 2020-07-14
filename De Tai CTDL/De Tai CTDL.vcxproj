@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AppDbContext.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="checkbox.h" />
     <ClInclude Include="CheckList.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppDbContext.cpp" />
     <ClCompile Include="CompareData.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="DBSet.cpp" />

@@ -47,9 +47,6 @@ public:
 		Showobj[3] = BtnImpQue;
 
 		//--------------------
-		lstObj = new List<Monhoc>;
-		Lstudent = new List<Sinhvien>;
-		lstClass = new List<LopHoc>;
 	}
 	void SyncData() {
 		
@@ -60,28 +57,21 @@ public:
 private:
 	void ActionBtnImCl(EventConsole &evt) {
 		importClass* Impclass = new importClass(this, 85, 25, colorbk_white);
-		Impclass->setlists(Lstudent, lstClass);
 		Impclass->show();
 	}
 	void ActionBtnImpStu(EventConsole &evt) {
 		importStudent* ImpStu =new importStudent(this, 85, 25, colorbk_white);
-		ImpStu->setlists(Lstudent, lstObj);
 		ImpStu->show();
 	}
 	void ActionBtnImpQue(EventConsole &evt) {
 		ImpQuestion* ImpQue = new ImpQuestion(this, 90, 30, colorbk_white);
-		ImpQue->setList(lstObj);
 		ImpQue->show();
 	}
 	void ActionBtnImpObj(EventConsole &evt) {
 		ImpObject* impObject = new ImpObject(this, 80, 25, colorbk_white);
-		impObject->setlists(lstObj);
 		impObject->show();
 	}
 private:
-	List<Monhoc> *lstObj;
-	List<Sinhvien> *Lstudent;
-	List<LopHoc> * lstClass;
 	Button *BtnImCl, *BtnImpStu, *BtnImpQue, *BtnImpObj;
 };
 #endif // !Formteach_H

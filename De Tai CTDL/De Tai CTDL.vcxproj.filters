@@ -96,6 +96,9 @@
     <ClInclude Include="DBSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppDbContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DBSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppDbContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

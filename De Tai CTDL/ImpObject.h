@@ -2,11 +2,11 @@
 #define ImpObject_H
 
 #include "Form.h"
-
+#include "AppDbContext.h"
 class ImpObject : public Form
 {
 public:
-	ImpObject(Form *Fbackup, int width, int height, int bkcolor) : Form(Fbackup, width, height, bkcolor)
+	ImpObject(Form* Fbackup, int width, int height, int bkcolor) : Form(Fbackup, width, height, bkcolor)
 	{
 		constructor();
 		setEventMouseOrKey();
@@ -61,7 +61,7 @@ public:
 		*Events += btnExit;
 		//-----------------
 
-		Showobj = new window*[nObj];
+		Showobj = new window * [nObj];
 
 		Showobj[0] = LBObject;
 		Showobj[1] = LIdObject;
@@ -73,15 +73,19 @@ public:
 		Showobj[7] = btnSave;
 		Showobj[8] = btnExit;
 
+
+		_Context = AppDbContext::getInstance();
+
+		setlists(_Context->MonHocs->ToList());
 	}
-	void setlists( List<Monhoc> * lstObj) {
+	void setlists(List<Monhoc>* lstObj) {
 		LBObject->setListObj(lstObj);
 	}
-	
+
 private:
 
 	//----------
-	void actionLBObj(EventConsole & evt) {
+	void actionLBObj(EventConsole& evt) {
 		node<Monhoc>* temp = LBObject->getSelected();
 		if (temp == NULL) return;
 		IpIdObject->setText(temp->info->getId());
@@ -95,10 +99,15 @@ private:
 			Monhoc* temp = new Monhoc(IpIdObject->Gettext(),
 				IIPnameObject->Gettext());
 			LBObject->addNode(temp);
+			_Context->MonHocs->Add(temp);
 		}
-	}	
+	}
 	void ActionDel(EventConsole& evt) {
-		LBObject->DelNode();
+		Monhoc* temp = LBObject->DelNode();
+		if (temp != NULL) {
+			_Context->MonHocs->Delete(temp);
+		}
+
 	}
 	void ActionSave(EventConsole& evt) {
 		node<Monhoc>* temp = LBObject->getSelected();
@@ -106,15 +115,17 @@ private:
 		temp->info->setidobject(IpIdObject->Gettext());
 		temp->info->setname(IIPnameObject->Gettext());
 		LBObject->showLObj();
+		_Context->MonHocs->Update(temp->info);
 	}
 	void ActionExit(EventConsole& evt) {
 		Close();
 	}
 private:
-	ListBox<Monhoc> *LBObject;
-	Lable *LIdObject, *LNameObject;
-	InPutBox * IpIdObject, *IIPnameObject;
-	Button *btnAdd, *btnDel, *btnSave, *btnExit;
+	ListBox<Monhoc>* LBObject;
+	Lable* LIdObject, * LNameObject;
+	InPutBox* IpIdObject, * IIPnameObject;
+	Button* btnAdd, * btnDel, * btnSave, * btnExit;
+	AppDbContext* _Context = NULL;
 };
 #endif // !ImpObject_H
 

@@ -50,7 +50,7 @@ int main3() {
 		cout << &test[i] << endl;
 	}
 
-	DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>* dbset1 = new DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>("SinhVien.txt", sizeof(Sinhvien) - sizeof(List<Monhoc>));
+	DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>* dbset1 = new DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>("SinhVien.txt");
 	dbset1->Add(new Sinhvien("sv1", "", "", true, ""));
 	dbset1->Add(new Sinhvien("sv2", "", "", true, ""));
 	dbset1->Add(new Sinhvien("sv3", "", "", true, ""));
