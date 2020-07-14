@@ -110,6 +110,7 @@ void constructor()override {
 	Showobj[13] = LChckSex;
 	Showobj[14] = chckBocSex;
 
+	setlists(_Context->SinhViens->ToList(), _Context->MonHocs->ToList());
 }
 void setlists(List<Sinhvien> * lstStu, List<Monhoc> * lstObj) {
 	LBStudent->setListObj(lstStu);
@@ -137,10 +138,14 @@ void ActionAdd(EventConsole& evt) {
 			IPpass->Gettext()
 		);
 		LBStudent->addNode(temp);
+		_Context->SinhViens->Add(temp);
 	}
 }
 void ActionDel(EventConsole& evt) {
-	LBStudent->DelNode();
+	Sinhvien * temp = LBStudent->DelNode();
+	if (temp != NULL) {
+		_Context->SinhViens->Delete(temp);
+	}
 }
 void ActionSave(EventConsole& evt) {
 	node<Sinhvien>* temp = LBStudent->getSelected();
@@ -151,6 +156,7 @@ void ActionSave(EventConsole& evt) {
 	temp->info->setsex(chckBocSex->getChck());
 	temp->info->SetPass(IPpass->Gettext());
 	LBStudent->showLObj();
+	_Context->SinhViens->Update(temp->info);
 }
 void ActionExit(EventConsole& evt) {
 	Close();

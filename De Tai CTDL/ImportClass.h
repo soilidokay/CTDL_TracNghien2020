@@ -69,6 +69,8 @@ public:
 		Showobj[6] = btnDel;
 		Showobj[7] = btnSave;
 		Showobj[8] = btnExit;
+
+		setlists(_Context->SinhViens->ToList(), _Context->LopHocs->ToList());
 	}
 	void setlists(List<Sinhvien> * lstStu,List<LopHoc> * lstClass){
 		LBclass->setListObj(lstClass);
@@ -88,10 +90,14 @@ private:
 			LopHoc* temp = new LopHoc(IPidclass->Gettext(),
 				IPnameclass->Gettext());
 			LBclass->addNode(temp);
+			_Context->LopHocs->Add(temp);
 		}
 	}
 	void ActionDel(EventConsole& evt) {
-		LBclass->DelNode();
+		LopHoc*temp = LBclass->DelNode();
+		if (temp != NULL) {
+			_Context->LopHocs->Delete(temp);
+		}
 	}
 	void ActionSave(EventConsole& evt) {
 		node<LopHoc>* temp = LBclass->getSelected();
@@ -99,6 +105,7 @@ private:
 		temp->info->setid(IPidclass->Gettext());
 		temp->info->setnameclass(IPnameclass->Gettext());
 		LBclass->showLObj();
+		_Context->LopHocs->Update(temp->info);
 	}
 	void ActionExit(EventConsole& evt) {
 		Close();

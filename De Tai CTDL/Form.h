@@ -15,6 +15,7 @@
 #include <functional>
 #include "EventController.h"
 #include "outbuf.h"
+#include "AppDbContext.h"
 using namespace scl;
 using namespace std::placeholders;
 
@@ -43,6 +44,7 @@ public:
 		scl::SetTitle("tai nguyen");
 		scl::SizeConsole(_hSCreen, _width, _height);
 		scl::fillBackGround(_hSCreen, _width, _height, _bkcolor);
+		_Context = AppDbContext::getInstance();
 	}
 	void backup() {
 		//init();
@@ -79,6 +81,7 @@ protected:
 	int _bkcolor;
 	int** _area;
 	EventMouseOrKey* Events;
+	AppDbContext* _Context = NULL;
 private:
 	int _width;
 	int _height;

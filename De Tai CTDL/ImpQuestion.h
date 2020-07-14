@@ -12,6 +12,7 @@ public:
 		constructor();
 		setEventMouseOrKey();
 		DrawToScreen();
+		setList(_Context->MonHocs->ToList());
 	}
 	void setList(List<Monhoc> *listObj) {
 		CLObject->setListObj(listObj);

@@ -73,9 +73,6 @@ public:
 		Showobj[7] = btnSave;
 		Showobj[8] = btnExit;
 
-
-		_Context = AppDbContext::getInstance();
-
 		setlists(_Context->MonHocs->ToList());
 	}
 	void setlists(List<Monhoc>* lstObj) {
@@ -125,7 +122,6 @@ private:
 	Lable* LIdObject, * LNameObject;
 	InPutBox* IpIdObject, * IIPnameObject;
 	Button* btnAdd, * btnDel, * btnSave, * btnExit;
-	AppDbContext* _Context = NULL;
 };
 #endif // !ImpObject_H
 
