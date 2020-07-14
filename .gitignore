@@ -1,9 +1,5 @@
-./Release/*
-./Debug/*
-./Project2/*
-./x64/*
-./De Tai CTDL/Release/*
-./De Tai CTDL/Debug/*
-./De Tai CTDL/Project2/*
-./De Tai CTDL/x64/*
+**/Release
+**/Debug
+**/Project2
+**/x64
 .vs
