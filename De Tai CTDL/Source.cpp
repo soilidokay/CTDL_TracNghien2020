@@ -5,6 +5,8 @@
 #include "Formteach.h"
 #include "DBSet.h"
 #include "EventController.h"
+#include"ArrayList.h"
+
 using namespace std;
 using namespace scl;
 
@@ -19,7 +21,23 @@ using namespace scl;
 //        T* d = new T();
 //    }
 //};
-int main3() {
+int main() {
+
+	ArrayList<Monhoc>* test22 = new ArrayList<Monhoc>(100);
+
+	test22->InsertConst(new Monhoc("test5", "name5"));
+	test22->InsertConst(new Monhoc("test4", "name6"));
+	test22->InsertConst(new Monhoc("test3", "name7"));
+	test22->InsertConst(new Monhoc("test2", "name8"));
+	test22->InsertConst(new Monhoc("test1", "name8"));
+	test22->Update(0,new Monhoc("test5", "name8"));
+
+	for (int i = 0; i < test22->Size(); i++)
+	{
+		cout << test22->GetData(i)<<endl;
+	}
+
+
 	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
 	dbset->Add(new Monhoc("test1", "name5"));
 	dbset->Add(new Monhoc("test2", "name6"));
@@ -83,7 +101,7 @@ int main3() {
 	delete dbset2;
 	return 0;
 }
-int main(int argc, char* argv[]) {
+int main2(int argc, char* argv[]) {
 	scl::DisableMaxiMize("tainguyen");
 
 	SYSTEMTIME systime;

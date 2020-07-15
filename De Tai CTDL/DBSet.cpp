@@ -1,10 +1,10 @@
+#ifndef DBSET_H
+#include "DBSet.h"
+#endif
+
 #ifndef DBSET_CPP
 #define DBSET_CPP
 
-#ifdef USE_EXPORT_DBSET_H
-export
-#endif
-#include "DBSet.h"
 
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 DBSet<_TIdCompare, _TId, amount, _TEntity, T>::DBSet(std::string pathdata)
@@ -114,6 +114,12 @@ T** DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToArrayPtr()
 }
 
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+ArrayList<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToArrayList(int size)
+{
+	return ReadDataArrayList(size);
+}
+
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 int DBSet<_TIdCompare, _TId, amount, _TEntity, T>::size()
 {
 	return _dataId->getSize();
@@ -209,6 +215,24 @@ T* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadData()
 		_fData->read(reinterpret_cast<char*>(temp), _SizeData);
 		trav = trav->next;
 		index++;
+	}
+	return data;
+}
+
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+ArrayList<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataArrayList(int size)
+{
+	if (_dataId->isempty()) return nullptr;
+	ArrayList<T>* data = new ArrayList<T>(size);
+	node<DataIndex<_TIdCompare, _TId, amount>>* trav = _dataId->getfirst();
+	int index = 0;
+	_TEntity* temp;
+	while (trav != NULL) {
+		temp = new T;
+		_fData->seekg(trav->info->sizeOffset);
+		_fData->read(reinterpret_cast<char*>(temp), _SizeData);
+		trav = trav->next;
+		data->InsertConst((T*)temp);
 	}
 	return data;
 }

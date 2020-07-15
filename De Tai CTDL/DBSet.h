@@ -1,16 +1,13 @@
 #ifndef DBSET_H
 #define DBSET_H
 
-#ifdef USE_EXPORT_DBSET_H
-export
-#endif
-
 #include"List.h"
 #include <windows.h>
 #include <string>
 #include <fstream>
 #include "CompareData.h"
 #include <type_traits>
+#include "ArrayList.h"
 
 template<typename T, int amount>
 struct EntityDataIndex {
@@ -22,7 +19,7 @@ struct DataIndex :public EntityDataIndex<T, amount>, public CompareData<_TIdComp
 
 	void setId(_TIdCompare u) {
 		if (typeid(_TIdCompare) == typeid(std::string)) {
-			_strcopy((char*)Id, amount,*((std::string*)&u));
+			_strcopy((char*)Id, amount, *((std::string*) & u));
 		}
 		else if (typeid(_TIdCompare) == typeid(int)) {
 			_PassValue((int*)Id, (int*)&u);
@@ -49,7 +46,7 @@ class DBSet
 {
 public:
 	DBSet(std::string pathdata);
-	DBSet(std::string pathdata,int SizeData);
+	DBSet(std::string pathdata, int SizeData);
 	~DBSet();
 	void Add(T* data);
 	void Delete(T* data);
@@ -57,6 +54,7 @@ public:
 	List<T>* ToList();
 	T* ToArray();
 	T** ToArrayPtr();
+	ArrayList<T>* ToArrayList(int size);
 	int size();
 private:
 	void CheckAndCreateFile(std::string path);
@@ -69,6 +67,7 @@ private:
 	void WriteIndexRemove();
 	void ReadDataIndexRemove();
 	T* ReadData();
+	ArrayList<T>* ReadDataArrayList(int size);
 	T** ReadDataPtr();
 	List<DataIndex<_TIdCompare, _TId, amount>>* _dataId;
 	List<int>* _dataOffsetRemove;

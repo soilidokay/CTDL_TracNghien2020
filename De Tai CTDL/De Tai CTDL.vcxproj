@@ -120,6 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AppDbContext.h" />
+    <ClInclude Include="ArrayList.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="checkbox.h" />
     <ClInclude Include="CheckList.h" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppDbContext.cpp" />
+    <ClCompile Include="ArrayList.cpp" />
     <ClCompile Include="CompareData.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="DBSet.cpp" />
@@ -156,6 +158,7 @@
     <ClCompile Include="EventMouseOrKey.cpp" />
     <ClCompile Include="Form.cpp" />
     <ClCompile Include="InPutBox.cpp" />
+    <ClCompile Include="List.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
