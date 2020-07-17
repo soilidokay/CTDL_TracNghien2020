@@ -127,6 +127,11 @@ public:
 
 		return true;
 	}
+	void checkEmptyPage() {
+		if (posPrintInt >= _listObj->getSize()) {
+			MoveUp(getheight() - 3);
+		}
+	}
 	void showLObj() {
 		if (getheight() < 2 || _listObj->isempty()) return;
 		int count = 0;
@@ -134,6 +139,7 @@ public:
 		showTitle();
 		TextColor(_hScreen, getcolor());
 		std::cout << std::setfill(' ');
+		checkEmptyPage();
 		_listObj->forEach([this](_T* data, int index) {return this->showSingle(data, index); },
 			posPrintInt, posPrintInt + getheight() - 4);
 

@@ -20,17 +20,18 @@ public:
 	bool showSingle(_T* data, int index) override {
 		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
 
-		if (groupElement) {
-			if (ListChecked != NULL && ListChecked->search(data) != NULL)
-				TextColor(_hScreen, colorbk_red | color_blue);
-		}
-		else if (selectedindex > -1 && selectedindex == index) {
+		if ((groupElement
+			&& ListChecked != NULL && ListChecked->search(data) != NULL) || Checked == index)
+		{
 			TextColor(_hScreen, colorbk_red | color_blue);
+		}
+		else {
+			TextColor(_hScreen, getcolor());
 		}
 
 		std::cout << std::setw(3) << index;
 
-		if (index == selectedindex) {
+		if (index == selectedindex || Checked == index) {
 			DrawHight(selectedindex);
 		}
 		else {
@@ -50,7 +51,7 @@ public:
 		std::cout << std::setfill(' ');
 		_listObj->forEach(showSingle, posPrintInt, posPrintInt + getheight() - 4);
 	}*/
-
+	_T* GetDataChecked() { return _listObj->GetData(Checked); }
 	void SetListCheck(List<_T>* Lst) { ListChecked = Lst; }
 	List<_T>* GetListChecked() { return ListChecked; }
 	void setStrTiltle(std::string strTiltle)override {
@@ -100,7 +101,7 @@ public:
 				if (ActionWarn(evt)) ListChecked->DelCen(temp);
 			}
 			else ListChecked->insertConst(temp);
-		
+
 		}
 	}
 	//void action(EventConsole& evt)override {
@@ -158,6 +159,9 @@ public:
 			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
 			if (selectedindex > -1) {
 				if (groupElement) Actionchecks(evt);
+				else {
+					Checked = selectedindex;
+				}
 			}
 		}
 		showLObj();
@@ -169,6 +173,7 @@ private:
 	CHAR_INFO* charac;
 	bool groupElement;
 	List<_T>* ListChecked;
+	int Checked = -1;
 	int _heightLB;
 	EventMouseOrKey* _containerEvent;
 	std::string _warnStr;

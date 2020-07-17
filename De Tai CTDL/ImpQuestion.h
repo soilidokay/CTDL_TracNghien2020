@@ -108,7 +108,7 @@ public:
 private:
 	
 	void actionAdd(EventConsole &evt) {
-		Monhoc* tempSel = CLObject->getSelected();
+		Monhoc* tempSel = CLObject->GetDataChecked();
 		if (tempSel == NULL) {
 			warning war(70, 10, 5, colorbk_darkgreen | color_red);
 			war.SetScreen(_hSCreen);

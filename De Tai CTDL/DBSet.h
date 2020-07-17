@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <string>
 #include <fstream>
-#include "CompareData.h"
+#include "CompareData.h"	
 #include <type_traits>
 #include "ArrayList.h"
 

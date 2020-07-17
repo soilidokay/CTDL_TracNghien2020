@@ -126,6 +126,7 @@ void ActionListClass(EventConsole& evt) {
 	IPlastname->setText(temp->getlastname());
 	//IPpass->setText(temp->info->)
 	IPfirst->setText(temp->getfirstname());
+	chckBocSex->setChck(temp->getsex());
 }
 //action button
 void ActionAdd(EventConsole& evt) {

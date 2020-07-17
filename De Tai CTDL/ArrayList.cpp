@@ -76,18 +76,19 @@ bool ArrayList<T>::Delete(int index, int amount = 1)
 
 	int amountDelete = _amount - index;
 
-	int indexDelete = (amount > amountDelete ? amountDelete : amount) + index;
-
-	for (int i = index; i < indexDelete; i++)
+	amountDelete = (amount > amountDelete ? amountDelete : amount) + index;
+	int indexDelete = index;
+	for (; indexDelete < amountDelete; indexDelete++)
 	{
-		delete _data[i];
+		delete _data[indexDelete];
 	}
 
-	amountDelete = _amount - index - amount;
 
-	for (; index <= amountDelete; index++)
+	amountDelete = _amount - 1;
+
+	for (; indexDelete <= amountDelete; index++, indexDelete++)
 	{
-		_data[index] = _data[index + 1];
+		_data[index] = _data[indexDelete];
 	}
 
 	_amount -= amount;

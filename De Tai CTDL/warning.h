@@ -64,8 +64,8 @@ public:
 
 private:
 	CHAR_INFO* showWindow() {
-		SHORT height = getheight() + 2;
-		SHORT width = getwidth() + 2;
+		SHORT height = getheight() + 3;
+		SHORT width = getwidth() + 3;
 		SHORT x = getx();
 		SHORT y = gety();
 		CHAR_INFO *charac = new CHAR_INFO[height*width];
@@ -74,8 +74,8 @@ private:
 		return charac;
 	}
 	void backup(CHAR_INFO *charac) {
-			SHORT height = getheight() + 2;
-			SHORT width = getwidth() + 2;
+			SHORT height = getheight() + 3;
+			SHORT width = getwidth() + 3;
 			SHORT x = getx();
 			SHORT y = gety();
 			scl::WriteBlockChar(_hScreen,charac, height, width, x, y);

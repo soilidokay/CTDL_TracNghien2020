@@ -5,7 +5,6 @@
 #ifndef DBSET_CPP
 #define DBSET_CPP
 
-
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 DBSet<_TIdCompare, _TId, amount, _TEntity, T>::DBSet(std::string pathdata)
 {
@@ -28,6 +27,7 @@ DBSet<_TIdCompare, _TId, amount, _TEntity, T>::~DBSet()
 	_dataId->clear();
 	delete _dataId;
 }
+
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Add(T* data)
 {
@@ -86,7 +86,6 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Update(T* data)
 	_TEntity* temp = data;
 	_fData->seekp(tempindex->info->sizeOffset);
 	_fData->write(reinterpret_cast<const char*>(temp), _SizeData);
-	delete data;
 	delete dataIndex;
 }
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
