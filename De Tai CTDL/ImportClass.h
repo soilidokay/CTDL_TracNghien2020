@@ -7,7 +7,7 @@ using namespace std;
 class importClass :public Form
 {
 public:
-	importClass(Form *Fbackup, int width, int height, int bkcolor) : Form(Fbackup, width, height, bkcolor)
+	importClass(Form* Fbackup, int width, int height, int bkcolor) : Form(Fbackup, width, height, bkcolor)
 	{
 		constructor();
 		setEventMouseOrKey();
@@ -58,7 +58,7 @@ public:
 		btnExit->setText("Thoat");
 		btnExit->setActionButton(bind(&importClass::ActionExit, this, _1));
 		*Events += btnExit;
-		Showobj = new window*[nObj];
+		Showobj = new window * [nObj];
 
 		Showobj[0] = LBclass;
 		Showobj[1] = LIdClass;
@@ -70,19 +70,19 @@ public:
 		Showobj[7] = btnSave;
 		Showobj[8] = btnExit;
 
-		setlists(_Context->SinhViens->ToList(), _Context->LopHocs->ToList());
+		setlists(_Context->LopHocs->ToArrayList(500));
 	}
-	void setlists(List<Sinhvien> * lstStu,List<LopHoc> * lstClass){
+	void setlists( IList<LopHoc>* lstClass) {
 		LBclass->setListObj(lstClass);
 	}
-	
+
 private:
 
 	void actionListBox(EventConsole& evt) {
-		node<LopHoc>* temp = LBclass->getSelected();
-		if (temp == NULL) return;
-		IPidclass->setText(temp->info->getId());
-		IPnameclass->setText(temp->info->getName());
+		LopHoc* lh = LBclass->getSelected();
+		if (lh == NULL) return;
+		IPidclass->setText(lh->getId());
+		IPnameclass->setText(lh->getName());
 	}
 	//action button
 	void ActionAdd(EventConsole& evt) {
@@ -94,27 +94,28 @@ private:
 		}
 	}
 	void ActionDel(EventConsole& evt) {
-		LopHoc*temp = LBclass->DelNode();
-		if (temp != NULL) {
-			_Context->LopHocs->Delete(temp);
+		LopHoc* lh = LBclass->getSelected();
+		if (lh != NULL) {
+			_Context->LopHocs->Delete(lh);
+			LBclass->DelNode();
 		}
 	}
 	void ActionSave(EventConsole& evt) {
-		node<LopHoc>* temp = LBclass->getSelected();
-		if (temp == NULL) return;
-		temp->info->setid(IPidclass->Gettext());
-		temp->info->setnameclass(IPnameclass->Gettext());
+		LopHoc* lh = LBclass->getSelected();
+		if (lh == NULL) return;
+		lh->setid(IPidclass->Gettext());
+		lh->setnameclass(IPnameclass->Gettext());
 		LBclass->showLObj();
-		_Context->LopHocs->Update(temp->info);
+		_Context->LopHocs->Update(lh);
 	}
 	void ActionExit(EventConsole& evt) {
 		Close();
 	}
 private:
-	ListBox<LopHoc> *LBclass;
-	Lable *LIdClass, *LNameClass;
-	InPutBox * IPidclass, *IPnameclass;
-	Button *btnAdd, *btnDel, *btnSave, *btnExit;
+	ListBox<LopHoc>* LBclass;
+	Lable* LIdClass, * LNameClass;
+	InPutBox* IPidclass, * IPnameclass;
+	Button* btnAdd, * btnDel, * btnSave, * btnExit;
 };
 #endif // !ImportClass_H
 

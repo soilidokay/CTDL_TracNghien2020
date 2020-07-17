@@ -56,7 +56,7 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Add(T* data)
 
 
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
-void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Delete(T* data)
+void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Delete(T* data, bool deleteData)
 {
 
 	DataIndex<_TIdCompare, _TId, amount>* dataIndex = GetDataIndex(data, 0);
@@ -72,7 +72,9 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Delete(T* data)
 
 	DeleteIndex(dataIndex);
 	WriteIndexRemove();
-	delete data;
+	if (deleteData) {
+		delete data;
+	}
 	delete dataIndex;
 }
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
@@ -222,8 +224,9 @@ T* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadData()
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 ArrayList<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataArrayList(int size)
 {
-	if (_dataId->isempty()) return nullptr;
 	ArrayList<T>* data = new ArrayList<T>(size);
+
+	if (_dataId->isempty()) return data;
 	node<DataIndex<_TIdCompare, _TId, amount>>* trav = _dataId->getfirst();
 	int index = 0;
 	_TEntity* temp;

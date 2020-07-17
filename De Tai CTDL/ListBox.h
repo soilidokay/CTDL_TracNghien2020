@@ -2,13 +2,19 @@
 #define ListBox_H
 
 #include "Window.h"
+#include <functional>
+#include "IList.h"
 
 template<class _T>
 class ListBox : public window
 {
 public:
+	typedef std::function<bool(_T*, int)> ACTION;
+
 	ListBox(int width, int height, int x, int y) : window(width, height, x, y)
 	{
+		gxShow = getx() + 1;
+		gyShow = gety() + 4;
 	}
 	bool _checkmoue(EventConsole& evt) {
 		int width = getwidth() + 2;
@@ -28,12 +34,6 @@ public:
 			posPrintInt += amount;
 		}
 	}
-	node<_T>* GetHightLight(int index) {
-		if (index >= _listObj->getSize()) return NULL;
-		node<_T>* tempPtr = _listObj->getfirst();
-		for (; index > 0; index--)	tempPtr = tempPtr->next;
-		return tempPtr;
-	}
 	virtual void action(EventConsole& evt) {
 		if (!evt.isMouseEvent()) return;
 		if (BclickBtn(evt) == 1) {
@@ -46,12 +46,16 @@ public:
 		}
 		else
 		{
-			selected = GetHightLight(evt._Smouse.y - gety() - 4 + posPrintInt);
-			if (selected != NULL) {
+			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
+			if (_listObj->GetData(selectedindex) != NULL) {
 				showLObj();
 				if (actionButton) {
 					actionButton(evt);
 				}
+			}
+			else
+			{
+				selectedindex = -1;
 			}
 		}
 
@@ -92,77 +96,71 @@ public:
 	~ListBox()
 	{
 	}
-	void setchose(node<_T>* chose) {
-		selected = chose;
-
+	void setchose(int chose) {
+		selectedindex = chose;
 	}
 	void setActionButton(const ACTIONBUTTON& func) {
 		actionButton = func;
 	}
-	void setposPrint(node<_T>* pos) {  }
 	node<_T>* getPosPrint() { return posPrint; }
-	void setListObj(List<_T>* listObj) {
+	void setListObj(IList<_T>* listObj) {
 		_listObj = listObj;
 		//selected = posPrint = _listObj->getfirst();
 		//showLObj();
 		posPrintInt = 0;
 	}
-	node<_T>* getSelected() { return selected; }
+	int getIndexSelected() { return selectedindex; }
 	void showTitle() {
 		TextColor(_hScreen, colorbk_darkblue | color_white);
 		gotoXY(_hScreen, getx() + 1, gety() + 3);
 		_T::settitle();
 	}
-	virtual void showLObj() {
+	virtual bool showSingle(_T* data, int index) {
+		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
+
+		if (index == selectedindex) {
+			std::cout << std::setw(3) << index; DrawHight(selectedindex);
+		}
+		else {
+			std::cout << std::setw(3) << index << char(179) << data;
+		}
+
+		return true;
+	}
+	void showLObj() {
 		if (getheight() < 2 || _listObj->isempty()) return;
 		int count = 0;
 		_T* temp = NULL;
-		node<_T>* TravNode = GetHightLight(posPrintInt);
 		showTitle();
 		TextColor(_hScreen, getcolor());
 		std::cout << std::setfill(' ');
-
-		int gy = gety() + 4;
-		int gx = getx() + 1;
-		while (count < getheight() - 3)
-		{
-			gotoXY(_hScreen, gx, gy + count++);
-			if (TravNode != NULL) {
-				if (TravNode == selected) {
-					std::cout << std::setw(3) << posPrintInt + count; DrawHight(selected->info, count - 1);
-				}
-				else {
-					std::cout << std::setw(3) << posPrintInt + count << char(179) << TravNode->info;
-				}
-				TravNode = TravNode->next;
-			}
-			else std::cout << std::setw(3) << posPrintInt + count << char(179) << temp;
-		}
+		_listObj->forEach([this](_T* data, int index) {return this->showSingle(data, index); },
+			posPrintInt, posPrintInt + getheight() - 4);
 
 	}
 	void addNode(_T* Dat) {
-		if (_listObj->search(Dat) == NULL) {
-			node<_T>* temp = _listObj->insertConst(Dat);
-			setchose(temp);
+		if (_listObj->Search(Dat) < 0) {
+			int index = _listObj->InsertConst(Dat);
+			setchose(index);
 			showLObj();
 		}
 	}
-	_T* DelNode() {
-		if (selected != NULL) {
-			//temp = selected->info;
-			_T* temp = selected->info;
-			_listObj->DelCen(selected->info);
+	int DelNode() {
+		if (selectedindex > -1) {
+			_listObj->Delete(selectedindex);
 			showLObj();
-			return temp;
 		}
-		return NULL;
+		return selectedindex;
 	}
-	void DrawHight(_T* Obj, int trav) {
+	void DrawHight(int index) {
 		TextColor(_hScreen, colorbk_cyan | color_white);
-		gotoXY(_hScreen, getx() + 4, gety() + 4 + trav);
-		std::cout << char(179) << Obj;
+		//gotoXY(_hScreen, gxShow, gy);
+		std::cout << char(179) << _listObj->GetData(index);
 		TextColor(_hScreen, getcolor());
 	}
+	IList<_T> getDataSource() { return _listObj; }
+
+	_T* getSelected() { return _listObj->GetData(selectedindex); }
 protected:
 	void setUpBtn(int color) {
 		TextColor(_hScreen, color);
@@ -185,9 +183,10 @@ protected:
 		int x1, x2, y1, y2;
 	}BtnClick;
 	std::string _strTiltle;
-	node<_T>* selected;
+	int selectedindex = -1;
 	int posPrintInt = 0;
-	List<_T>* _listObj;
+	int gxShow, gyShow;
+	IList<_T>* _listObj;
 	ACTIONBUTTON actionButton = nullptr;
 };
 

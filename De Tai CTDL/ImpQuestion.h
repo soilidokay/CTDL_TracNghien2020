@@ -108,7 +108,7 @@ public:
 private:
 	
 	void actionAdd(EventConsole &evt) {
-		node<Monhoc>* tempSel = CLObject->getSelected();
+		Monhoc* tempSel = CLObject->getSelected();
 		if (tempSel == NULL) {
 			warning war(70, 10, 5, colorbk_darkgreen | color_red);
 			war.SetScreen(_hSCreen);
@@ -118,7 +118,7 @@ private:
 			return;
 		}
 		Question *tempQuest = new Question(
-			tempSel->info->GetTree()->getCount(),
+			tempSel->GetTree()->getCount(),
 			IPquest->Gettext(),
 			IPanswerA->Gettext(),
 			IPanswerB->Gettext(),

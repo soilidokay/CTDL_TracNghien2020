@@ -73,9 +73,9 @@ public:
 		Showobj[7] = btnSave;
 		Showobj[8] = btnExit;
 
-		setlists(_Context->MonHocs->ToList());
+		setlists(_Context->MonHocs->ToArrayList(300));
 	}
-	void setlists(List<Monhoc>* lstObj) {
+	void setlists(IList<Monhoc>* lstObj) {
 		LBObject->setListObj(lstObj);
 	}
 
@@ -83,10 +83,10 @@ private:
 
 	//----------
 	void actionLBObj(EventConsole& evt) {
-		node<Monhoc>* temp = LBObject->getSelected();
+		Monhoc* temp = LBObject->getSelected();
 		if (temp == NULL) return;
-		IpIdObject->setText(temp->info->getId());
-		IIPnameObject->setText(temp->info->getName());
+		IpIdObject->setText(temp->getId());
+		IIPnameObject->setText(temp->getName());
 	}
 
 	//action button
@@ -100,19 +100,20 @@ private:
 		}
 	}
 	void ActionDel(EventConsole& evt) {
-		Monhoc* temp = LBObject->DelNode();
+		Monhoc* temp = LBObject->getSelected();
 		if (temp != NULL) {
 			_Context->MonHocs->Delete(temp);
+			LBObject->DelNode();
 		}
 
 	}
 	void ActionSave(EventConsole& evt) {
-		node<Monhoc>* temp = LBObject->getSelected();
+		Monhoc* temp = LBObject->getSelected();
 		if (temp == NULL)return;
-		temp->info->setidobject(IpIdObject->Gettext());
-		temp->info->setname(IIPnameObject->Gettext());
+		temp->setidobject(IpIdObject->Gettext());
+		temp->setname(IIPnameObject->Gettext());
 		LBObject->showLObj();
-		_Context->MonHocs->Update(temp->info);
+		_Context->MonHocs->Update(temp);
 	}
 	void ActionExit(EventConsole& evt) {
 		Close();

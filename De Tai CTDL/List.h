@@ -1,6 +1,8 @@
 #ifndef List_H
 #define List_H
 
+#include "IList.h"
+
 #define _ptr(_var) *##_var
 
 template<class _T>
@@ -11,7 +13,7 @@ struct node
 };
 
 template<class T>
-class List
+class List : public IList<T>
 {
 public:
 	typedef  node<T> nodeOjb;
@@ -27,7 +29,11 @@ public:
 	nodePtr insertCen(nodePtr ptrN, T* ptrdat);
 
 	nodePtr insertConst(T* ptrDat);
-
+	int Search(T* data) override;
+	int InsertConst(T* data) override;
+	bool Delete(int index)override;
+	void forEach(const IList<T>::ACTION& action, int indexStart = 0, int indexEnd = 0) override;
+	T* GetData(int index) override;
 	//
 	bool Addlast(nodePtr value);
 	bool AddFirt(nodePtr Value);
@@ -46,26 +52,7 @@ public:
 
 		}
 	}*/
-	bool DelCen(T* ptrDat) {
-		if (isempty() || ptrDat == nullptr) return 0;
-		if (_ptr(ptrDat) == _ptr(_first->info)) return Delfirst();
-		nodePtr temp = _first;
-		while (temp->next != nullptr && _ptr(ptrDat) != _ptr(temp->next->info)) temp = temp->next;
-		if (temp->next == nullptr) return 0;
-		if (temp->next == _last) {
-			delete _last;
-			_last = temp;
-			temp->next = nullptr;
-		}
-		else
-		{
-			nodePtr bktemp = temp->next->next;
-			delete temp->next;
-			temp->next = bktemp;
-		}
-		--_count;
-		return 1;
-	}
+	bool DelCen(T* ptrDat);
 
 	bool DelCen(T* ptrDat, int& index);
 
@@ -75,13 +62,13 @@ public:
 
 	virtual bool AddList(List<T>& list);
 	//----------------------
-	bool isempty();
+	bool isempty() override;
 	//-------------
 	nodePtr search(dataPtr dat);
 	int searchIndex(dataPtr dat);
 	nodePtr getfirst();
 	nodePtr getLast();
-	int getSize();
+	int getSize() override;
 	void Sort();
 	~List();
 	List();

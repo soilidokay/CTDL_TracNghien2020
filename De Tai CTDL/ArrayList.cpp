@@ -44,7 +44,7 @@ bool ArrayList<T>::Insert(T* data)
 }
 
 template<typename T>
-bool ArrayList<T>::InsertConst(T* data)
+int ArrayList<T>::InsertConst(T* data)
 {
 	if (_amount >= _size) return false;
 
@@ -65,7 +65,7 @@ bool ArrayList<T>::InsertConst(T* data)
 
 	++_amount;
 
-	return true;
+	return index;
 
 }
 
@@ -83,14 +83,22 @@ bool ArrayList<T>::Delete(int index, int amount = 1)
 		delete _data[i];
 	}
 
-	amountDelete = indexDelete;
+	amountDelete = _amount - index - amount;
 
-	for (; index < amountDelete; index++)
+	for (; index <= amountDelete; index++)
 	{
-		_data[index] = _data[indexDelete++];
-		--_amount;
+		_data[index] = _data[index + 1];
 	}
+
+	_amount -= amount;
+
 	return true;
+}
+
+template<typename T>
+bool ArrayList<T>::Delete(int index)
+{
+	return Delete(index, 1);
 }
 
 template<typename T>
@@ -111,13 +119,13 @@ bool ArrayList<T>::Update(int index, T* data)
 }
 
 template<typename T>
-T* ArrayList<T>::Search(T* data)
+int ArrayList<T>::Search(T* data)
 {
 	for (int i = 0; i < _amount; i++)
 	{
-		if (*_data[i] == *data) return _data[i];
+		if (*_data[i] == *data) return i;
 	}
-	return NULL;
+	return -1;
 }
 
 template<typename T>
@@ -127,10 +135,39 @@ int ArrayList<T>::Size()
 }
 
 template<typename T>
+bool ArrayList<T>::isempty()
+{
+	return _amount == 0;
+}
+
+template<typename T>
+void ArrayList<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexEnd)
+{
+	if (indexStart >= _amount || indexStart < 0) return;
+
+	int indexEndTemp = indexEnd >= _amount ? _amount : indexEnd + 1;
+
+	for (; indexStart < indexEndTemp; indexStart++)
+	{
+		if (!action(_data[indexStart], indexStart)) return;
+	}
+	for (indexStart; indexStart <= indexEnd; indexStart++)
+	{
+		if (!action(NULL, indexStart)) return;
+	}
+}
+
+template<typename T>
 T* ArrayList<T>::GetData(int index)
 {
 	if (!isCheckIndex(index) || _amount == 0) return NULL;
 	return _data[index];
+}
+
+template<typename T>
+int ArrayList<T>::getSize()
+{
+	return Size();
 }
 
 template<typename T>

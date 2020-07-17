@@ -16,48 +16,41 @@ public:
 	}
 	void setGroupEle(bool grElement) { groupElement = grElement; }
 	void SetWarnStr(std::string wrnStr) { _warnStr = wrnStr; }
-	void showLObj() override {
-		if (getheight() < 3 || _listObj->isempty()) return;//
 
-		int count = 0, trav = -1;
+	bool showSingle(_T* data, int index) override {
+		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
+
+		if (groupElement) {
+			if (ListChecked != NULL && ListChecked->search(data) != NULL)
+				TextColor(_hScreen, colorbk_red | color_blue);
+		}
+		else if (selectedindex > -1 && selectedindex == index) {
+			TextColor(_hScreen, colorbk_red | color_blue);
+		}
+
+		std::cout << std::setw(3) << index;
+
+		if (index == selectedindex) {
+			DrawHight(selectedindex);
+		}
+		else {
+			TextColor(_hScreen, getcolor());
+			std::cout << char(179) << data;
+		}
+
+		return true;
+	}
+	/*virtual void showLObj() override {
+		if (getheight() < 2 || _listObj->isempty()) return;
+		int count = 0;
 		_T* temp = NULL;
 		node<_T>* TravNode = GetHightLight(posPrintInt);
 		showTitle();
-		std::cout << std::setfill(' ');
 		TextColor(_hScreen, getcolor());
+		std::cout << std::setfill(' ');
+		_listObj->forEach(showSingle, posPrintInt, posPrintInt + getheight() - 4);
+	}*/
 
-		int gy = gety() + 4;
-		int gx = getx() + 1;
-		while (count < getheight() - 3)
-		{
-			gotoXY(_hScreen, gx, gy + count);
-			if (TravNode != NULL) {
-
-
-				if (groupElement) {
-					if (ListChecked != NULL && ListChecked->search(TravNode->info) != NULL)
-						TextColor(_hScreen, colorbk_red | color_blue);
-				}
-				else if (selected != NULL && selected->info == TravNode->info)
-					TextColor(_hScreen, colorbk_red | color_blue);
-
-				std::cout << std::setw(3) << posPrintInt + count;
-
-				if (TravNode == selected) {
-					DrawHight(selected->info, count);
-				}
-				else {
-					TextColor(_hScreen, getcolor());
-					std::cout << char(179) << TravNode->info;
-				}
-				TravNode = TravNode->next;
-			}
-			else std::cout << std::setw(3) << posPrintInt + count << char(179) << temp;
-			++count;
-		}
-
-
-	}
 	void SetListCheck(List<_T>* Lst) { ListChecked = Lst; }
 	List<_T>* GetListChecked() { return ListChecked; }
 	void setStrTiltle(std::string strTiltle)override {
@@ -100,11 +93,14 @@ public:
 	void Actionchecks(EventConsole& evt) {
 		if (evt._Smouse.x > getx() && evt._Smouse.x < getx() + 4 &&
 			evt._Smouse.y > gety() + 1 && ListChecked != NULL) {
-			if (ListChecked->search(selected->info) != NULL) {
 
-				if (ActionWarn(evt)) ListChecked->DelNode(selected);
+			_T* temp = _listObj->GetData(selectedindex);
+
+			if (ListChecked->search(temp) != NULL) {
+				if (ActionWarn(evt)) ListChecked->DelCen(temp);
 			}
-			else ListChecked->insertConst(selected->info);
+			else ListChecked->insertConst(temp);
+		
 		}
 	}
 	//void action(EventConsole& evt)override {
@@ -159,9 +155,8 @@ public:
 		}
 		else
 		{
-			tempPtr = GetHightLight(evt._Smouse.y - gety() - 4 + posPrintInt);
-			if (tempPtr != NULL) {
-				selected = tempPtr;
+			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
+			if (selectedindex > -1) {
 				if (groupElement) Actionchecks(evt);
 			}
 		}

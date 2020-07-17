@@ -110,9 +110,9 @@ void constructor()override {
 	Showobj[13] = LChckSex;
 	Showobj[14] = chckBocSex;
 
-	setlists(_Context->SinhViens->ToList(), _Context->MonHocs->ToList());
+	setlists(_Context->SinhViens->ToList());
 }
-void setlists(List<Sinhvien> * lstStu, List<Monhoc> * lstObj) {
+void setlists(IList<Sinhvien> * lstStu) {
 	LBStudent->setListObj(lstStu);
 }
 
@@ -120,12 +120,12 @@ private:
 
 
 void ActionListClass(EventConsole& evt) {
-	node<Sinhvien> *temp = LBStudent->getSelected();
+	Sinhvien *temp = LBStudent->getSelected();
 	if (temp == NULL) return;
-	IPidStudent->setText(temp->info->getId());
-	IPlastname->setText(temp->info->getlastname());
+	IPidStudent->setText(temp->getId());
+	IPlastname->setText(temp->getlastname());
 	//IPpass->setText(temp->info->)
-	IPfirst->setText(temp->info->getfirstname());
+	IPfirst->setText(temp->getfirstname());
 }
 //action button
 void ActionAdd(EventConsole& evt) {
@@ -142,21 +142,22 @@ void ActionAdd(EventConsole& evt) {
 	}
 }
 void ActionDel(EventConsole& evt) {
-	Sinhvien * temp = LBStudent->DelNode();
+	Sinhvien * temp = LBStudent->getSelected();
 	if (temp != NULL) {
 		_Context->SinhViens->Delete(temp);
+		LBStudent->DelNode();
 	}
 }
 void ActionSave(EventConsole& evt) {
-	node<Sinhvien>* temp = LBStudent->getSelected();
+	Sinhvien* temp = LBStudent->getSelected();
 	if (temp == NULL) return;
-	temp->info->setidstudent(IPidStudent->Gettext());
-	temp->info->setlastname(IPlastname->Gettext());
-	temp->info->setfirstname(IPfirst->Gettext());
-	temp->info->setsex(chckBocSex->getChck());
-	temp->info->SetPass(IPpass->Gettext());
+	temp->setidstudent(IPidStudent->Gettext());
+	temp->setlastname(IPlastname->Gettext());
+	temp->setfirstname(IPfirst->Gettext());
+	temp->setsex(chckBocSex->getChck());
+	temp->SetPass(IPpass->Gettext());
 	LBStudent->showLObj();
-	_Context->SinhViens->Update(temp->info);
+	_Context->SinhViens->Update(temp);
 }
 void ActionExit(EventConsole& evt) {
 	Close();

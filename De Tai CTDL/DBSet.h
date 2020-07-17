@@ -49,7 +49,7 @@ public:
 	DBSet(std::string pathdata, int SizeData);
 	~DBSet();
 	void Add(T* data);
-	void Delete(T* data);
+	void Delete(T* data,bool deleteData = false);
 	void Update(T* data);
 	List<T>* ToList();
 	T* ToArray();

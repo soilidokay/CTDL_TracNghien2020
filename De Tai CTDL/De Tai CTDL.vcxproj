@@ -132,6 +132,7 @@
     <ClInclude Include="EventMouseOrKey.h" />
     <ClInclude Include="Form.h" />
     <ClInclude Include="Formteach.h" />
+    <ClInclude Include="IList.h" />
     <ClInclude Include="ImpObject.h" />
     <ClInclude Include="ImportClass.h" />
     <ClInclude Include="ImportStudent.h" />

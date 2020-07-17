@@ -10,6 +10,10 @@
 using namespace std;
 using namespace scl;
 
+bool Show(Monhoc* mh,int index) {
+	cout << mh<<endl;
+	return true;
+}
 
 //class a : public CompareData<int>{
 //    int getId() { return  0; }
@@ -21,7 +25,7 @@ using namespace scl;
 //        T* d = new T();
 //    }
 //};
-int main() {
+int main3() {
 
 	ArrayList<Monhoc>* test22 = new ArrayList<Monhoc>(100);
 
@@ -30,12 +34,13 @@ int main() {
 	test22->InsertConst(new Monhoc("test3", "name7"));
 	test22->InsertConst(new Monhoc("test2", "name8"));
 	test22->InsertConst(new Monhoc("test1", "name8"));
-	test22->Update(0,new Monhoc("test5", "name8"));
+	test22->Update(0, new Monhoc("test5", "name8"));
+	test22->forEach(Show);
 
-	for (int i = 0; i < test22->Size(); i++)
+	/*for (int i = 0; i < test22->Size(); i++)
 	{
 		cout << test22->GetData(i)<<endl;
-	}
+	}*/
 
 
 	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
@@ -101,7 +106,7 @@ int main() {
 	delete dbset2;
 	return 0;
 }
-int main2(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	scl::DisableMaxiMize("tainguyen");
 
 	SYSTEMTIME systime;
