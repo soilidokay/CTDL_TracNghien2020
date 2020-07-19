@@ -18,7 +18,7 @@
 #include "AppDbContext.h"
 using namespace scl;
 using namespace std::placeholders;
-
+void ShowWarning(HANDLE _hSCreen, std::string text);
 class Form
 {
 

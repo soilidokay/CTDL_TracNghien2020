@@ -32,12 +32,13 @@ public:
 	int Search(T* data) override;
 	int InsertConst(T* data) override;
 	bool Delete(int index)override;
-	void forEach(const IList<T>::ACTION& action, int indexStart = 0, int indexEnd = 0) override;
+	void forEach(const IList<T>::ACTION& action, int indexStart = 0, int indexEnd = -1) override;
+	IList<T>* filter(const IList<T>::ACTION& action) override;
 	T* GetData(int index) override;
 	//
 	bool Addlast(nodePtr value);
 	bool AddFirt(nodePtr Value);
-	void clear();
+	void Clear() override;
 	//
 	bool Delfirst();
 	/*bool Dellast() {

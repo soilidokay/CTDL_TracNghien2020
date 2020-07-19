@@ -10,9 +10,12 @@
 using namespace std;
 using namespace scl;
 
-bool Show(Monhoc* mh,int index) {
-	cout << mh<<endl;
+bool Show(Monhoc* mh, int index) {
+	cout << mh << endl;
 	return true;
+}
+bool filterMonhoc(Monhoc* mh, int index) {
+	return mh->getId() == "test5" || mh->getId() == "test4";
 }
 
 //class a : public CompareData<int>{
@@ -37,13 +40,13 @@ int main3() {
 	test22->Update(0, new Monhoc("test5", "name8"));
 	test22->forEach(Show);
 
-	/*for (int i = 0; i < test22->Size(); i++)
-	{
-		cout << test22->GetData(i)<<endl;
-	}*/
+
+	IList<Monhoc>* y = test22->filter(filterMonhoc);
+	y->forEach(Show);
+		
 
 
-	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
+		DBSet<std::string, char, 10, EntityMonHoc, Monhoc> * dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
 	dbset->Add(new Monhoc("test1", "name5"));
 	dbset->Add(new Monhoc("test2", "name6"));
 	dbset->Add(new Monhoc("test3", "name7"));

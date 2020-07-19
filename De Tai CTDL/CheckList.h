@@ -5,7 +5,7 @@
 #include "ListBox.h"
 #include "EventMouseOrKey.h"
 
-template<class _T>
+template<typename _T>
 class CheckList : public ListBox<_T>
 {
 public:
@@ -16,7 +16,9 @@ public:
 	}
 	void setGroupEle(bool grElement) { groupElement = grElement; }
 	void SetWarnStr(std::string wrnStr) { _warnStr = wrnStr; }
-
+	void setActionCollapse(const ACTIONBUTTON& func) {
+		actionCollapse = func;
+	}
 	bool showSingle(_T* data, int index) override {
 		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
 
@@ -145,26 +147,36 @@ public:
 		else if (!this->_checkmoue(evt)) {
 			_containerEvent->unLockControl(this);
 			backup(charac);
+			if (actionCollapse) {
+				actionCollapse(evt);
+			}
 			return;
 		}
 
 		if (BclickBtn(evt) == 1) {
 			MoveUp(getheight() - 3);
+			showLObj();
 		}
 		else if (BclickBtn(evt) == 2) {
 			MoveDw(getheight() - 3);
+			showLObj();
 		}
 		else
 		{
 			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
-			if (selectedindex > -1) {
+			if (selectedindex > -1 && selectedindex < _listObj->getSize()) {
 				if (groupElement) Actionchecks(evt);
 				else {
 					Checked = selectedindex;
 				}
+
+				if (actionButton) {
+					actionButton(evt);
+				}
+				showLObj();
 			}
+
 		}
-		showLObj();
 
 		//_select = 1;
 	}
@@ -178,6 +190,7 @@ private:
 	EventMouseOrKey* _containerEvent;
 	std::string _warnStr;
 	node<_T>* tempPtr;
+	ACTIONBUTTON actionCollapse = nullptr;
 };
 
 #endif // !CheckList_H

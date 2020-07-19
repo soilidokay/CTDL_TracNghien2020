@@ -24,7 +24,7 @@ DBSet<_TIdCompare, _TId, amount, _TEntity, T>::~DBSet()
 {
 	_fData->close();
 	delete _fData;
-	_dataId->clear();
+	_dataId->Clear();
 	delete _dataId;
 }
 

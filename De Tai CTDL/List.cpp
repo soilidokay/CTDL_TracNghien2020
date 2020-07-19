@@ -157,7 +157,9 @@ bool List<T>::Delete(int index) {
 template<class T>
 void List<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexEnd)
 {
-	if (indexStart >= getSize() || indexStart < 0) return;
+	if (indexStart < 0) return;
+	if (indexStart >= getSize()) indexStart = 0;
+
 	int indexEndTemp = indexEnd >= getSize() ? getSize() : indexEnd + 1;
 	int index = 0;
 	nodePtr i = _first;
@@ -172,6 +174,22 @@ void List<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexE
 		if (!action(i->info, index++)) return;
 	}
 	while (index <= indexEnd) if (!action(NULL, index++)) return;
+}
+
+template<class T>
+IList<T>* List<T>::filter(const IList<T>::ACTION& action)
+{
+	IList<T>* temps = new List<T>();
+
+	nodePtr trav = _first;
+	int index = 0;
+	while (trav != NULL) {
+		if (action(trav->info, index++)) {
+			temps->InsertConst(trav->info);
+		}
+		trav = trav->next;
+	}
+	return temps;
 }
 
 template<class T>
@@ -219,7 +237,7 @@ bool List<T>::AddFirt(nodePtr Value)
 }
 
 template<class T>
-void List<T>::clear()
+void List<T>::Clear()
 {
 	while (!isempty())
 	{

@@ -14,7 +14,7 @@ public:
 	}
 	void constructor()override {
 		//Listbox lop
-		nObj = 9;
+		nObj = 10;
 		//
 		LBObject = new ListBox<Monhoc>(78, 10, 0, 8);
 		LBObject->setColor(_bkcolor | color_grey);
@@ -39,9 +39,14 @@ public:
 		IIPnameObject = new InPutBox(25, 1, 53, 3);
 		IIPnameObject->setColor(colorbk_white | color_blue);
 		*Events += IIPnameObject;
+		//-------Button Clear
+		btnClear = new Button(6, 1, 15, 20);
+		btnClear->setText("Moi");
+		btnClear->setActionButton(bind(&ImpObject::ActionClear, this, _1));
+		*Events += btnClear;
 		//-------Botton them
 		btnAdd = new Button(6, 1, 24, 20);
-		btnAdd->setText("Moi");
+		btnAdd->setText("Luu");
 		btnAdd->setActionButton(bind(&ImpObject::ActionAdd, this, _1));
 		*Events += btnAdd;
 		//-------Botton xoa
@@ -51,7 +56,7 @@ public:
 		*Events += btnDel;
 		//-------Botton luu
 		btnSave = new Button(6, 1, 42, 20);
-		btnSave->setText("Save");
+		btnSave->setText("Sua");
 		btnSave->setActionButton(bind(&ImpObject::ActionSave, this, _1));
 		*Events += btnSave;
 		//-------Botton thoat
@@ -68,10 +73,11 @@ public:
 		Showobj[2] = LNameObject;
 		Showobj[3] = IpIdObject;
 		Showobj[4] = IIPnameObject;
-		Showobj[5] = btnAdd;
-		Showobj[6] = btnDel;
-		Showobj[7] = btnSave;
-		Showobj[8] = btnExit;
+		Showobj[5] = btnClear;
+		Showobj[6] = btnAdd;
+		Showobj[7] = btnDel;
+		Showobj[8] = btnSave;
+		Showobj[9] = btnExit;
 
 		setlists(_Context->MonHocs->ToArrayList(300));
 	}
@@ -90,7 +96,10 @@ private:
 	}
 
 	//action button
-
+	void ActionClear(EventConsole& evt) {
+		IpIdObject->setText("");
+		IIPnameObject->setText("");
+	}
 	void ActionAdd(EventConsole& evt) {
 		if (IpIdObject->Gettext().length() > 0) {
 			Monhoc* temp = new Monhoc(IpIdObject->Gettext(),
@@ -108,9 +117,15 @@ private:
 
 	}
 	void ActionSave(EventConsole& evt) {
+
 		Monhoc* temp = LBObject->getSelected();
+
 		if (temp == NULL)return;
-		temp->setidobject(IpIdObject->Gettext());
+		if (temp->getId() != IpIdObject->Gettext()) {
+			ShowWarning(_hSCreen, "Mon hoc khong ton tai!");
+			return;
+		}
+
 		temp->setname(IIPnameObject->Gettext());
 		LBObject->showLObj();
 		_Context->MonHocs->Update(temp);
@@ -122,7 +137,7 @@ private:
 	ListBox<Monhoc>* LBObject;
 	Lable* LIdObject, * LNameObject;
 	InPutBox* IpIdObject, * IIPnameObject;
-	Button* btnAdd, * btnDel, * btnSave, * btnExit;
+	Button* btnClear, * btnAdd, * btnDel, * btnSave, * btnExit;
 };
 #endif // !ImpObject_H
 

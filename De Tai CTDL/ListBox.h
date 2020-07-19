@@ -47,7 +47,7 @@ public:
 		else
 		{
 			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
-			if (_listObj->GetData(selectedindex) != NULL) {
+			if (selectedindex>-1 && selectedindex < _listObj->getSize()) {
 				showLObj();
 				if (actionButton) {
 					actionButton(evt);
@@ -133,7 +133,8 @@ public:
 		}
 	}
 	void showLObj() {
-		if (getheight() < 2 || _listObj->isempty()) return;
+		if (_listObj == NULL) return;
+		if (getheight() < 2) return;
 		int count = 0;
 		_T* temp = NULL;
 		showTitle();

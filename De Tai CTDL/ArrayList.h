@@ -20,10 +20,11 @@ public:
 	int Search(T* data) override;
 	int Size();
 	bool isempty() override;
-	void forEach(const IList<T>::ACTION& action, int indexStart = 0, int indexEnd = 0) override;
+	void forEach(const IList<T>::ACTION& action, int indexStart = 0, int indexEnd = -1) override;
+	IList<T>* filter(const IList<T>::ACTION& action) override;
 	T* GetData(int index) override;
 	int getSize() override;
-	void Clear();
+	void Clear() override;
 private:
 	T** _data;
 	int _size;

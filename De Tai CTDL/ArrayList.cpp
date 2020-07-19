@@ -146,8 +146,10 @@ void ArrayList<T>::forEach(const IList<T>::ACTION& action, int indexStart, int i
 {
 	if (indexStart >= _amount || indexStart < 0) return;
 
-	int indexEndTemp = indexEnd >= _amount ? _amount : indexEnd + 1;
-
+	int indexEndTemp = _amount;
+	if (indexEnd > -1) {
+		indexEndTemp = indexEnd >= _amount ? _amount : indexEnd + 1;
+	}
 	for (; indexStart < indexEndTemp; indexStart++)
 	{
 		if (!action(_data[indexStart], indexStart)) return;
@@ -156,6 +158,19 @@ void ArrayList<T>::forEach(const IList<T>::ACTION& action, int indexStart, int i
 	{
 		if (!action(NULL, indexStart)) return;
 	}
+}
+
+template<typename T>
+IList<T>* ArrayList<T>::filter(const IList<T>::ACTION& action)
+{
+	IList<T>* temps = new  ArrayList<T>(_size);
+	for (int i = 0; i < getSize(); i++)
+	{
+		if (action(_data[i], i)) {
+			temps->InsertConst(_data[i]);
+		}
+	}
+	return temps;
 }
 
 template<typename T>

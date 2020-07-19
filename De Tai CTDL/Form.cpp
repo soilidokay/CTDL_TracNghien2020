@@ -45,3 +45,13 @@ void Form::DrawToScreen()
 		Showobj[i]->show();
 	}
 }
+
+void ShowWarning(HANDLE _hSCreen, std::string text)
+{
+	EventConsole evt;
+	warning war(70, 10, 5, colorbk_darkgreen | color_red);
+	war.SetScreen(_hSCreen);
+	war.setBtnCancel(0);
+	war.settext(text);
+	war.action(evt);
+}

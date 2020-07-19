@@ -129,6 +129,7 @@ protected:
 	char _firstname[10] = "";
 	bool _sex = false;
 	char _passWord[15] = "";
+	char _MaLop[10] = "";
 };
 
 class Sinhvien : public EntiySinhvien, public CompareData<std::string>
@@ -183,12 +184,14 @@ public:
 	void setsex(bool sex) { _sex = sex; }
 	void setLMonhoc(List<Monhoc>* LMonhoc) { _LMonHoc = LMonhoc; }
 	void SetPass(std::string pass) { _strcopy(_passWord, 30, pass); }
+	void SetMaLop(std::string malop) { _strcopy(_MaLop, 30, malop); }
 
 	std::string getId() { return _idStudent; }
 	std::string getlastname() { return _lastname; }
 	std::string getfirstname() { return _firstname; }
 	bool getsex() { return _sex; }
 	std::string getPass() { return _passWord; }
+	std::string getMaLop() { return _MaLop; }
 
 	List<Monhoc>* getLMonhoc() { return _LMonHoc; }
 	~Sinhvien() {}

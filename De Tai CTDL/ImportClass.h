@@ -15,7 +15,6 @@ public:
 	}
 	void constructor()override {
 		//Listbox lop
-		nObj = 9;
 		//
 		LBclass = new ListBox<LopHoc>(78, 10, 2, 8);
 		LBclass->setColor(_bkcolor | color_grey);
@@ -38,9 +37,14 @@ public:
 		IPnameclass = new InPutBox(25, 1, 53, 0);
 		IPnameclass->setColor(colorbk_white | color_blue);
 		*Events += IPnameclass;
+		//-------Button Clear
+		btnClear = new Button(6, 1, 15, 20);
+		btnClear->setText("Moi");
+		btnClear->setActionButton(bind(&importClass::ActionClear, this, _1));
+		*Events += btnClear;
 		//-------Botton them
 		btnAdd = new Button(6, 1, 24, 20);
-		btnAdd->setText("Moi");
+		btnAdd->setText("Luu");
 		btnAdd->setActionButton(bind(&importClass::ActionAdd, this, _1));
 		*Events += btnAdd;
 		//-------Botton xoa
@@ -50,7 +54,7 @@ public:
 		*Events += btnDel;
 		//-------Botton luu
 		btnSave = new Button(6, 1, 42, 20);
-		btnSave->setText("Save");
+		btnSave->setText("Sua");
 		btnSave->setActionButton(bind(&importClass::ActionSave, this, _1));
 		*Events += btnSave;
 		//-------Botton thoat
@@ -58,6 +62,8 @@ public:
 		btnExit->setText("Thoat");
 		btnExit->setActionButton(bind(&importClass::ActionExit, this, _1));
 		*Events += btnExit;
+
+		nObj = 10;
 		Showobj = new window * [nObj];
 
 		Showobj[0] = LBclass;
@@ -65,10 +71,11 @@ public:
 		Showobj[2] = LNameClass;
 		Showobj[3] = IPidclass;
 		Showobj[4] = IPnameclass;
-		Showobj[5] = btnAdd;
-		Showobj[6] = btnDel;
-		Showobj[7] = btnSave;
-		Showobj[8] = btnExit;
+		Showobj[5] = btnClear;
+		Showobj[6] = btnAdd;
+		Showobj[7] = btnDel;
+		Showobj[8] = btnSave;
+		Showobj[9] = btnExit;
 
 		setlists(_Context->LopHocs->ToArrayList(500));
 	}
@@ -85,6 +92,10 @@ private:
 		IPnameclass->setText(lh->getName());
 	}
 	//action button
+	void ActionClear(EventConsole& evt) {
+		IPidclass->setText("");
+		IPnameclass->setText("");
+	}
 	void ActionAdd(EventConsole& evt) {
 		if (IPidclass->Gettext().length() > 0) {
 			LopHoc* temp = new LopHoc(IPidclass->Gettext(),
@@ -103,8 +114,14 @@ private:
 	void ActionSave(EventConsole& evt) {
 		LopHoc* lh = LBclass->getSelected();
 		if (lh == NULL) return;
-		lh->setid(IPidclass->Gettext());
+
+		if (lh->getId() != IPidclass->Gettext()) {
+			ShowWarning(_hSCreen,"Lop hoc khong ton tai!");
+			return;
+		};
+
 		lh->setnameclass(IPnameclass->Gettext());
+
 		LBclass->showLObj();
 		_Context->LopHocs->Update(lh);
 	}
@@ -115,7 +132,7 @@ private:
 	ListBox<LopHoc>* LBclass;
 	Lable* LIdClass, * LNameClass;
 	InPutBox* IPidclass, * IPnameclass;
-	Button* btnAdd, * btnDel, * btnSave, * btnExit;
+	Button* btnClear,* btnAdd, * btnDel, * btnSave, * btnExit;
 };
 #endif // !ImportClass_H
 
