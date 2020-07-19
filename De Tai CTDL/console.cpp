@@ -14,7 +14,7 @@ namespace scl {
 	}
 	void SetTitle(std::string title)
 	{
-		SetConsoleTitle(TEXT(title.c_str()));
+		SetConsoleTitle(title.c_str());
 	}
 
 	void SizeConsole(SHORT Width, SHORT height)
@@ -27,11 +27,11 @@ namespace scl {
 	}
 	void SizeConsole(HANDLE hscreen, SHORT Width, SHORT height)
 	{
+
 		SMALL_RECT SizeW = { 0,0,Width - 1,height - 1 };
 		COORD sizebuff = { Width,height };
-		BOOL BSize = SetConsoleWindowInfo(hscreen, true, &SizeW);
 		SetConsoleScreenBufferSize(hscreen, sizebuff);
-		if (!BSize) SetConsoleWindowInfo(hscreen, true, &SizeW);
+		BOOL BSize = SetConsoleWindowInfo(hscreen, true, &SizeW);
 	}
 	void SizeBuffer(SHORT col, SHORT row)
 	{
@@ -107,7 +107,7 @@ namespace scl {
 		WriteConsoleOutput(whandConsole, charater, sizebuff, pos, &earea);
 		delete[] charater;
 	}
-	void WriteBlockChar(HANDLE hscreen,CHAR_INFO* charater,
+	void WriteBlockChar(HANDLE hscreen, CHAR_INFO* charater,
 		SHORT row, SHORT col,
 		SHORT x, SHORT y)
 	{
@@ -156,7 +156,7 @@ namespace scl {
 		if (!FillConsoleOutputAttribute(whandConsole, color, nlen, pos, &nCharacter))
 			return;
 	}
-	void fillBackGround(HANDLE hscreen,int col, int row, int color) {
+	void fillBackGround(HANDLE hscreen, int col, int row, int color) {
 		COORD pos = { 0,0 };
 		DWORD nlen = col * row;
 		DWORD nCharacter;
@@ -271,7 +271,7 @@ namespace scl {
 	{
 		SetConsoleTextAttribute(hscreen, color);
 	}
-	
+
 
 	//catch key and mouse
 	void KeyMouse(EventConsole* eventcon) {
@@ -281,15 +281,15 @@ namespace scl {
 		eventcon->_Smouse._kindMouse = MouseKind::none;
 		eventcon->_key = -1;
 		DWORD numberEvent = 0;
+		INPUT_RECORD enventBuff[100];//= new INPUT_RECORD[numberEvent];
 		//tao mang de luu cac event 
-		INPUT_RECORD* enventBuff;
 		DWORD rnumberEvent = 0;
 		while (runCath)
 		{
 			//lay so luong event da xay ra
 			GetNumberOfConsoleInputEvents(rhandleConsole, &numberEvent);
 			if (numberEvent != 0) {//co su kien xay ra
-				enventBuff = new INPUT_RECORD[numberEvent];
+				numberEvent = numberEvent > 100 ? 100 : numberEvent;
 				//doc event vao man
 				ReadConsoleInput(rhandleConsole, enventBuff, numberEvent, &rnumberEvent);
 				for (DWORD i = 0; i < numberEvent; ++i) {
@@ -321,7 +321,7 @@ namespace scl {
 						runCath = 0;
 					}
 				}
-				delete[] enventBuff;
+				//delete[] enventBuff;
 			}// if
 			Sleep(10);
 		}// while

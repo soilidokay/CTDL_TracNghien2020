@@ -4,10 +4,14 @@ Form::Form(Form* Fbackup, int width, int height, int bkcolor)
 {
 	_Fbackup = Fbackup;
 	_bkcolor = bkcolor;
-	_width = width;
-	_height = height;
-	_area = new int* [height];
-	for (int i = 0; i < height; ++i) _area[i] = new int[width];
+
+	COORD WinInfo = GetLargestConsoleWindowSize(GetStdHandle(STD_OUTPUT_HANDLE));
+
+	_width = width > WinInfo.X ? WinInfo.X : width;
+	_height = height > WinInfo.Y ? WinInfo.Y : height;
+
+	_area = new int* [_height];
+	for (int i = 0; i < _height; ++i) _area[i] = new int[_width];
 	for (int i = 0; i < _width; i++)
 		for (int j = 0; j < _height; j++)
 			_area[j][i] = -1;

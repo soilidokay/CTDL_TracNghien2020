@@ -34,7 +34,8 @@ public:
 		std::cout << std::setw(3) << index;
 
 		if (index == selectedindex || Checked == index) {
-			DrawHight(selectedindex);
+			int index = selectedindex > -1 ? selectedindex : Checked;
+			DrawHight(index);
 		}
 		else {
 			TextColor(_hScreen, getcolor());
@@ -163,6 +164,7 @@ public:
 		}
 		else
 		{
+
 			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
 			if (selectedindex > -1 && selectedindex < _listObj->getSize()) {
 				if (groupElement) Actionchecks(evt);

@@ -118,7 +118,6 @@ public:
 		Showobj[14] = btnExit;
 		Showobj[15] = LChckSex;
 		Showobj[16] = chckBocSex;
-		lstSinhVien = _Context->SinhViens->ToList();
 		ClassCurrent = NULL;
 		setlists(_Context->LopHocs->ToArrayList(300));
 
@@ -135,6 +134,7 @@ public:
 	}
 
 	void setlists(IList<LopHoc>* lstStu) {
+		lstSinhVien = _Context->SinhViens->ToList();
 		lstStu->forEach([&](LopHoc* lh, int index) {return this->forEachLop(lh, index); });
 		LBLopHoc->setListObj(lstStu);
 	}

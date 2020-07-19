@@ -159,8 +159,10 @@ void List<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexE
 {
 	if (indexStart < 0) return;
 	if (indexStart >= getSize()) indexStart = 0;
-
-	int indexEndTemp = indexEnd >= getSize() ? getSize() : indexEnd + 1;
+	int indexEndTemp = getSize();
+	if (indexEnd > -1) {
+		indexEndTemp = indexEnd >= getSize() ? getSize() : indexEnd + 1;
+	}
 	int index = 0;
 	nodePtr i = _first;
 
@@ -169,10 +171,11 @@ void List<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexE
 		++index;
 	}
 
-	for (; i != NULL && index < indexEndTemp; i = i->next)
+	for (; index < indexEndTemp; i = i->next)
 	{
 		if (!action(i->info, index++)) return;
 	}
+
 	while (index <= indexEnd) if (!action(NULL, index++)) return;
 }
 

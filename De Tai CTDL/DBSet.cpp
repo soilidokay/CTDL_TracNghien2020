@@ -121,6 +121,12 @@ ArrayList<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToArrayList(int siz
 }
 
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+TreeAVL<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToTree()
+{
+	return ReadDataTree();
+}
+
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 int DBSet<_TIdCompare, _TId, amount, _TEntity, T>::size()
 {
 	return _dataId->getSize();
@@ -240,7 +246,25 @@ ArrayList<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataArrayList(i
 }
 
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
-inline T** DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataPtr()
+TreeAVL<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataTree()
+{
+	TreeAVL<T>* data = new TreeAVL<T>();
+	if (_dataId->isempty()) return data;
+	node<DataIndex<_TIdCompare, _TId, amount>>* trav = _dataId->getfirst();
+	int index = 0;
+	_TEntity* temp;
+	while (trav != NULL) {
+		temp = new T;
+		_fData->seekg(trav->info->sizeOffset);
+		_fData->read(reinterpret_cast<char*>(temp), _SizeData);
+		trav = trav->next;
+		data->InsertConst((T*)temp);
+	}
+	return data;
+}
+
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+T** DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ReadDataPtr()
 {
 	if (_dataId->isempty()) return nullptr;
 	T** data = new T * [_dataId->getSize()];

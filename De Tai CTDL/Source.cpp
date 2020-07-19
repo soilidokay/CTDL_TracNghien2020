@@ -111,7 +111,6 @@ int main3() {
 }
 int main(int argc, char* argv[]) {
 	scl::DisableMaxiMize("tainguyen");
-
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 	Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };

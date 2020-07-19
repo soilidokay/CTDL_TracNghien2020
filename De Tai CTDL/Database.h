@@ -16,6 +16,7 @@ const char lim = 179;
 class EntityQuestion {
 protected:
 	int _idquest = '-1';
+	char _IdObject[10] = "";
 	char _Quest[100] = "";
 	char _answerA[100] = "";
 	char _answerB[100] = "";
@@ -23,6 +24,14 @@ protected:
 	char _answerD[100] = "";
 	char _answer = '\0';
 };
+static std::string CutStr(std::string str, int amount) {
+	if (str.length() > amount) {
+		return str.substr(0,amount - 3) + "...";
+	}
+	else {
+		return str;
+	}
+}
 class Question : public EntityQuestion, public CompareData<int>
 {
 public:
@@ -40,6 +49,7 @@ public:
 	};
 	void setId(int idquest) { _idquest = idquest; }
 	void setQuest(std::string Quest) { _strcopy(_Quest, 100, Quest); }
+	void setIdObject(std::string IdObject) { _strcopy(_IdObject, 100, IdObject); }
 	void setanswerA(std::string answerA) { _strcopy(_answerA, 100, answerA); }
 	void setanswerB(std::string answerB) { _strcopy(_answerB, 100, answerB); }
 	void setanswerC(std::string answerC) { _strcopy(_answerC, 100, answerC); }
@@ -49,21 +59,38 @@ public:
 		//char lim = 179;
 		output << std::left << std::setfill(' ');
 		if (Obj != NULL) {
-			output << std::setw(20)
-				<< Obj->getId()
-				<< lim
-				<< std::setw(50)
-				<< Obj->getQuest() << lim;
+			output<< std::setw(12) << CutStr(Obj->_Quest,12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerA,12)<< lim
+				<< std::setw(12) << CutStr(Obj->_answerB,12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerC,12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerD,12) << lim
+				<< std::setw(12) << Obj->_answer << lim;
 		}
 		else
 		{
-			output << std::setw(20) << ' ' << lim
-				<< std::setw(50) << ' ' << lim;
+			output<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim;
 		}
 		return output;
 	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ');
+		std::cout << std::setw(3) << ' ' << lim
+			<< std::setw(12) << "  Cau Hoi" << lim
+			<< std::setw(12) << "    A" << lim
+			<< std::setw(12) << "    B" << lim
+			<< std::setw(12) << "    C" << lim
+			<< std::setw(12) << "    D" << lim
+			<< std::setw(12) << "Dap An" << lim;
+	}
+
 	int getId()override { return _idquest; }
 	std::string getQuest() { return _Quest; }
+	std::string getIdObject() { return _IdObject; }
 	std::string getanswerA() { return _answerA; }
 	std::string getanswerB() { return _answerB; }
 	std::string getanswerC() { return _answerC; }
@@ -90,6 +117,7 @@ public:
 
 	void setidobject(std::string idobject) { _strcopy(_idObject, 10, idobject); }
 	void setname(std::string nameobj) { _strcopy(_nameobj, 30, nameobj); }
+	void setTree(TreeAVL<Question>* tree) { treeQuest = tree; }
 
 	std::string getId()override { return _idObject; }
 	std::string getName() { return _nameobj; }

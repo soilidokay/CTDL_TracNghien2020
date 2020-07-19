@@ -64,7 +64,7 @@ private:
 		ImpStu->show();
 	}
 	void ActionBtnImpQue(EventConsole &evt) {
-		ImpQuestion* ImpQue = new ImpQuestion(this, 90, 30, colorbk_white);
+		ImpQuestion* ImpQue = new ImpQuestion(this, 90, 60, colorbk_white);
 		ImpQue->show();
 	}
 	void ActionBtnImpObj(EventConsole &evt) {

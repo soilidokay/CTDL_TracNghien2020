@@ -6,25 +6,24 @@
 class ImpQuestion : public Form
 {
 public:
-	ImpQuestion(Form *Fbackup, int width, int height, int bkcolor) :
+	ImpQuestion(Form* Fbackup, int width, int height, int bkcolor) :
 		Form(Fbackup, width, height, bkcolor)
 	{
 		constructor();
 		setEventMouseOrKey();
 		DrawToScreen();
-		setList(_Context->MonHocs->ToList());
 	}
-	void setList(List<Monhoc> *listObj) {
+	void setList(List<Monhoc>* listObj) {
 		CLObject->setListObj(listObj);
 	}
 	void constructor()override {
-		nObj = 15;
 		//
-		CLObject = new CheckList<Monhoc>(76, 12, 1,Events);
+		CLObject = new CheckList<Monhoc>(76, 12, 1, Events);
 		CLObject->setColor(_bkcolor | color_grey);
 		CLObject->setheightLB(15);
 		CLObject->setStrTiltle("Danh sach mon hoc");
 		CLObject->setGroupEle(false);
+		CLObject->setActionCollapse(bind(&ImpQuestion::ActionListQuestion, this, _1));
 		*Events += CLObject;
 		//
 		Lquest = new Lable(10, 1, 0, 4);
@@ -74,18 +73,28 @@ public:
 		IPanswer = new InPutBox(76, 1, 12, 19);
 		IPanswer->setColor(colorbk_white | color_blue);
 		*Events += IPanswer;
+
+
+		LBQuestion = new ListBox<Question>(88, 30, 0, 24);
+		LBQuestion->setColor(_bkcolor | color_grey);
+		LBQuestion->setStrTiltle("Danh Sach Cau Hoi ");
+		LBQuestion->setActionButton(bind(&ImpQuestion::ActionListQuestion, this, _1));
+		*Events += LBQuestion;
+
 		//
-		btnAdd = new Button(6, 1, 40, 24);
+		int gy = getheight() - 4;
+		btnAdd = new Button(6, 1, 40, gy);
 		btnAdd->setText("Them");
 		btnAdd->setActionButton(bind(&ImpQuestion::actionAdd, this, _1));
 		*Events += btnAdd;
 		//
-		btnExit = new Button(6, 1, 50, 24);
+		btnExit = new Button(6, 1, 50, gy);
 		btnExit->setText("Thoat");
 		btnExit->setActionButton(bind(&ImpQuestion::actionExit, this, _1));
 		*Events += btnExit;
 		//
-		Showobj = new window*[nObj];
+		nObj = 16;
+		Showobj = new window * [nObj];
 
 		Showobj[0] = CLObject;
 		Showobj[1] = Lquest;
@@ -100,14 +109,35 @@ public:
 		Showobj[10] = IPanswerC;
 		Showobj[11] = IPanswerD;
 		Showobj[12] = IPanswer;
-		Showobj[13] = btnAdd;
-		Showobj[14] = btnExit;
+		Showobj[13] = LBQuestion;
+		Showobj[14] = btnAdd;
+		Showobj[15] = btnExit;
 		//
+		setlists(_Context->MonHocs->ToList());
 	}
-	
+
 private:
-	
-	void actionAdd(EventConsole &evt) {
+	bool conditionfiltersv(Question* qs, int index, Monhoc* mh) {
+		return qs->getIdObject() == mh->getId();
+	}
+	bool forEachMonHoc(Monhoc* mh, int index) {
+		IList<Question>* temps = _treeQuestion->filter([&](Question* qs, int index) {return this->conditionfiltersv(qs, index, mh); });
+		mh->setTree((TreeAVL<Question>*)temps);
+		return true;
+	}
+	void setlists(IList<Monhoc>* lstObject) {
+		_treeQuestion = _Context->Questions->ToTree();
+		lstObject->forEach([&](Monhoc* mh, int index) {return this->forEachMonHoc(mh, index); });
+		CLObject->setListObj(lstObject);
+	}
+	void ActionListQuestion(EventConsole& evt) {
+		if (_ObjectCurrent != CLObject->GetDataChecked()) {
+			_ObjectCurrent = CLObject->GetDataChecked();
+			LBQuestion->setListObj(_ObjectCurrent->GetTree());
+			LBQuestion->showLObj();
+		}
+	}
+	void actionAdd(EventConsole& evt) {
 		Monhoc* tempSel = CLObject->GetDataChecked();
 		if (tempSel == NULL) {
 			warning war(70, 10, 5, colorbk_darkgreen | color_red);
@@ -117,8 +147,20 @@ private:
 			war.action(evt);
 			return;
 		}
-		Question *tempQuest = new Question(
-			tempSel->GetTree()->getCount(),
+		//tim id
+		int count = _ObjectCurrent->GetTree()->getCount();
+		int idTemp = hash<string>{}(_ObjectCurrent->getId() + (char)(48 + count));
+		Question tempQuestion;
+		tempQuestion.setId(idTemp);
+		while (_treeQuestion->searchValue(&tempQuestion) != NULL)
+		{
+			++count;
+			idTemp = hash<string>{}(_ObjectCurrent->getId() + (char)(48 + count));
+			tempQuestion.setId(idTemp);
+		}
+
+		Question* tempQuest = new Question(
+			idTemp,
 			IPquest->Gettext(),
 			IPanswerA->Gettext(),
 			IPanswerB->Gettext(),
@@ -126,15 +168,22 @@ private:
 			IPanswerD->Gettext(),
 			IPanswer->Gettext()[0]
 		);
+		tempQuest->setIdObject(_ObjectCurrent->getId());
+		LBQuestion->addNode(tempQuest);
+		_treeQuestion->InsertConst(tempQuest);
+		_Context->Questions->Add(tempQuest);
 	}
-	void actionExit(EventConsole &evt) {
+	void actionExit(EventConsole& evt) {
 		Close();
 	}
 private:
-	CheckList<Monhoc> *CLObject;
-	Lable *Lquest, *LanswerA, *LanswerB, *LanswerC, *LanswerD, *Lanswer;
-	InPutBox *IPquest, *IPanswerA, *IPanswerB, *IPanswerC, *IPanswerD, *IPanswer;
-	Button *btnAdd, *btnExit;
+	CheckList<Monhoc>* CLObject;
+	Lable* Lquest, * LanswerA, * LanswerB, * LanswerC, * LanswerD, * Lanswer;
+	InPutBox* IPquest, * IPanswerA, * IPanswerB, * IPanswerC, * IPanswerD, * IPanswer;
+	Button* btnAdd, * btnExit;
+	ListBox<Question>* LBQuestion;
+	TreeAVL<Question>* _treeQuestion = NULL;
+	Monhoc* _ObjectCurrent = NULL;
 };
 
 #endif // !Question_H

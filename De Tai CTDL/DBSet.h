@@ -8,6 +8,7 @@
 #include "CompareData.h"	
 #include <type_traits>
 #include "ArrayList.h"
+#include "TreeAVL.h"
 
 template<typename T, int amount>
 struct EntityDataIndex {
@@ -55,6 +56,7 @@ public:
 	T* ToArray();
 	T** ToArrayPtr();
 	ArrayList<T>* ToArrayList(int size);
+	TreeAVL<T>* ToTree();
 	int size();
 private:
 	void CheckAndCreateFile(std::string path);
@@ -68,6 +70,7 @@ private:
 	void ReadDataIndexRemove();
 	T* ReadData();
 	ArrayList<T>* ReadDataArrayList(int size);
+	TreeAVL<T>* ReadDataTree();
 	T** ReadDataPtr();
 	List<DataIndex<_TIdCompare, _TId, amount>>* _dataId;
 	List<int>* _dataOffsetRemove;
