@@ -6,7 +6,7 @@
 #include "DBSet.h"
 #include "EventController.h"
 #include"ArrayList.h"
-
+#include <exception>
 using namespace std;
 using namespace scl;
 
@@ -29,6 +29,33 @@ bool filterMonhoc(Monhoc* mh, int index) {
 //    }
 //};
 int main3() {
+	DBSet<int, int, 1, EntityQuestion, Question>* dbset2 = new DBSet<int, int, 1, EntityQuestion, Question>("Question.txt");
+	
+	std::unique_ptr<int*[]> io{ new int* [22] {} };
+	io[3] = new int(3);
+	cout<<*io[3];
+	
+	string j = "dsasssssssddasd";
+	TreeAVL<Question>* tree = new TreeAVL<Question>();
+	for (int i = 0; i < 1000; i++)
+	{
+		Question* t = new Question();
+		t->setId(hash<string>{}(j + to_string(i)));
+		tree->InsertConst(t);
+		dbset2->Add(t);
+	}
+
+	dbset2->ToTree()->forEach([&](Question* i, int index) {
+		cout << index << " " << i << endl;
+		return true;
+		});
+	for (int i = 0; i < 1000; i++)
+	{
+		Question* t = new Question();
+		t->setId(hash<string>{}(j + to_string(i+1000)));
+		cout << tree->searchValue(t) << endl;
+	}
+
 
 	ArrayList<Monhoc>* test22 = new ArrayList<Monhoc>(100);
 
@@ -43,10 +70,10 @@ int main3() {
 
 	IList<Monhoc>* y = test22->filter(filterMonhoc);
 	y->forEach(Show);
-		
 
 
-		DBSet<std::string, char, 10, EntityMonHoc, Monhoc> * dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
+
+	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* dbset = new DBSet<std::string, char, 10, EntityMonHoc, Monhoc>("MonHoc.txt");
 	dbset->Add(new Monhoc("test1", "name5"));
 	dbset->Add(new Monhoc("test2", "name6"));
 	dbset->Add(new Monhoc("test3", "name7"));
@@ -90,19 +117,7 @@ int main3() {
 	}
 
 
-	DBSet<int, int, 1, EntityQuestion, Question>* dbset2 = new DBSet<int, int, 1, EntityQuestion, Question>("Question.txt");
-	dbset2->Add(new Question(1, "c1", "1", "", "", "1", '\0'));
-	dbset2->Add(new Question(2, "c2", "2", "", "", "2", '\0'));
-	dbset2->Add(new Question(3, "c3", "3", "", "", "3", '\0'));
-	dbset2->Add(new Question(4, "c4", "4", "", "", "4", '\0'));
-	dbset2->Add(new Question(5, "c5", "6", "", "", "5", '\0'));
-	cout << endl;
-
-	Question* test2 = dbset2->ToArray();
-	for (int i = 0; i < dbset2->size(); i++)
-	{
-		cout << &test2[i] << endl;
-	}
+	
 
 	delete dbset;
 	delete dbset1;
@@ -110,37 +125,41 @@ int main3() {
 	return 0;
 }
 int main(int argc, char* argv[]) {
-	scl::DisableMaxiMize("tainguyen");
-	SYSTEMTIME systime;
-	GetLocalTime(&systime);
-	Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };
-	//Hour h{ 0,0,20 };
-	TimeClock t{ h,colorbk_yellow | color_red,0,0 };
-	thread th{ [&t] {t.printClock(&TimeClock::changetimeMult); } };
-	EventController* HandleEventController = EventController::getInstance();
-	thread* handleThreadMouse = HandleEventController->Start();
 
-	//cac doi tuong form
-	bool Checklogin;
-	Login DangNhap(NULL, 40, 14, colorbk_white);
-	DangNhap.show();
 
-	/*switch (Checklogin)
-	{
-	case true: {
-		EventConsole evt;
-		FormTeach Fteach(NULL, 52, 25, colorbk_blue | color_blue);
-		Fteach.show();
-		Fteach.ActionFormTeach();
-		break;
-	}
-	case false:break;
-	};*/
-	//------------------------
 
-	th.join();
-	t.stop();
-	handleThreadMouse->join();
+		scl::DisableMaxiMize("tainguyen");
+		SYSTEMTIME systime;
+		GetLocalTime(&systime);
+		Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };
+		//Hour h{ 0,0,20 };
+		TimeClock t{ h,colorbk_yellow | color_red,0,0 };
+		thread th{ [&t] {t.printClock(&TimeClock::changetimeMult); } };
+		EventController* HandleEventController = EventController::getInstance();
+		thread* handleThreadMouse = HandleEventController->Start();
+
+		//cac doi tuong form
+		bool Checklogin;
+		Login DangNhap(NULL, 40, 14, colorbk_white);
+		DangNhap.show();
+
+		/*switch (Checklogin)
+		{
+		case true: {
+			EventConsole evt;
+			FormTeach Fteach(NULL, 52, 25, colorbk_blue | color_blue);
+			Fteach.show();
+			Fteach.ActionFormTeach();
+			break;
+		}
+		case false:break;
+		};*/
+		//------------------------
+
+		th.join();
+		t.stop();
+		handleThreadMouse->join();
+	
 	return 0;
 }
 int main1() {

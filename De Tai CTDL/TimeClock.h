@@ -22,14 +22,14 @@ class TimeClock
 {
 
 public:
-	TimeClock(Hour hour, int color, int x, int y){
+	TimeClock(Hour hour, int color, int x, int y) {
 		_hour = new Hour(hour);
 		_x = x;
 		_y = y;
 		_color = color;
 		_stop = 0;
 	}
-	void printClock( bool (TimeClock::*changetime)(pHour) ) {
+	void printClock(bool (TimeClock::* changetime)(pHour)) {
 		std::string _strHour = "00:00:00";
 		_stop = 1;
 		while (_stop)
@@ -42,7 +42,7 @@ public:
 		return;
 	}
 	bool changetimePlus(pHour hour) {
-		if (hour->_second <59) ++hour->_second;
+		if (hour->_second < 59) ++hour->_second;
 		else if (hour->_minute < 59) {
 			hour->_second = 0;
 			++hour->_minute;
@@ -83,7 +83,7 @@ public:
 		_stop = 0;
 	}
 private:
-	void insertarray(std::string &strHour, pHour hour) {
+	void insertarray(std::string& strHour, pHour hour) {
 		int bait = 0;
 		bait = hour->_second;
 		strHour[7] = inToA(bait % 10);
@@ -98,12 +98,12 @@ private:
 		strHour[0] = inToA(bait /= 10);
 
 	}
-	
-	void WriteBlockChar(std::string &_strHour)
+
+	void WriteBlockChar(std::string& _strHour)
 	{
-		EventController *handle = EventController::getInstance();
-		
-		CHAR_INFO *charater = new CHAR_INFO[8];
+		EventController* handle = EventController::getInstance();
+
+		CHAR_INFO charater[8];
 		for (int i = 0; i < 8; i++) {
 			charater[i].Attributes = _color;
 			charater[i].Char.AsciiChar = _strHour[i];
@@ -112,7 +112,6 @@ private:
 		COORD pos = { 0,0 };
 		SMALL_RECT earea = { (SHORT)_x,(SHORT)_y,(SHORT)_x + 8 - 1,(SHORT)_y + 1 - 1 };
 		WriteConsoleOutput(handle->getScreenActive(), charater, sizebuff, pos, &earea);
-		delete[] charater;
 	}
 	char inToA(int h) {
 		switch (h)

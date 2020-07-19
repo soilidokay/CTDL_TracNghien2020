@@ -141,7 +141,7 @@ public:
 		TextColor(_hScreen, getcolor());
 		std::cout << std::setfill(' ');
 		checkEmptyPage();
-		_listObj->forEach([this](_T* data, int index) {return this->showSingle(data, index); },
+		_listObj->forEach([&](_T* data, int index) {return this->showSingle(data, index); },
 			posPrintInt, posPrintInt + getheight() - 4);
 
 	}

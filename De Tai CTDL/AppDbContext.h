@@ -9,7 +9,7 @@ public:
 	AppDbContext();
 	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* MonHocs;
 	DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>* SinhViens;
-	DBSet<int, int, 1, EntityQuestion, Question>* Questions;
+	DBSet<long long int, long long int, 1, EntityQuestion, Question>* Questions;
 	DBSet<std::string, char, 10, EntityLopHoc, LopHoc>* LopHocs;
 	static AppDbContext* getInstance();
 private:

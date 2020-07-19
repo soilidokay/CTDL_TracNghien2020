@@ -184,7 +184,7 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::AddIdex(DataIndex<_TIdCompar
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 DataIndex<_TIdCompare, _TId, amount>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::GetDataIndex(T* data, int offsetData)
 {
-	comparetor = data;
+	comparetor = (CompareData<_TIdCompare>*) data;
 	DataIndex<_TIdCompare, _TId, amount>* dataIndex = new DataIndex<_TIdCompare, _TId, amount>();
 	dataIndex->setId(comparetor->getId());
 	dataIndex->sizeOffset = offsetData;
@@ -193,7 +193,12 @@ DataIndex<_TIdCompare, _TId, amount>* DBSet<_TIdCompare, _TId, amount, _TEntity,
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::WriteIndex()
 {
-	_fDataIndex = new std::fstream(_PathIndex, std::ios::binary | std::ios::out);
+	try {
+		_fDataIndex = new std::fstream(_PathIndex, std::ios::binary | std::ios::out);
+	}
+	catch (std::exception e1) {
+		// catch block
+	}
 	node<DataIndex<_TIdCompare, _TId, amount>>* trav = _dataId->getfirst();
 	EntityDataIndex<_TId, amount>* data = NULL;
 	int nSize = _dataId->getSize();

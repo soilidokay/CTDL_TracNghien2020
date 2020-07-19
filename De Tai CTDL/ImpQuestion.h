@@ -122,7 +122,7 @@ private:
 	}
 	bool forEachMonHoc(Monhoc* mh, int index) {
 		IList<Question>* temps = _treeQuestion->filter([&](Question* qs, int index) {return this->conditionfiltersv(qs, index, mh); });
-		mh->setTree((TreeAVL<Question>*)temps);
+		mh->setLstQuestion((IList<Question>*)temps);
 		return true;
 	}
 	void setlists(IList<Monhoc>* lstObject) {
@@ -133,7 +133,7 @@ private:
 	void ActionListQuestion(EventConsole& evt) {
 		if (_ObjectCurrent != CLObject->GetDataChecked()) {
 			_ObjectCurrent = CLObject->GetDataChecked();
-			LBQuestion->setListObj(_ObjectCurrent->GetTree());
+			LBQuestion->setListObj(_ObjectCurrent->GetLstQuetion());
 			LBQuestion->showLObj();
 		}
 	}
@@ -148,17 +148,22 @@ private:
 			return;
 		}
 		//tim id
-		int count = _ObjectCurrent->GetTree()->getCount();
-		int idTemp = hash<string>{}(_ObjectCurrent->getId() + (char)(48 + count));
+		int count = _ObjectCurrent->GetLstQuetion()->getSize();
+		long long int idTemp = hash<string>{}(_ObjectCurrent->getId() + std::to_string(count));
+		if (idTemp < 0) {
+			++idTemp;
+		}
 		Question tempQuestion;
 		tempQuestion.setId(idTemp);
 		while (_treeQuestion->searchValue(&tempQuestion) != NULL)
 		{
 			++count;
-			idTemp = hash<string>{}(_ObjectCurrent->getId() + (char)(48 + count));
+			idTemp = hash<string>{}(_ObjectCurrent->getId() + std::to_string(count));
 			tempQuestion.setId(idTemp);
 		}
-
+		if (count < 0) {
+			count++;
+		}
 		Question* tempQuest = new Question(
 			idTemp,
 			IPquest->Gettext(),
@@ -169,9 +174,9 @@ private:
 			IPanswer->Gettext()[0]
 		);
 		tempQuest->setIdObject(_ObjectCurrent->getId());
-		LBQuestion->addNode(tempQuest);
 		_treeQuestion->InsertConst(tempQuest);
 		_Context->Questions->Add(tempQuest);
+		LBQuestion->addNode(tempQuest);
 	}
 	void actionExit(EventConsole& evt) {
 		Close();

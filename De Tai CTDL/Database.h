@@ -15,7 +15,7 @@ const char lim = 179;
 
 class EntityQuestion {
 protected:
-	int _idquest = '-1';
+	long long int _idquest = '-1';
 	char _IdObject[10] = "";
 	char _Quest[100] = "";
 	char _answerA[100] = "";
@@ -32,11 +32,11 @@ static std::string CutStr(std::string str, int amount) {
 		return str;
 	}
 }
-class Question : public EntityQuestion, public CompareData<int>
+class Question : public EntityQuestion, public CompareData<long long int>
 {
 public:
 	Question() {}
-	Question(int idquest, std::string Quest, std::string answerA, std::string answerB,
+	Question(long long int idquest, std::string Quest, std::string answerA, std::string answerB,
 		std::string answerC, std::string answerD, char answer)
 	{
 		_idquest = idquest;
@@ -47,7 +47,7 @@ public:
 		_strcopy(_answerD, 100, answerD);
 		_answer = answer;
 	};
-	void setId(int idquest) { _idquest = idquest; }
+	void setId(long long int idquest) { _idquest = idquest; }
 	void setQuest(std::string Quest) { _strcopy(_Quest, 100, Quest); }
 	void setIdObject(std::string IdObject) { _strcopy(_IdObject, 100, IdObject); }
 	void setanswerA(std::string answerA) { _strcopy(_answerA, 100, answerA); }
@@ -88,7 +88,7 @@ public:
 			<< std::setw(12) << "Dap An" << lim;
 	}
 
-	int getId()override { return _idquest; }
+	long long int getId()override { return _idquest; }
 	std::string getQuest() { return _Quest; }
 	std::string getIdObject() { return _IdObject; }
 	std::string getanswerA() { return _answerA; }
@@ -117,11 +117,11 @@ public:
 
 	void setidobject(std::string idobject) { _strcopy(_idObject, 10, idobject); }
 	void setname(std::string nameobj) { _strcopy(_nameobj, 30, nameobj); }
-	void setTree(TreeAVL<Question>* tree) { treeQuest = tree; }
+	void setLstQuestion(IList<Question>* lstQuestion) { LstQuest = lstQuestion; }
 
 	std::string getId()override { return _idObject; }
 	std::string getName() { return _nameobj; }
-	TreeAVL<Question>* GetTree() { return treeQuest; }
+	IList<Question>* GetLstQuetion() { return LstQuest; }
 	~Monhoc() {}
 	friend std::ostream& operator<<(std::ostream& output, Monhoc* Obj) {
 		//char lim = 179;
@@ -147,7 +147,7 @@ public:
 			<< std::setw(30) << "             Mon hoc" << lim;
 	}
 private:
-	TreeAVL<Question>* treeQuest = NULL;
+	IList<Question>* LstQuest = NULL;
 };
 
 class EntiySinhvien {

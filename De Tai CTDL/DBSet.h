@@ -22,8 +22,8 @@ struct DataIndex :public EntityDataIndex<T, amount>, public CompareData<_TIdComp
 		if (typeid(_TIdCompare) == typeid(std::string)) {
 			_strcopy((char*)Id, amount, *((std::string*) & u));
 		}
-		else if (typeid(_TIdCompare) == typeid(int)) {
-			_PassValue((int*)Id, (int*)&u);
+		else {
+			((_TIdCompare*)Id)[0] = *((_TIdCompare*)&u);
 		}
 	}
 
@@ -32,11 +32,8 @@ struct DataIndex :public EntityDataIndex<T, amount>, public CompareData<_TIdComp
 			std::string temp = (char*)Id;
 			return *((_TIdCompare*)&temp);
 		}
-		else if (typeid(_TIdCompare) == typeid(int)) {
-			return *((_TIdCompare*)&Id[0]);
-		}
 		else {
-			return NULL;
+			return *((_TIdCompare*)&Id[0]);
 		}
 	}
 };
@@ -50,7 +47,7 @@ public:
 	DBSet(std::string pathdata, int SizeData);
 	~DBSet();
 	void Add(T* data);
-	void Delete(T* data,bool deleteData = false);
+	void Delete(T* data, bool deleteData = false);
 	void Update(T* data);
 	List<T>* ToList();
 	T* ToArray();

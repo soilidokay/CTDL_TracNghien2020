@@ -2,18 +2,15 @@
 #define TreeAVL_H
 
 #include"IList.h"
+#include <memory> 
+#include"List.h"
 
 template<class _T>
 struct NodeAVl {
 	_T* key;
 	int bal;
 	NodeAVl* left, * right;
-	NodeAVl() {
-		key = NULL;
-		bal = 0;
-		left = NULL;
-		right = NULL;
-	}
+	NodeAVl();
 };
 
 template<class _T>
@@ -105,4 +102,5 @@ private:
 
 
 #endif // !TreeAVL_H
+
 

@@ -4,6 +4,16 @@
 #ifndef TREEAVL_H
 #include"TreeAVL.h"
 #endif // !TREEAVL_H
+
+template<class _T>
+NodeAVl<_T>::NodeAVl()
+{
+	key = NULL;
+	bal = 0;
+	left = NULL;
+	right = NULL;
+}
+
 template<class _T>
 TreeAVL<_T>::TreeAVL()
 {
@@ -48,8 +58,9 @@ _T* TreeAVL<_T>::GetData(int index)
 {
 	if (index < 0 || index >= getSize()) return NULL;
 
+	int size = getSize() + 1;
 	int indexHead = 0, indexLast = 1;
-	NodeAVl<_T>** queue = new NodeAVl<_T> * [index + 2];
+	std::unique_ptr<NodeAVl<_T>* []> queue{ new NodeAVl<_T> * [size] {} };
 	NodeAVl<_T>* trav = NULL;
 
 	queue[indexHead] = Tree;
@@ -98,19 +109,23 @@ void TreeAVL<_T>::forEach(const ACTION& action, int indexStart, int indexEnd)
 		indexEndTemp = indexEnd >= getSize() ? getSize() : indexEnd + 1;
 	}
 	int indexHead = 0, indexLast = 1;
-	NodeAVl<_T>** queue = new NodeAVl<_T> * [getSize() + 1];
+	int size = getSize() + 1;
+	std::unique_ptr<NodeAVl<_T>* []> queue{ new NodeAVl<_T> * [size] {} };
 	NodeAVl<_T>* trav = NULL;
 
 	if (!isempty())queue[indexHead] = Tree;
 
 	while (indexHead < indexStart) {
-		trav = queue[indexHead++];
+		trav = queue[indexHead];
 		if (trav->left != NULL) {
-			queue[indexLast++] = trav->left;
+			queue[indexLast] = trav->left;
+			++indexLast;
 		}
 		if (trav->right != NULL) {
-			queue[indexLast++] = trav->right;
+			queue[indexLast] = trav->right;
+			++indexLast;
 		}
+		++indexHead;
 	}
 
 	for (; indexHead < indexEndTemp; indexHead++)
@@ -120,15 +135,16 @@ void TreeAVL<_T>::forEach(const ACTION& action, int indexStart, int indexEnd)
 		if (!action(trav->key, indexHead)) return;
 
 		if (trav->left != NULL) {
-			queue[indexLast++] = trav->left;
+			queue[indexLast] = trav->left;
+			++indexLast;
 		}
 		if (trav->right != NULL) {
-			queue[indexLast++] = trav->right;
+			queue[indexLast] = trav->right;
+			++indexLast;
 		}
 	}
 
 	while (indexHead <= indexEnd) if (!action(NULL, indexHead++)) return;
-
 }
 
 template<class _T>
@@ -140,18 +156,28 @@ bool TreeAVL<_T>::isempty()
 template<class _T>
 int TreeAVL<_T>::Search(_T* data)
 {
-	int indexdata = -1;
-	forEach([&](_T* item, int index) {
-		if (*data != *item) {
-			return true;
+	if (data == NULL) return -1;
+	int indexHead = 0, indexLast = 1;
+	int size = getSize() + 1;
+
+	std::unique_ptr<NodeAVl<_T>* []> queue{ new NodeAVl<_T> * [size] {} };
+
+	NodeAVl<_T>* trav = NULL;
+
+	if (!isempty())queue[indexHead] = Tree;
+
+	while (indexHead < getSize()) {
+		trav = queue[indexHead];
+		if (*data == *trav->key) return indexHead;
+		if (trav->left != NULL) {
+			queue[indexLast++] = trav->left;
 		}
-		else {
-			indexdata = index;
-			return false;
+		if (trav->right != NULL) {
+			queue[indexLast++] = trav->right;
 		}
-		}
-	);
-	return indexdata;
+		++indexHead;
+	}
+	return -1;
 }
 
 template<class _T>
@@ -186,14 +212,36 @@ void TreeAVL<_T>::Clear()
 template<class _T>
 IList<_T>* TreeAVL<_T>::filter(const ACTION& action)
 {
-	TreeAVL<_T>* temp = new TreeAVL<_T>();
-	forEach([&](_T* item, int index) {
-		if (action(item, index)) {
-			temp->InsertNodeAVl(item);
+	IList<_T>* temp = new List<_T>();
+
+	int indexHead = 0, indexLast = 1;
+	int size = getSize() + 1;
+	std::unique_ptr<NodeAVl<_T>* []> queue{ new NodeAVl<_T> * [size] {} };
+
+	NodeAVl<_T>* trav = NULL;
+
+	if (!isempty())queue[indexHead] = Tree;
+
+	while (indexHead < getSize()) {
+		trav = queue[indexHead];
+		if (action(trav->key, indexHead)) {
+			temp->InsertConst(trav->key);
 		}
-		return true;
+		if (trav->left != NULL) {
+			queue[indexLast++] = trav->left;
 		}
-	);
+		if (trav->right != NULL) {
+			queue[indexLast++] = trav->right;
+		}
+		++indexHead;
+	}
+	//forEach([&](_T* item, int index) {
+	//	if (action(item, index)) {
+	//		temp->InsertNodeAVl(item);
+	//	}
+	//	return true;
+	//	}
+	//);
 	return temp;
 }
 
@@ -205,8 +253,8 @@ NodeAVl<_T>* TreeAVL<_T>::searchNode(_T* data)
 	if (Tree == NULL)return NULL;
 	while (temp != NULL)
 	{
-		if (*temp->key > * data) temp = temp->left;
-		else if (*temp->key < *data) temp = temp->right;
+		if (*data > * temp->key) temp = temp->right;
+		else if (*data < *temp->key) temp = temp->left;
 		else return temp;
 	}
 	return NULL;
