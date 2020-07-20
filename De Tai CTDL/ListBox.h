@@ -35,27 +35,27 @@ public:
 		}
 	}
 	virtual void action(EventConsole& evt) {
+		if (_listObj == NULL) return;
 		if (!evt.isMouseEvent()) return;
 		if (BclickBtn(evt) == 1) {
-			MoveUp(getheight() - 3);
+			MoveUp(getSizeDisplay());
 			showLObj();
 		}
 		else if (BclickBtn(evt) == 2) {
-			MoveDw(getheight() - 3);
+			MoveDw(getSizeDisplay());
 			showLObj();
 		}
 		else
 		{
-			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
-			if (selectedindex>-1 && selectedindex < _listObj->getSize()) {
-				showLObj();
+			int SelectedIndexTemp = evt._Smouse.y - gety() - 4 + posPrintInt;
+			if (SelectedIndexTemp > -1 && SelectedIndexTemp < _listObj->getSize()) {
+				DrawHight(selectedindex);
+				DrawHight(SelectedIndexTemp, colorbk_cyan | color_white);
+				selectedindex = SelectedIndexTemp;
+				//showLObj();
 				if (actionButton) {
 					actionButton(evt);
 				}
-			}
-			else
-			{
-				selectedindex = -1;
 			}
 		}
 
@@ -99,7 +99,7 @@ public:
 	void setchose(int chose) {
 		selectedindex = chose;
 	}
-	void setActionButton(const ACTIONBUTTON& func) {
+	void setActionItemClick(const ACTIONBUTTON& func) {
 		actionButton = func;
 	}
 	node<_T>* getPosPrint() { return posPrint; }
@@ -119,7 +119,7 @@ public:
 		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
 
 		if (index == selectedindex) {
-			std::cout << std::setw(3) << index; DrawHight(selectedindex);
+			std::cout << std::setw(3) << index; DrawHight(selectedindex, colorbk_cyan | color_white);
 		}
 		else {
 			std::cout << std::setw(3) << index << char(179) << data;
@@ -159,11 +159,18 @@ public:
 		}
 		return selectedindex;
 	}
-	void DrawHight(int index) {
-		TextColor(_hScreen, colorbk_cyan | color_white);
-		//gotoXY(_hScreen, gxShow, gy);
+	void DrawHight(int index, int color = -1) {
+		if (index < 0 || index < posPrintInt || index >= getSizeDisplay() + posPrintInt) return;
+		if (color < 0) color = getcolor();
+
+		gotoXY(_hScreen, gxShow + 3, gyShow + index - posPrintInt);
+
+		TextColor(_hScreen, color);
 		std::cout << char(179) << _listObj->GetData(index);
 		TextColor(_hScreen, getcolor());
+	}
+	int getSizeDisplay() {
+		return getheight() - 3;
 	}
 	IList<_T> getDataSource() { return _listObj; }
 

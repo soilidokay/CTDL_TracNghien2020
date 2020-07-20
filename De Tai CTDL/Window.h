@@ -71,8 +71,8 @@ protected:
 	HANDLE _hScreen;
 private:
 	int _height, _width;
-	int _x, _y;
 	int _color;
+	int _x, _y;
 	int _id = 0;
 	int** _area;
 };

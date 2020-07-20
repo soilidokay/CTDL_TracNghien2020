@@ -143,6 +143,7 @@
     <ClInclude Include="ListBox.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="outbuf.h" />
+    <ClInclude Include="PrintClasses.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="TimeClock.h" />
     <ClInclude Include="TreeAVL.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Form.cpp" />
     <ClCompile Include="InPutBox.cpp" />
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="PrintClasses.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TreeAVL.cpp" />
     <ClCompile Include="Window.cpp" />

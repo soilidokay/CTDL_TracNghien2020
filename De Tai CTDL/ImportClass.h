@@ -19,7 +19,7 @@ public:
 		LBclass = new ListBox<LopHoc>(78, 10, 2, 8);
 		LBclass->setColor(_bkcolor | color_grey);
 		LBclass->setStrTiltle("Danh sach lop ");
-		LBclass->setActionButton(bind(&importClass::actionListBox, this, _1));
+		LBclass->setActionItemClick(bind(&importClass::actionListBox, this, _1));
 		*Events += LBclass;
 		//lable Ma lop
 		LIdClass = new Lable(10, 1, 0, 0);
@@ -29,6 +29,10 @@ public:
 		LNameClass = new Lable(10, 1, 42, 0);
 		LNameClass->settext("Ten lop");
 		LNameClass->setColor(colorbk_white | color_grey);
+		//lable nien khoa
+		LSchoolYear = new Lable(10, 1, 0, 3);
+		LSchoolYear->settext("Nien Khoa");
+		LSchoolYear->setColor(colorbk_white | color_grey);
 		//inputbox idclass
 		IPidclass = new InPutBox(25, 1, 10, 0);
 		IPidclass->setColor(colorbk_white | color_blue);
@@ -37,6 +41,10 @@ public:
 		IPnameclass = new InPutBox(25, 1, 53, 0);
 		IPnameclass->setColor(colorbk_white | color_blue);
 		*Events += IPnameclass;
+		//inputbox SchoolYear
+		ISchoolYear = new InPutBox(25, 1, 10, 3);
+		ISchoolYear->setColor(colorbk_white | color_blue);
+		*Events += ISchoolYear;
 		//-------Button Clear
 		btnClear = new Button(6, 1, 15, 20);
 		btnClear->setText("Moi");
@@ -63,23 +71,25 @@ public:
 		btnExit->setActionButton(bind(&importClass::ActionExit, this, _1));
 		*Events += btnExit;
 
-		nObj = 10;
+		nObj = 12;
 		Showobj = new window * [nObj];
 
 		Showobj[0] = LBclass;
 		Showobj[1] = LIdClass;
 		Showobj[2] = LNameClass;
-		Showobj[3] = IPidclass;
-		Showobj[4] = IPnameclass;
-		Showobj[5] = btnClear;
-		Showobj[6] = btnAdd;
-		Showobj[7] = btnDel;
-		Showobj[8] = btnSave;
-		Showobj[9] = btnExit;
+		Showobj[3] = LSchoolYear;
+		Showobj[4] = IPidclass;
+		Showobj[5] = IPnameclass;
+		Showobj[6] = ISchoolYear;
+		Showobj[7] = btnClear;
+		Showobj[8] = btnAdd;
+		Showobj[9] = btnDel;
+		Showobj[10] = btnSave;
+		Showobj[11] = btnExit;
 
 		setlists(_Context->LopHocs->ToArrayList(500));
 	}
-	void setlists( IList<LopHoc>* lstClass) {
+	void setlists(IList<LopHoc>* lstClass) {
 		LBclass->setListObj(lstClass);
 	}
 
@@ -95,11 +105,15 @@ private:
 	void ActionClear(EventConsole& evt) {
 		IPidclass->setText("");
 		IPnameclass->setText("");
+		ISchoolYear->setText("");
 	}
 	void ActionAdd(EventConsole& evt) {
 		if (IPidclass->Gettext().length() > 0) {
-			LopHoc* temp = new LopHoc(IPidclass->Gettext(),
-				IPnameclass->Gettext());
+			LopHoc* temp = new LopHoc(
+				IPidclass->Gettext(),
+				IPnameclass->Gettext(),
+				ISchoolYear->Gettext()
+			);
 			LBclass->addNode(temp);
 			_Context->LopHocs->Add(temp);
 		}
@@ -116,11 +130,12 @@ private:
 		if (lh == NULL) return;
 
 		if (lh->getId() != IPidclass->Gettext()) {
-			ShowWarning(_hSCreen,"Lop hoc khong ton tai!");
+			ShowWarning(_hSCreen, "Lop hoc khong ton tai!");
 			return;
 		};
 
 		lh->setnameclass(IPnameclass->Gettext());
+		lh->setschoolyear(ISchoolYear->Gettext());
 
 		LBclass->showLObj();
 		_Context->LopHocs->Update(lh);
@@ -130,9 +145,9 @@ private:
 	}
 private:
 	ListBox<LopHoc>* LBclass;
-	Lable* LIdClass, * LNameClass;
-	InPutBox* IPidclass, * IPnameclass;
-	Button* btnClear,* btnAdd, * btnDel, * btnSave, * btnExit;
+	Lable* LIdClass, * LNameClass, * LSchoolYear;
+	InPutBox* IPidclass, * IPnameclass, * ISchoolYear;
+	Button* btnClear, * btnAdd, * btnDel, * btnSave, * btnExit;
 };
 #endif // !ImportClass_H
 

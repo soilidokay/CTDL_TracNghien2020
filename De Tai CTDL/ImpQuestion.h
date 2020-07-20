@@ -23,7 +23,7 @@ public:
 		CLObject->setheightLB(15);
 		CLObject->setStrTiltle("Danh sach mon hoc");
 		CLObject->setGroupEle(false);
-		CLObject->setActionCollapse(bind(&ImpQuestion::ActionListQuestion, this, _1));
+		CLObject->setActionCollapse(bind(&ImpQuestion::ActionListObject, this, _1));
 		*Events += CLObject;
 		//
 		Lquest = new Lable(10, 1, 0, 4);
@@ -78,22 +78,32 @@ public:
 		LBQuestion = new ListBox<Question>(88, 30, 0, 24);
 		LBQuestion->setColor(_bkcolor | color_grey);
 		LBQuestion->setStrTiltle("Danh Sach Cau Hoi ");
-		LBQuestion->setActionButton(bind(&ImpQuestion::ActionListQuestion, this, _1));
+		LBQuestion->setActionItemClick(bind(&ImpQuestion::ActionListQuestion, this, _1));
 		*Events += LBQuestion;
 
-		//
+		//button
 		int gy = getheight() - 4;
+		btnClear = new Button(6, 1, 30, gy);
+		btnClear->setText("Moi");
+		btnClear->setActionButton(bind(&ImpQuestion::actionClear, this, _1));
+		*Events += btnClear;
+		//
 		btnAdd = new Button(6, 1, 40, gy);
-		btnAdd->setText("Them");
+		btnAdd->setText("Luu");
 		btnAdd->setActionButton(bind(&ImpQuestion::actionAdd, this, _1));
 		*Events += btnAdd;
+
+		btnUpdate = new Button(6, 1, 50, gy);
+		btnUpdate->setText("Sua");
+		btnUpdate->setActionButton(bind(&ImpQuestion::actionUpdate, this, _1));
+		*Events += btnUpdate;
 		//
-		btnExit = new Button(6, 1, 50, gy);
+		btnExit = new Button(6, 1, 60, gy);
 		btnExit->setText("Thoat");
 		btnExit->setActionButton(bind(&ImpQuestion::actionExit, this, _1));
 		*Events += btnExit;
 		//
-		nObj = 16;
+		nObj = 18;
 		Showobj = new window * [nObj];
 
 		Showobj[0] = CLObject;
@@ -110,8 +120,10 @@ public:
 		Showobj[11] = IPanswerD;
 		Showobj[12] = IPanswer;
 		Showobj[13] = LBQuestion;
-		Showobj[14] = btnAdd;
-		Showobj[15] = btnExit;
+		Showobj[14] = btnClear;
+		Showobj[15] = btnAdd;
+		Showobj[16] = btnUpdate;
+		Showobj[17] = btnExit;
 		//
 		setlists(_Context->MonHocs->ToList());
 	}
@@ -131,20 +143,42 @@ private:
 		CLObject->setListObj(lstObject);
 	}
 	void ActionListQuestion(EventConsole& evt) {
+		Question* temp = LBQuestion->getSelected();
+		char anwser[2];
+		anwser[0] = temp->getAnserw();
+		anwser[1] = '\0';
+
+		IPquest->setText(temp->getQuest());
+		IPanswerA->setText(temp->getanswerA());
+		IPanswerB->setText(temp->getanswerB());
+		IPanswerC->setText(temp->getanswerC());
+		IPanswerD->setText(temp->getanswerD());
+		IPanswer->setText(anwser);
+	}
+	void ActionListObject(EventConsole& evt) {
 		if (_ObjectCurrent != CLObject->GetDataChecked()) {
 			_ObjectCurrent = CLObject->GetDataChecked();
 			LBQuestion->setListObj(_ObjectCurrent->GetLstQuetion());
 			LBQuestion->showLObj();
 		}
 	}
+
+	bool ValidateData() {
+		return !IPanswer->isEmpty() && !IPquest->isEmpty() && !IPanswerA->isEmpty() && !IPanswerB->isEmpty()
+			&& !IPanswerC->isEmpty() && !IPanswerD->isEmpty();
+	}
+
 	void actionAdd(EventConsole& evt) {
 		Monhoc* tempSel = CLObject->GetDataChecked();
+
+		if (!ValidateData()) {
+			ShowWarning(_hSCreen, "Ban chua nhap du thong tin!");
+			return;
+		}
+
+
 		if (tempSel == NULL) {
-			warning war(70, 10, 5, colorbk_darkgreen | color_red);
-			war.SetScreen(_hSCreen);
-			war.setBtnCancel(0);
-			war.settext("ban chua chon mon hoc!!!");
-			war.action(evt);
+			ShowWarning(_hSCreen, "ban chua chon mon hoc!!!");
 			return;
 		}
 		//tim id
@@ -178,6 +212,32 @@ private:
 		_Context->Questions->Add(tempQuest);
 		LBQuestion->addNode(tempQuest);
 	}
+	void actionUpdate(EventConsole& evt) {
+		Question* temp = LBQuestion->getSelected();
+
+		if (!ValidateData()) {
+			ShowWarning(_hSCreen, "Ban chua nhap du thong tin!");
+			return;
+		}
+		if (temp == NULL) return;
+
+		temp->setQuest(IPquest->Gettext());
+		temp->setanswer(IPanswer->Gettext()[0]);
+		temp->setanswerA(IPanswerA->Gettext());
+		temp->setanswerB(IPanswerB->Gettext());
+		temp->setanswerC(IPanswerC->Gettext());
+		temp->setanswerD(IPanswerD->Gettext());
+		LBQuestion->showLObj();
+		_Context->Questions->Update(temp);
+	}
+	void actionClear(EventConsole& evt) {
+		IPquest->setText("");
+		IPanswer->setText("");
+		IPanswerA->setText("");
+		IPanswerB->setText("");
+		IPanswerC->setText("");
+		IPanswerD->setText("");
+	}
 	void actionExit(EventConsole& evt) {
 		Close();
 	}
@@ -185,7 +245,7 @@ private:
 	CheckList<Monhoc>* CLObject;
 	Lable* Lquest, * LanswerA, * LanswerB, * LanswerC, * LanswerD, * Lanswer;
 	InPutBox* IPquest, * IPanswerA, * IPanswerB, * IPanswerC, * IPanswerD, * IPanswer;
-	Button* btnAdd, * btnExit;
+	Button* btnAdd, * btnUpdate, * btnClear, * btnExit;
 	ListBox<Question>* LBQuestion;
 	TreeAVL<Question>* _treeQuestion = NULL;
 	Monhoc* _ObjectCurrent = NULL;

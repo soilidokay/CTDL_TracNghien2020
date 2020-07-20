@@ -26,7 +26,7 @@ protected:
 };
 static std::string CutStr(std::string str, int amount) {
 	if (str.length() > amount) {
-		return str.substr(0,amount - 3) + "...";
+		return str.substr(0, amount - 3) + "...";
 	}
 	else {
 		return str;
@@ -59,16 +59,16 @@ public:
 		//char lim = 179;
 		output << std::left << std::setfill(' ');
 		if (Obj != NULL) {
-			output<< std::setw(12) << CutStr(Obj->_Quest,12) << lim
-				<< std::setw(12) << CutStr(Obj->_answerA,12)<< lim
-				<< std::setw(12) << CutStr(Obj->_answerB,12) << lim
-				<< std::setw(12) << CutStr(Obj->_answerC,12) << lim
-				<< std::setw(12) << CutStr(Obj->_answerD,12) << lim
+			output << std::setw(12) << CutStr(Obj->_Quest, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerA, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerB, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerC, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerD, 12) << lim
 				<< std::setw(12) << Obj->_answer << lim;
 		}
 		else
 		{
-			output<< std::setw(12) << " " << lim
+			output << std::setw(12) << " " << lim
 				<< std::setw(12) << " " << lim
 				<< std::setw(12) << " " << lim
 				<< std::setw(12) << " " << lim
@@ -230,6 +230,7 @@ class EntityLopHoc {
 protected:
 	char _idclass[10] = "";
 	char _NameClass[10] = "";
+	char _SchoolYear[10] = "";
 };
 class LopHoc :public EntityLopHoc, public CompareData<std::string>
 {
@@ -239,12 +240,14 @@ public:
 		output << std::left << std::setfill(' ');
 		if (Obj != NULL) {
 			output << std::setw(20) << Obj->getId() << lim
-				<< std::setw(30) << Obj->getName() << lim;
+				<< std::setw(30) << Obj->getName() << lim
+				<< std::setw(20) << Obj->getSchoolYear() << lim;
 		}
 		else
 		{
 			output << std::setw(20) << ' ' << lim
-				<< std::setw(30) << ' ' << lim;
+				<< std::setw(30) << ' ' << lim
+				<< std::setw(20) << ' ' << lim;
 		}
 		return output;
 	}
@@ -252,21 +255,25 @@ public:
 		std::cout << std::left << std::setfill(' ')
 			<< std::setw(3) << ' ' << lim
 			<< std::setw(20) << "         ID" << lim
-			<< std::setw(30) << "         Lop hoc" << lim;
+			<< std::setw(30) << "         Lop hoc" << lim
+			<< std::setw(20) << "  Nien khoa" << lim;
 
 	}
 	LopHoc() {}
-	LopHoc(std::string idclass, std::string nameclass) {
+	LopHoc(std::string idclass, std::string nameclass, std::string schoolyear) {
 		_strcopy(_idclass, 10, idclass);
 		_strcopy(_NameClass, 10, nameclass);
+		_strcopy(_SchoolYear, 10, schoolyear);
 		_LSinhvien = new  List<Sinhvien>;
 	}
 	void setid(std::string idclass) { _strcopy(_idclass, 10, idclass); }
 	void setnameclass(std::string nameclass) { _strcopy(_NameClass, 10, nameclass); }
+	void setschoolyear(std::string schoolyear) { _strcopy(_SchoolYear, 10, schoolyear); }
 	void setLSinhvien(List<Sinhvien>* LSinhvien) { _LSinhvien = LSinhvien; }
 
 	std::string getId() { return _idclass; }
 	std::string getName() { return _NameClass; }
+	std::string getSchoolYear() { return _SchoolYear; }
 	List<Sinhvien>* getLSinhvien() { return _LSinhvien; }
 
 	~LopHoc() {}
@@ -274,6 +281,40 @@ private:
 	List<Sinhvien>* _LSinhvien = NULL;
 };
 
+class EntitySchoolYear {
+protected:
+	char _SchoolYear[10] = "";
+	int _idSchoolYear = -1;
+};
+class SchoolYear :public EntitySchoolYear, public CompareData<int> {
+public:
+	void SetSchoolYear(std::string schoolyear) {
+		_strcopy(_SchoolYear, 10, schoolyear);
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ')
+			<< std::setw(3) << ' ' << lim
+			<< std::setw(20) << "  Nien khoa" << lim;
+
+	}
+	void setId(int idSchoolYear) { _idSchoolYear = idSchoolYear; }
+	int getId()override { return _idSchoolYear; }
+	friend std::ostream& operator<<(std::ostream& output, SchoolYear* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(20) << Obj->getId() << lim
+				<< std::setw(20) << Obj->GetSchoolYear() << lim;
+		}
+		else
+		{
+			output << std::setw(20) << ' ' << lim
+				<< std::setw(20) << ' ' << lim;
+		}
+		return output;
+	}
+	std::string GetSchoolYear() { return _SchoolYear; }
+};
 
 
 #endif // !DataBase_H

@@ -286,6 +286,7 @@ namespace scl {
 		DWORD rnumberEvent = 0;
 		while (runCath)
 		{
+			WaitForSingleObject(rhandleConsole, 10000);
 			//lay so luong event da xay ra
 			GetNumberOfConsoleInputEvents(rhandleConsole, &numberEvent);
 			if (numberEvent != 0) {//co su kien xay ra

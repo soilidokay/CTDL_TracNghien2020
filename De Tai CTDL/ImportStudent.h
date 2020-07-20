@@ -31,7 +31,7 @@ public:
 		LBStudent = new ListBox<Sinhvien>(82, 10, 0, 9);
 		LBStudent->setColor(_bkcolor | color_grey);
 		LBStudent->setStrTiltle("Danh sach sinh vien ");
-		LBStudent->setActionButton(bind(&importStudent::ActionListStudent, this, _1));
+		LBStudent->setActionItemClick(bind(&importStudent::ActionListStudent, this, _1));
 		*Events += LBStudent;
 
 		//lable Ma lop

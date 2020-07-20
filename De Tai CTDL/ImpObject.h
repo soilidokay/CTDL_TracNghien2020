@@ -19,7 +19,7 @@ public:
 		LBObject = new ListBox<Monhoc>(78, 10, 0, 8);
 		LBObject->setColor(_bkcolor | color_grey);
 		LBObject->setStrTiltle("Danh sach mon hoc ");
-		LBObject->setActionButton(bind(&ImpObject::actionLBObj, this, _1));
+		LBObject->setActionItemClick(bind(&ImpObject::actionLBObj, this, _1));
 		*Events += LBObject;
 		//lable Ma lop
 		LIdObject = new Lable(10, 1, 0, 3);

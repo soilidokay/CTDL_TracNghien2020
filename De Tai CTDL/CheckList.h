@@ -2,8 +2,8 @@
 #define CheckList_H
 
 #include "List.h"
-#include "ListBox.h"
 #include "EventMouseOrKey.h"
+#include "ListBox.h"
 
 template<typename _T>
 class CheckList : public ListBox<_T>
@@ -76,8 +76,11 @@ public:
 		setDwBtn(getcolor());
 		return charac;
 	}
+	bool IsOpen() {
+		return getheight() > 1;
+	}
 	virtual void backup(CHAR_INFO* charac) {
-		if (getheight() > 1) {
+		if (IsOpen()) {
 			SHORT height = getheight() + 3;
 			SHORT width = getwidth() + 3;
 			SHORT x = getx();
@@ -102,8 +105,12 @@ public:
 
 			if (ListChecked->search(temp) != NULL) {
 				if (ActionWarn(evt)) ListChecked->DelCen(temp);
+				DrawCheckIndex(selectedindex);
 			}
-			else ListChecked->insertConst(temp);
+			else {
+				ListChecked->insertConst(temp);
+				DrawCheckIndex(selectedindex, colorbk_red | color_blue);
+			}
 
 		}
 	}
@@ -153,34 +160,52 @@ public:
 			}
 			return;
 		}
-
-		if (BclickBtn(evt) == 1) {
-			MoveUp(getheight() - 3);
+		else if (BclickBtn(evt) == 1) {
+			if (_listObj == NULL) return;
+			MoveUp(getSizeDisplay());
 			showLObj();
 		}
 		else if (BclickBtn(evt) == 2) {
-			MoveDw(getheight() - 3);
+			if (_listObj == NULL) return;
+			MoveDw(getSizeDisplay());
 			showLObj();
 		}
 		else
 		{
+			if (_listObj == NULL) return;
 
-			selectedindex = evt._Smouse.y - gety() - 4 + posPrintInt;
-			if (selectedindex > -1 && selectedindex < _listObj->getSize()) {
+			int SelectedIndexTemp = evt._Smouse.y - gety() - 4 + posPrintInt;
+			if (SelectedIndexTemp > -1 && SelectedIndexTemp < _listObj->getSize()) {
+				DrawHight(selectedindex);
+				DrawHight(SelectedIndexTemp, colorbk_cyan | color_white);
 				if (groupElement) Actionchecks(evt);
 				else {
-					Checked = selectedindex;
+					DrawCheckIndex(selectedindex);
+					DrawCheckIndex(SelectedIndexTemp, colorbk_red | color_blue);
+					Checked = SelectedIndexTemp;
 				}
+
+				selectedindex = SelectedIndexTemp;
 
 				if (actionButton) {
 					actionButton(evt);
 				}
-				showLObj();
 			}
 
 		}
 
 		//_select = 1;
+	}
+
+	void DrawCheckIndex(int index, int color = -1) {
+		if (index <0 || index < posPrintInt || index >= getSizeDisplay() + posPrintInt) return;
+		if (color < 0) color = getcolor();
+
+		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);
+
+		TextColor(_hScreen, color);
+		std::cout << setw(3) << index;
+		TextColor(_hScreen, getcolor());
 	}
 	void setheightLB(int height) { _heightLB = height; }
 private:
