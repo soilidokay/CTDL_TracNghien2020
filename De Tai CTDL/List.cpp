@@ -83,6 +83,100 @@ node<T>* List<T>::insertCen(nodePtr ptrN, T* ptrdat)
 	return temp;
 }
 
+
+template<class T>
+void List<T>::RadixSort(const SelectString& select)
+{
+	if (isempty()) return;
+
+	nodePtr trav = _first;
+	//tim chuoi dai nhat
+	int maxLen = 0, MaxTemp = 0;
+	while (trav != NULL) {
+		MaxTemp = select(trav->info).length();
+		if (MaxTemp > maxLen) {
+			maxLen = MaxTemp;
+		}
+		trav = trav->next;
+	}
+
+	nodePtr** bucket = new nodePtr * [257];
+	for (int i = 0; i < 257; i++)
+	{
+		bucket[i] = new nodePtr[2];
+		bucket[i][0] = NULL;
+		bucket[i][1] = NULL;
+	}
+
+	//sap xep
+	for (int i = maxLen - 1; i > 0; i--)
+	{
+		BucketListString(select, bucket, i);
+		MergeBucket(bucket);
+	}
+	for (int i = 0; i < 257; i++)
+	{
+		delete[] bucket[i];
+	}
+	delete[] bucket;
+}
+template<class T>
+void List<T>::BucketListString(const SelectString& select, nodePtr**& bucket, int offset)
+{
+
+	nodePtr trav = _first, travNext;
+	int pos = 0;
+	std::string buffstr = "";
+	while (trav != NULL) {
+
+		buffstr = select(trav->info);
+
+		if (offset < buffstr.length()) {
+			pos = buffstr[offset];
+			if (bucket[pos + 1][0] == NULL) {
+				bucket[pos + 1][0] = trav;
+				bucket[pos + 1][1] = trav;
+			}
+			else {
+				bucket[pos + 1][1]->next = trav;
+				bucket[pos + 1][1] = trav;
+			}
+		}
+		else {
+			if (bucket[0][0] == NULL) {
+				bucket[0][0] = trav;
+				bucket[0][1] = trav;
+			}
+			else {
+				bucket[0][1]->next = trav;
+				bucket[0][1] = trav;
+			}
+		}
+
+		trav = trav->next;
+	}
+}
+template<class T>
+void List<T>::MergeBucket(nodePtr**& LstBucket)
+{
+	nodePtr* temp = LstBucket[0];
+	int index = 1;
+	while (temp[0] == NULL) temp = LstBucket[index++];
+
+	_first = temp[0];
+	temp[0] = NULL;
+
+	for (; index < 257; index++)
+	{
+		if (LstBucket[index][0] != NULL) {
+			temp[1]->next = LstBucket[index][0];
+			temp = LstBucket[index];
+			temp[0] = NULL;
+		}
+	}
+	_last = temp[1];
+	_last->next = NULL;
+}
 template<class T>
 node<T>* List<T>::insertConst(T* ptrDat)
 {
@@ -221,6 +315,7 @@ bool List<T>::Addlast(nodePtr value)
 		if (isempty()) _first = value;
 		else _last->next = value;
 		_last = value;
+		_last->next = NULL;
 	}
 	return 1;
 }

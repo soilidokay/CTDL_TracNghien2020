@@ -50,12 +50,39 @@ void Form::DrawToScreen()
 	}
 }
 
-void ShowWarning(HANDLE _hSCreen, std::string text)
+
+int customtext(std::string& text, int lenmax) {
+	int len = text.length();
+	int buff = len / lenmax;
+	int plus = len % lenmax;
+	if (plus == 0) {
+		--buff;
+	}
+
+	for (int i = 1; i <= buff; i++)
+	{
+		int posSpace = i * lenmax;
+		while (posSpace > 0 && text[posSpace] != ' ') posSpace--;
+		text.insert(text.begin() + posSpace, '\n');
+	}
+	return buff + 1;
+}
+
+const int WidthWar = 40;
+
+bool ShowWarning(HANDLE _hSCreen, std::string text, bool isCancel)
 {
+	CONSOLE_SCREEN_BUFFER_INFO cisbi = {};
+	GetConsoleScreenBufferInfo(_hSCreen, &cisbi);
+
+	int Width = WidthWar > cisbi.dwSize.X ? cisbi.dwSize.X : WidthWar;
+
 	EventConsole evt;
-	warning war(70, 10, 5, colorbk_darkgreen | color_red);
-	war.SetScreen(_hSCreen);
-	war.setBtnCancel(0);
+	int row = customtext(text, Width - 4);
+
+	warning war(_hSCreen, Width - 2, row + 5, 0, 0, colorbk_darkgreen | color_red);
+	war.setBtnCancel(isCancel);
 	war.settext(text);
 	war.action(evt);
+	return war.GetOK();
 }

@@ -30,19 +30,59 @@ public:
 		_LBClasses->setStrTiltle("Danh Sach Lop Hoc");
 		_LBClasses->setActionItemClick(bind(&PrintClasses::ActionListClass, this, _1));
 		*Events += _LBClasses;
+		//btn exit
+		
+		BtnExit = new Button(6, 1, 60, 2);
+		BtnExit->setText("Thoat");
+		BtnExit->setActionButton(bind(&PrintClasses::actionExit, this, _1));
+		*Events += BtnExit;
 
-		nObj = 3; Showobj = new window * [nObj];
+
+		nObj = 4; Showobj = new window * [nObj];
 		Showobj[0] = _Title;
 		Showobj[1] = _CLSchoolYear;
 		Showobj[2] = _LBClasses;
+		Showobj[3] = BtnExit;
 		setlists(_Context->LopHocs->ToList());
 	}
 private:
+	void actionExit(EventConsole& evt) {
+		Close();
+	}
+
 	void setlists(IList<LopHoc>* lstClass) {
-		_LBClasses->setListObj(lstClass);
+		lstClass->RadixSort([&](LopHoc* lh) {return lh->getSchoolYear(); });
+		List<SchoolYear>* lstSchool = new List<SchoolYear>;
+		string temp = "-a";
+		List<LopHoc>* lstLopHocTem = NULL;
+		lstClass->forEach([&](LopHoc* lh, int index)
+			{
+				if (lh->getSchoolYear() != temp) {
+					temp = lh->getSchoolYear();
+					SchoolYear* data = new SchoolYear(lstSchool->getSize(),temp);
+					lstSchool->insertlast(data);
+
+					lstLopHocTem = new List<LopHoc>;
+					lstLopHocTem->InsertConst(lh);
+
+					data->setLstLopHop(lstLopHocTem);
+				}
+				else {
+					lstLopHocTem->insertlast(lh);
+				}
+				return true;
+			}
+		);
+		_CLSchoolYear->setListObj(lstSchool);
+
+		//_LBClasses->setListObj(lstClass);
 	}
 	void ActionListSchoolYear(EventConsole& evt) {
-
+		if (_SchoolYearCurrent != _CLSchoolYear->GetDataChecked()) {
+			_SchoolYearCurrent = _CLSchoolYear->GetDataChecked();
+			_LBClasses->setListObj(_SchoolYearCurrent->getLstLopHoc());
+			_LBClasses->showLObj();
+		}
 	}
 	void ActionListClass(EventConsole& evt) {
 
@@ -51,6 +91,8 @@ private:
 	CheckList<SchoolYear>* _CLSchoolYear;
 	ListBox<LopHoc>* _LBClasses;
 	Lable* _Title;
+	SchoolYear* _SchoolYearCurrent = NULL;
+	Button* BtnExit = NULL;
 };
 
 #ifndef PRINTCLASES_CPP

@@ -18,7 +18,7 @@
 #include "AppDbContext.h"
 using namespace scl;
 using namespace std::placeholders;
-void ShowWarning(HANDLE _hSCreen, std::string text);
+bool ShowWarning(HANDLE _hSCreen, std::string text, bool isCancel = false);
 class Form
 {
 
@@ -49,7 +49,7 @@ public:
 	void backup() {
 		//init();
 		std::cout.rdbuf(_StreamBuff);
-		show();
+		//show();
 	}
 	virtual void show() {
 

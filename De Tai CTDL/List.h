@@ -2,6 +2,7 @@
 #define List_H
 
 #include "IList.h"
+#include <memory> 
 
 #define _ptr(_var) *##_var
 
@@ -27,7 +28,9 @@ public:
 	nodePtr insertlast(dataPtr dat);
 	nodePtr insertCen(T* ptrdatsam, T* ptrDat);
 	nodePtr insertCen(nodePtr ptrN, T* ptrdat);
-
+	void RadixSort(const SelectString& select) override;
+	void BucketListString(const SelectString& select, nodePtr**& bucket, int offset);
+	void MergeBucket(nodePtr**& LstBucket);
 	nodePtr insertConst(T* ptrDat);
 	int Search(T* data) override;
 	int InsertConst(T* data) override;

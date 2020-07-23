@@ -47,6 +47,7 @@ public:
 	bool isempty() override;
 	int Search(_T* data) override;
 	int getSize()override;
+	void RadixSort(const SelectString& select) override;
 	void Clear() override;
 	IList<_T>* filter(const ACTION& action)override;
 

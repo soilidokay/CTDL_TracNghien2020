@@ -3,6 +3,8 @@
 #include "Form.h"
 #include <iostream>
 #include "Formteach.h"
+#include "FormStudent.h"
+
 using namespace std::placeholders;
 using namespace std;
 
@@ -71,22 +73,36 @@ private:
 	void actionBtnLOgin(EventConsole& evt) {
 		gotoXY(30, 0);
 		scl::TextColor(_hSCreen, _bkcolor);
+
+		if (txtTaiKhoan->isEmpty() && txtMatkhau->isEmpty()) {
+			ShowWarning(_hSCreen, "Thong tin dang nhap khong duoc rong!");
+			return;
+		}
+
 		if (txtTaiKhoan->Gettext() == "GV" && txtMatkhau->Gettext() == "GV") {
-			FormTeach* Fteach = new FormTeach(NULL, 52, 25, colorbk_white);
+			FormTeach* Fteach = new FormTeach(this, 52, 25, colorbk_white);
 			Fteach->show();
+			return;
 		}
-		else if (!txtTaiKhoan->isEmpty() && !txtMatkhau->isEmpty()) {
-			scl::TextColor(_hSCreen, color_red | _bkcolor);
-			gotoXY(_hSCreen, 3, 8);
-			cout << "thong tin dang nhap sai !!!";
-			gotoXY(_hSCreen, 3, 9);
-			cout << "Vui long, kiem tra lai!";
+		else {
+			Sinhvien svtemp;
+			svtemp.setidstudent(txtTaiKhoan->Gettext());
+			_LstStudent = _Context->SinhViens->ToList();
+			node<Sinhvien>* sv = _LstStudent->search(&svtemp);
+			if (sv != NULL && sv->info->getPass() == txtMatkhau->Gettext()) {
+				FormStudent* fstudent = new FormStudent(this, 52, 20,colorbk_white);
+				fstudent->show();
+				return;
+			}
 		}
+		ShowWarning(_hSCreen, "Thong tin dang nhap sai, Vui long kiem tra lai!");
+
 	}
 private:
 	Lable* lbTaikhoan, * lbMatkhau;
 	InPutBox* txtMatkhau, * txtTaiKhoan;
 	Button* btnDangNhap;
+	List<Sinhvien>* _LstStudent = NULL;
 };
 
 #endif // !Login_H

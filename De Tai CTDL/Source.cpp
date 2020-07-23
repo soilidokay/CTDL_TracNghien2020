@@ -29,12 +29,46 @@ bool filterMonhoc(Monhoc* mh, int index) {
 //    }
 //};
 int main3() {
+	
+
+	List<Monhoc> testList;
+
+	string ch = "aaaaaaa";
+	for (int i = 1000000; i > 0; i--)
+	{
+		testList.insertlast(new Monhoc(ch + to_string(i), ""));
+	}
+	testList.RadixSort([&](Monhoc* mh) {return mh->getId(); });
+
+	/*for (node<Monhoc>* i = testList.getfirst(); i != NULL; i = i->next)
+	{
+		for (node<Monhoc>* j = i->next; j != NULL; j = j->next)
+		{
+			if (*i->info > * j->info) {
+				Monhoc* temp = i->info;
+				i->info = j->info;
+				j->info = temp;
+			}
+		}
+	}*/
+
+
+
+	testList.forEach([&](Monhoc* mh, int index) {
+		cout << mh << endl;
+		return true;
+		}
+	);
+
 	DBSet<int, int, 1, EntityQuestion, Question>* dbset2 = new DBSet<int, int, 1, EntityQuestion, Question>("Question.txt");
-	
-	std::unique_ptr<int*[]> io{ new int* [22] {} };
+
+
+
+
+	std::unique_ptr<int* []> io{ new int* [22] {} };
 	io[3] = new int(3);
-	cout<<*io[3];
-	
+	cout << *io[3];
+
 	string j = "dsasssssssddasd";
 	TreeAVL<Question>* tree = new TreeAVL<Question>();
 	for (int i = 0; i < 1000; i++)
@@ -52,7 +86,7 @@ int main3() {
 	for (int i = 0; i < 1000; i++)
 	{
 		Question* t = new Question();
-		t->setId(hash<string>{}(j + to_string(i+1000)));
+		t->setId(hash<string>{}(j + to_string(i + 1000)));
 		cout << tree->searchValue(t) << endl;
 	}
 
@@ -117,7 +151,7 @@ int main3() {
 	}
 
 
-	
+
 
 	delete dbset;
 	delete dbset1;
@@ -128,38 +162,38 @@ int main(int argc, char* argv[]) {
 
 
 
-		scl::DisableMaxiMize("tainguyen");
-		SYSTEMTIME systime;
-		GetLocalTime(&systime);
-		Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };
-		//Hour h{ 0,0,20 };
-		TimeClock t{ h,colorbk_yellow | color_red,0,0 };
-		thread th{ [&t] {t.printClock(&TimeClock::changetimeMult); } };
-		EventController* HandleEventController = EventController::getInstance();
-		thread* handleThreadMouse = HandleEventController->Start();
+	scl::DisableMaxiMize("tainguyen");
+	SYSTEMTIME systime;
+	GetLocalTime(&systime);
+	Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };
+	//Hour h{ 0,0,20 };
+	TimeClock t{ h,colorbk_yellow | color_red,0,0 };
+	thread th{ [&t] {t.printClock(&TimeClock::changetimeMult); } };
+	EventController* HandleEventController = EventController::getInstance();
+	thread* handleThreadMouse = HandleEventController->Start();
 
-		//cac doi tuong form
-		bool Checklogin;
-		Login DangNhap(NULL, 40, 14, colorbk_white);
-		DangNhap.show();
+	//cac doi tuong form
+	bool Checklogin;
+	Login DangNhap(NULL, 40, 14, colorbk_white);
+	DangNhap.show();
 
-		/*switch (Checklogin)
-		{
-		case true: {
-			EventConsole evt;
-			FormTeach Fteach(NULL, 52, 25, colorbk_blue | color_blue);
-			Fteach.show();
-			Fteach.ActionFormTeach();
-			break;
-		}
-		case false:break;
-		};*/
-		//------------------------
+	/*switch (Checklogin)
+	{
+	case true: {
+		EventConsole evt;
+		FormTeach Fteach(NULL, 52, 25, colorbk_blue | color_blue);
+		Fteach.show();
+		Fteach.ActionFormTeach();
+		break;
+	}
+	case false:break;
+	};*/
+	//------------------------
 
-		th.join();
-		t.stop();
-		handleThreadMouse->join();
-	
+	th.join();
+	t.stop();
+	handleThreadMouse->join();
+
 	return 0;
 }
 int main1() {

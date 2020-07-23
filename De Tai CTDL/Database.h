@@ -288,6 +288,10 @@ protected:
 };
 class SchoolYear :public EntitySchoolYear, public CompareData<int> {
 public:
+	SchoolYear(int idSchoolYear,std::string SchoolYear) {
+		_idSchoolYear = idSchoolYear;
+		_strcopy(_SchoolYear, 10, SchoolYear);
+	}
 	void SetSchoolYear(std::string schoolyear) {
 		_strcopy(_SchoolYear, 10, schoolyear);
 	}
@@ -298,22 +302,24 @@ public:
 
 	}
 	void setId(int idSchoolYear) { _idSchoolYear = idSchoolYear; }
+	void setLstLopHop(List<LopHoc>* lstLopHoc) { _lstLopHop = lstLopHoc; }
 	int getId()override { return _idSchoolYear; }
+	List<LopHoc>* getLstLopHoc() { return _lstLopHop; }
 	friend std::ostream& operator<<(std::ostream& output, SchoolYear* Obj) {
 		//char lim = 179;
 		output << std::left << std::setfill(' ');
 		if (Obj != NULL) {
-			output << std::setw(20) << Obj->getId() << lim
-				<< std::setw(20) << Obj->GetSchoolYear() << lim;
+			output << std::setw(20) << Obj->GetSchoolYear() << lim;
 		}
 		else
 		{
-			output << std::setw(20) << ' ' << lim
-				<< std::setw(20) << ' ' << lim;
+			output << std::setw(20) << ' ' << lim;
 		}
 		return output;
 	}
 	std::string GetSchoolYear() { return _SchoolYear; }
+private:
+	List<LopHoc>* _lstLopHop = NULL;
 };
 
 

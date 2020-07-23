@@ -187,6 +187,11 @@ int TreeAVL<_T>::getSize()
 }
 
 template<class _T>
+void TreeAVL<_T>::RadixSort(const SelectString& select)
+{
+}
+
+template<class _T>
 void TreeAVL<_T>::Clear()
 {
 	if (isempty()) return;

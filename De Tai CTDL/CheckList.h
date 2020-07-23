@@ -91,11 +91,11 @@ public:
 		}
 	}
 	bool ActionWarn(EventConsole& evt) {
-		warning Warn(70, 10, 5, colorbk_darkgreen | color_red);
+		/*warning Warn(70, 10, 5, colorbk_darkgreen | color_red);
 		Warn.SetScreen(_hScreen);
 		Warn.settext(_warnStr);
-		Warn.action(evt);
-		return Warn.GetOK();
+		Warn.action(evt);*/
+		return ShowWarning(_hScreen, _warnStr, true);
 	}
 	void Actionchecks(EventConsole& evt) {
 		if (evt._Smouse.x > getx() && evt._Smouse.x < getx() + 4 &&
