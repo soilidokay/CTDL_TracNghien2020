@@ -130,13 +130,13 @@ public:
 			output << std::setw(20)
 				<< Obj->getId()
 				<< lim
-				<< std::setw(30)
+				<< std::setw(20)
 				<< Obj->getName() << lim;
 		}
 		else
 		{
 			output << std::setw(20) << ' ' << lim
-				<< std::setw(30) << ' ' << lim;
+				<< std::setw(20) << ' ' << lim;
 		}
 		return output;
 	}
@@ -144,7 +144,7 @@ public:
 		std::cout << std::left << std::setfill(' ');
 		std::cout << std::setw(3) << ' ' << lim
 			<< std::setw(20) << "       ID" << lim
-			<< std::setw(30) << "             Mon hoc" << lim;
+			<< std::setw(20) << "             Mon hoc" << lim;
 	}
 private:
 	IList<Question>* LstQuest = NULL;

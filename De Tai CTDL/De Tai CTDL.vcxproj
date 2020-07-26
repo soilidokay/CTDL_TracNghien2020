@@ -136,6 +136,7 @@
     <ClInclude Include="IList.h" />
     <ClInclude Include="ImpObject.h" />
     <ClInclude Include="ImportClass.h" />
+    <ClInclude Include="ImportInfoTerm.h" />
     <ClInclude Include="ImportStudent.h" />
     <ClInclude Include="ImpQuestion.h" />
     <ClInclude Include="InPutBox.h" />
@@ -145,7 +146,7 @@
     <ClInclude Include="Login.h" />
     <ClInclude Include="outbuf.h" />
     <ClInclude Include="PrintClasses.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="Term.h" />
     <ClInclude Include="TimeClock.h" />
     <ClInclude Include="TreeAVL.h" />
     <ClInclude Include="warning.h" />

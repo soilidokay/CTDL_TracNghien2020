@@ -17,7 +17,16 @@ void InPutBox::processkey(int key)
 	{
 	case key_bkspace: backspace(); break;
 	default:
-		if (key > 31 && key < 127) {
+		if (_isNumber) {
+			if (key > 47 && key < 58) {
+				int lentext = _strtext.length() + 1;
+				if (lentext < getwidth()) {
+					_strtext += char(key);
+					writeChar(key);
+				}
+			}
+		}
+		else if (key > 31 && key < 127) {
 			int lentext = _strtext.length() + 1;
 			if (lentext < getwidth()) {
 				_strtext += char(key);

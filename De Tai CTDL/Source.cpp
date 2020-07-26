@@ -28,7 +28,7 @@ bool filterMonhoc(Monhoc* mh, int index) {
 //        T* d = new T();
 //    }
 //};
-int main3() {
+int main2() {
 	
 
 	List<Monhoc> testList;
@@ -196,7 +196,7 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
-int main1() {
+int main3() {
 	HANDLE hStdout, hNewScreenBuffer;
 	SMALL_RECT srctReadRect;
 	SMALL_RECT srctWriteRect;

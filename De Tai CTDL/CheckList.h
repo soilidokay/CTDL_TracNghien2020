@@ -62,7 +62,7 @@ public:
 		_strTiltle += 31;
 	}
 	CHAR_INFO* showlist() {
-		if (getheight() > 1) return NULL;
+		if (getheight() > 1 || _listObj == NULL) return NULL;
 		setheight(_heightLB);
 		//sety(gety() - 9);
 		SHORT height = getheight() + 3;

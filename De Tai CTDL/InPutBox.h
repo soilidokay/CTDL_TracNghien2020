@@ -14,6 +14,7 @@ public:
 		_strtext = Str;
 		showText();
 	}
+	void SetisNumber(bool isNumber) { _isNumber = isNumber; }
 	void setPassChar(char passchar) {
 		_password = passchar;
 	}
@@ -32,6 +33,7 @@ public:
 			std::cout << std::setfill(_password) << std::setw(_strtext.length()) << _password;
 		}
 	}
+	bool isNumber() { return _isNumber; }
 	void SetActive(bool isActive) override;
 	std::string Gettext() { return _strtext; }
 	InPutBox(int width, int height, int x, int y);
@@ -55,6 +57,7 @@ private:
 		}
 	}
 	char _password;
+	bool _isNumber = false;
 	std::string _strtext;
 };
 

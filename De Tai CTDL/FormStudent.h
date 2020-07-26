@@ -6,6 +6,7 @@
 #include "ImpObject.h"
 #include "ImpQuestion.h"
 #include "PrintClasses.h"
+#include "ImportInfoTerm.h"
 
 class FormStudent : public Form
 {
@@ -46,11 +47,12 @@ public:
 	}
 private:
 	void ActionBtnInfoTerm(EventConsole& evt) {
+		ImportInfoTerm * FormTerm = new ImportInfoTerm(this, 50, 25, colorbk_white);
+		FormTerm->show();
 	}
 	void ActionBtnLogOut(EventConsole& evt) {
 		Close();
 	}
-private:
 	Button* BtnTerm, * BtnLogout;
 };
 
