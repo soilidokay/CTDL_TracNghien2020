@@ -3,6 +3,10 @@
 
 #include "Form.h"
 #include "AppDbContext.h"
+#include "Term.h"
+#include <cstdlib>
+#include <ctime>
+
 class ImportInfoTerm : public Form
 {
 public:
@@ -22,13 +26,13 @@ public:
 		CLObject->setStrTiltle("Danh sach mon hoc ");
 		*Events += CLObject;
 		//lable Ma lop
-		LAmountQuestion = new Lable(20, 1, 0, 4);
+		LAmountQuestion = new Label(20, 1, 0, 4);
 		LAmountQuestion->settext("So Luong Cau hoi");
 		LAmountQuestion->setColor(colorbk_white | color_grey);
 		*Events += LAmountQuestion;
 
 		//lable ten lop
-		LTime = new Lable(20, 1, 0, 7);
+		LTime = new Label(20, 1, 0, 7);
 		LTime->settext("So Phut Thi");
 		LTime->setColor(colorbk_white | color_grey);
 		//inputbox idclass
@@ -93,22 +97,57 @@ private:
 		IpAmountQuetion->setText("");
 		IpTime->setText("");
 	}
+	void shuffle(int* arr, int n) {
+		srand(time(NULL));
+		int res = rand();
+		for (int i = n - 1; i > 0; i--) {
+			int j = rand() % (n - i) + i; //Math.floor(Math.random() * (i + 1));
+			swap(arr[i], arr[j]);
+		}
+	}
+	IList<Question>* RandomQuestion(IList<Question>* lstQuestion, int amount) {
+		int* a = new int[amount];
+		for (int i = 0; i < amount; i++)
+		{
+			a[i] = i;
+		}
+		shuffle(a, amount);
+		IList<Question>* lstTemp = new ArrayList<Question>(amount);
+
+		for (int i = 0; i < amount; i++)
+		{
+			lstTemp->InsertConst(lstQuestion->GetData(a[i]));
+		}
+
+		delete[]a;
+		return lstTemp;
+	}
 	void ActionTerm(EventConsole& evt) {
-		Monhoc * mh = CLObject->GetDataChecked();
+		Monhoc* mh = CLObject->GetDataChecked();
+		if (mh == NULL) {
+			ShowWarning(_hSCreen, "Ban chua chon mon hoc!");
+			return;
+		}
+		if (IpTime->isEmpty() || IpAmountQuetion->isEmpty()) {
+			ShowWarning(_hSCreen, "Ban chua nhap day du thong tin!");
+			return;
+		}
 		IList<Question>* lstQuestion = mh->GetLstQuetion();
 		int AmountQuestionm = atoi(IpAmountQuetion->Gettext().c_str());
 		if (AmountQuestionm > lstQuestion->getSize()) {
 			ShowWarning(_hSCreen, "So luong cau hoi khong du!");
 			return;
 		}
-
+		int time = atoi(IpTime->Gettext().c_str());
+		Term* term = new Term(this, colorbk_white, RandomQuestion(lstQuestion, AmountQuestionm), time);
+		term->show();
 	}
 	void ActionExit(EventConsole& evt) {
 		Close();
 	}
 private:
 	CheckList<Monhoc>* CLObject;
-	Lable* LAmountQuestion, * LTime;
+	Label* LAmountQuestion, * LTime;
 	InPutBox* IpAmountQuetion, * IpTime;
 	Button* btnClear, * btnTerm, * btnExit;
 	TreeAVL<Question>* _treeQuestion = NULL;

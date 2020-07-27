@@ -5,12 +5,14 @@
 #include "ImpObject.h"
 #include "ImpQuestion.h"
 #include "PrintClasses.h"
+#include "PrintMarks.h"
+#include "DetailQuestion.h"
 
 class FormTeach : public Form
 {
 public:
-	FormTeach(Form* Fbackup, int width, int height, int bkcolor) :
-		Form(Fbackup, width, height, bkcolor)
+	FormTeach(Form* Fbackup, int bkcolor) :
+		Form(Fbackup, 52, 35, bkcolor)
 	{
 		constructor();
 		setEventMouseOrKey();
@@ -45,19 +47,32 @@ public:
 		BtnPrintClass->setActionButton(bind(&FormTeach::ActionBtnPrintCLass, this, _1));
 		*Events += BtnPrintClass;
 		//-------------------
-		BtnLogout = new Button(48, 1, 1, 21);
+		BtnPrintMarkStudent = new Button(48, 1, 1, 21);
+		BtnPrintMarkStudent->setText("Bang Diem sinh vien");
+		BtnPrintMarkStudent->setActionButton(bind(&FormTeach::ActionBtnMarkStudent, this, _1));
+		*Events += BtnPrintMarkStudent;
+		//-------------------
+		btnPrintDetailQuestion = new Button(48, 1, 1, 25);
+		btnPrintDetailQuestion->setText("Chi tiet bai thi");
+		btnPrintDetailQuestion->setActionButton(bind(&FormTeach::ActionBtnPrintDetailQuestion, this, _1));
+		*Events += btnPrintDetailQuestion;
+		//-------------------
+
+		BtnLogout = new Button(48, 1, 1, 29);
 		BtnLogout->setText("Dang Xuat");
 		BtnLogout->setActionButton(bind(&FormTeach::ActionBtnLogOut, this, _1));
 		*Events += BtnLogout;
 		//-------------------
-		nObj = 6;
+		nObj = 8;
 		Showobj = new window * [nObj];
 		Showobj[0] = BtnImCl;
 		Showobj[1] = BtnImpStu;
 		Showobj[2] = BtnImpObj;
 		Showobj[3] = BtnImpQue;
 		Showobj[4] = BtnPrintClass;
-		Showobj[5] = BtnLogout;
+		Showobj[5] = BtnPrintMarkStudent;
+		Showobj[6] = btnPrintDetailQuestion;
+		Showobj[7] = BtnLogout;
 
 		//--------------------
 	}
@@ -69,11 +84,11 @@ public:
 	}
 private:
 	void ActionBtnImCl(EventConsole& evt) {
-		importClass* Impclass = new importClass(this, 85, 25, colorbk_white);
+		importClass* Impclass = new importClass(this, 85, 35, colorbk_white);
 		Impclass->show();
 	}
 	void ActionBtnImpStu(EventConsole& evt) {
-		importStudent* ImpStu = new importStudent(this, 85, 25, colorbk_white);
+		importStudent* ImpStu = new importStudent(this, 85, 35, colorbk_white);
 		ImpStu->show();
 	}
 	void ActionBtnImpQue(EventConsole& evt) {
@@ -81,17 +96,28 @@ private:
 		ImpQue->show();
 	}
 	void ActionBtnImpObj(EventConsole& evt) {
-		ImpObject* impObject = new ImpObject(this, 80, 25, colorbk_white);
+		ImpObject* impObject = new ImpObject(this, 80, 35, colorbk_white);
 		impObject->show();
 	}
 	void ActionBtnPrintCLass(EventConsole& evt) {
 		PrintClasses* PrintClass = new PrintClasses(this, 80, 50, colorbk_white);
 		PrintClass->show();
 	}
+	void ActionBtnMarkStudent(EventConsole& evt) {
+		PrintMark* Printmark = new PrintMark(this);
+		Printmark->show();
+	}
+	void ActionBtnPrintDetailQuestion(EventConsole& evt) {
+		DetailQuestion* form = new DetailQuestion(this);
+		form->show();
+	}
 	void ActionBtnLogOut(EventConsole& evt) {
 		Close();
 	}
 private:
-	Button* BtnImCl, * BtnImpStu, * BtnImpQue, * BtnImpObj, * BtnPrintClass, * BtnLogout;
+	Button* BtnImCl, * BtnImpStu, * BtnImpQue,
+		* BtnImpObj, * BtnPrintClass,
+		* BtnPrintMarkStudent, * BtnLogout,
+		* btnPrintDetailQuestion;
 };
 #endif // !Formteach_H

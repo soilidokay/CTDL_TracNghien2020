@@ -22,13 +22,13 @@ public:
 		LBObject->setActionItemClick(bind(&ImpObject::actionLBObj, this, _1));
 		*Events += LBObject;
 		//lable Ma lop
-		LIdObject = new Lable(10, 1, 0, 3);
+		LIdObject = new Label(10, 1, 0, 3);
 		LIdObject->settext(" Ma Mon");
 		LIdObject->setColor(colorbk_white | color_grey);
 		*Events += LIdObject;
 
 		//lable ten lop
-		LNameObject = new Lable(10, 1, 42, 3);
+		LNameObject = new Label(10, 1, 42, 3);
 		LNameObject->settext("Ten Mon");
 		LNameObject->setColor(colorbk_white | color_grey);
 		//inputbox idclass
@@ -135,7 +135,7 @@ private:
 	}
 private:
 	ListBox<Monhoc>* LBObject;
-	Lable* LIdObject, * LNameObject;
+	Label* LIdObject, * LNameObject;
 	InPutBox* IpIdObject, * IIPnameObject;
 	Button* btnClear, * btnAdd, * btnDel, * btnSave, * btnExit;
 };

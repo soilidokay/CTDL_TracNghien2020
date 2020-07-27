@@ -192,7 +192,7 @@ void TreeAVL<_T>::RadixSort(const SelectString& select)
 }
 
 template<class _T>
-void TreeAVL<_T>::Clear()
+void TreeAVL<_T>::Clear(bool isDeleteData)
 {
 	if (isempty()) return;
 	int indexHead = 0, indexLast = 1;
@@ -209,7 +209,9 @@ void TreeAVL<_T>::Clear()
 		if (trav->right != NULL) {
 			queue[indexLast++] = trav->right;
 		}
-		delete trav->key;
+		if (isDeleteData) {
+			delete trav->key;
+		}
 		delete trav;
 	}
 }

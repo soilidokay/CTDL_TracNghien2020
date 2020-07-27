@@ -48,7 +48,7 @@ public:
 	int Search(_T* data) override;
 	int getSize()override;
 	void RadixSort(const SelectString& select) override;
-	void Clear() override;
+	void Clear(bool isDeleteData = false) override;
 	IList<_T>* filter(const ACTION& action)override;
 
 	~TreeAVL();

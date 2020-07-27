@@ -49,6 +49,8 @@ public:
 	void Add(T* data);
 	void Delete(T* data, bool deleteData = false);
 	void Update(T* data);
+	bool isExit(_TIdCompare id);
+	T* Seach(T *data);
 	List<T>* ToList();
 	T* ToArray();
 	T** ToArrayPtr();

@@ -64,11 +64,15 @@ public:
 	virtual void setStrTiltle(std::string strTiltle) {
 		_strTiltle = strTiltle;
 	}
+	template<typename _Ti>
+	void ShowTitle(_Ti text,int len) {
+		gotoXY(_hScreen, getx() + getwidth() / 2 - len / 2, gety() + 1);
+		scl::TextColor(_hScreen, color_darkgreen | colorbk_yellow);
+		std::cout << text;
+	}
 	void show()override {
 		window::show();
-		gotoXY(_hScreen, getx() + getwidth() / 2 - _strTiltle.length() / 2, gety() + 1);
-		scl::TextColor(_hScreen, color_darkgreen | colorbk_yellow);
-		std::cout << _strTiltle;
+		ShowTitle(_strTiltle, _strTiltle.length());
 		if (getheight() > 9) {
 			setUpBtn(getcolor());
 			setDwBtn(getcolor());
@@ -109,6 +113,7 @@ public:
 		//showLObj();
 		posPrintInt = 0;
 	}
+	IList<_T>* getListObj() { return _listObj; }
 	int getIndexSelected() { return selectedindex; }
 	void showTitle() {
 		TextColor(_hScreen, colorbk_darkblue | color_white);

@@ -35,19 +35,19 @@ public:
 		*Events += LBStudent;
 
 		//lable Ma lop
-		LIdStudent = new Lable(10, 1, 0, 0);
+		LIdStudent = new Label(10, 1, 0, 0);
 		LIdStudent->settext(" Ma id");
 		LIdStudent->setColor(colorbk_white | color_grey);
 		//lable ten lop
-		LlastName = new Lable(10, 1, 37, 0);
+		LlastName = new Label(10, 1, 37, 0);
 		LlastName->settext("Ho");
 		LlastName->setColor(colorbk_white | color_grey);
 		//Lable password
-		LPass = new Lable(10, 1, 2, 3);
+		LPass = new Label(10, 1, 2, 3);
 		LPass->settext("pass");
 		LPass->setColor(colorbk_white | color_grey);
 		//Lable ten
-		Lfirst = new Lable(10, 1, 37, 3);
+		Lfirst = new Label(10, 1, 37, 3);
 		Lfirst->settext("Ten");
 		Lfirst->setColor(colorbk_white | color_grey);
 		//inputbox idclass
@@ -92,7 +92,7 @@ public:
 		btnExit->setActionButton(bind(&importStudent::ActionExit, this, _1));
 		*Events += btnExit;
 		//--------labcheckbox
-		LChckSex = new Lable(6, 1, 71, 0);
+		LChckSex = new Label(6, 1, 71, 0);
 		LChckSex->setColor(colorbk_white | color_grey);
 		LChckSex->settext("NAM");
 		//--------Check box
@@ -119,7 +119,7 @@ public:
 		Showobj[15] = LChckSex;
 		Showobj[16] = chckBocSex;
 		ClassCurrent = NULL;
-		setlists(_Context->LopHocs->ToArrayList(300));
+		setlists(_Context->LopHocs->ToArrayList(500));
 
 	}
 
@@ -235,7 +235,7 @@ private:
 private:
 	ListBox<Sinhvien>* LBStudent;
 	CheckList<LopHoc>* LBLopHoc;
-	Lable* LIdStudent, * LlastName, * LPass, * Lfirst, * LChckSex;
+	Label* LIdStudent, * LlastName, * LPass, * Lfirst, * LChckSex;
 	InPutBox* IPidStudent, * IPlastname, * IPpass, * IPfirst;
 	Button* btnClear, * btnAdd, * btnDel, * btnSave, * btnExit;
 	checkbox* chckBocSex;

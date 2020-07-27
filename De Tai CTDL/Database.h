@@ -87,7 +87,7 @@ public:
 			<< std::setw(12) << "    D" << lim
 			<< std::setw(12) << "Dap An" << lim;
 	}
-
+	static int getSizeTitle() { return 75; }
 	long long int getId()override { return _idquest; }
 	std::string getQuest() { return _Quest; }
 	std::string getIdObject() { return _IdObject; }
@@ -95,10 +95,49 @@ public:
 	std::string getanswerB() { return _answerB; }
 	std::string getanswerC() { return _answerC; }
 	std::string getanswerD() { return _answerD; }
-	char getAnserw() { return _answer; }
+	 char getAnserw() { return _answer; }
 	~Question() {};
 };
-
+class ModelQuestion :public Question {
+private:
+	char _answers[20];
+public:
+	void setAnswers(std::string answers) { _strcopy(_answers, 20, answers); }
+	std::string getAnswers() { return _answers; }
+	friend std::ostream& operator<<(std::ostream& output, ModelQuestion* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(12) << CutStr(Obj->_Quest, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerA, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerB, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerC, 12) << lim
+				<< std::setw(12) << CutStr(Obj->_answerD, 12) << lim
+				<< std::setw(20) << Obj->_answers << lim;
+		}
+		else
+		{
+			output << std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(12) << " " << lim
+				<< std::setw(20) << " " << lim;
+		}
+		return output;
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ');
+		std::cout << std::setw(3) << ' ' << lim
+			<< std::setw(12) << "  Cau Hoi" << lim
+			<< std::setw(12) << "    A" << lim
+			<< std::setw(12) << "    B" << lim
+			<< std::setw(12) << "    C" << lim
+			<< std::setw(12) << "    D" << lim
+			<< std::setw(20) << "Dap An" << lim;
+	}
+	static int getSizeTitle() { return 83; }
+};
 class EntityMonHoc {
 protected:
 	char _idObject[10] = "";
@@ -146,10 +185,34 @@ public:
 			<< std::setw(20) << "       ID" << lim
 			<< std::setw(20) << "             Mon hoc" << lim;
 	}
+	static int getSizeTitle() { return 43; }
 private:
 	IList<Question>* LstQuest = NULL;
 };
+class EntityDiem {
+protected:
+	char _MaMH[10];
+	double _Scores;
+	char _MaSV[20];
+};
 
+
+class Diem :public EntityDiem, public CompareData<std::string> {
+public:
+	Diem() {}
+	Diem(std::string MaMH, std::string MaSV, double Mark) {
+		_strcopy(_MaMH, 10, MaMH);
+		_strcopy(_MaSV, 20, MaSV);
+		_Scores = Mark;
+	}
+	void setObjectId(std::string ObjectId) { _strcopy(_MaMH, 10, ObjectId); }
+	std::string getObjectId() { return _MaMH; }
+	void setStudentId(std::string studentid) { _strcopy(_MaSV, 20, studentid); }
+	std::string getStudentId() { return _MaSV; }
+	void setScores(double Scores) { _Scores = Scores; }
+	double getScores() { return _Scores; }
+	std::string getId()override { return getObjectId() + getStudentId(); }
+};
 class EntiySinhvien {
 protected:
 	char _idStudent[20] = "";
@@ -159,7 +222,6 @@ protected:
 	char _passWord[15] = "";
 	char _MaLop[10] = "";
 };
-
 class Sinhvien : public EntiySinhvien, public CompareData<std::string>
 {
 public:
@@ -184,7 +246,7 @@ public:
 		}
 		return output;
 	}
-	static void settitle() {
+	static  void settitle() {
 		std::cout << std::left << std::setfill(' ');
 		std::cout << std::setw(3) << ' ' << lim
 			<< std::setw(15) << "     ID" << lim
@@ -193,6 +255,7 @@ public:
 			<< std::setw(10) << "Gioi Tinh" << lim
 			<< std::setw(15) << "    PassWord" << lim;
 	}
+	static  int getSizeTitle() { return 73; }
 	enum SEX
 	{
 		nam = 1, nu = 0
@@ -204,16 +267,15 @@ public:
 		_strcopy(_firstname, 10, firstname);
 		_strcopy(_passWord, 30, pass);
 		_sex = sex;
-		_LMonHoc = new List<Monhoc>;
+		_LstDiem = new List<Diem>;
 	}
 	void setidstudent(std::string idstudent) { _strcopy(_idStudent, 20, idstudent); }
 	void setlastname(std::string lastname) { _strcopy(_lastname, 20, lastname); }
 	void setfirstname(std::string firstname) { _strcopy(_firstname, 10, firstname); }
 	void setsex(bool sex) { _sex = sex; }
-	void setLMonhoc(List<Monhoc>* LMonhoc) { _LMonHoc = LMonhoc; }
+	void setLstDiem(List<Diem>* lstDiem) { _LstDiem = lstDiem; }
 	void SetPass(std::string pass) { _strcopy(_passWord, 30, pass); }
 	void SetMaLop(std::string malop) { _strcopy(_MaLop, 30, malop); }
-
 	std::string getId() { return _idStudent; }
 	std::string getlastname() { return _lastname; }
 	std::string getfirstname() { return _firstname; }
@@ -221,11 +283,48 @@ public:
 	std::string getPass() { return _passWord; }
 	std::string getMaLop() { return _MaLop; }
 
-	List<Monhoc>* getLMonhoc() { return _LMonHoc; }
+	List<Diem>* getLstDiem() { return _LstDiem; }
 	~Sinhvien() {}
 private:
-	List<Monhoc>* _LMonHoc = NULL;
+	List<Diem>* _LstDiem = NULL;
 };
+
+class ModelMarkSinhvien : public Sinhvien
+{
+public:
+	friend std::ostream& operator<<(std::ostream& output, ModelMarkSinhvien* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(15) << Obj->_idStudent << lim
+				<< std::setw(20) << Obj->_lastname << lim
+				<< std::setw(10) << Obj->_firstname << lim
+				<< std::setw(15) << std::string(Obj->_Mark).substr(0, 4) << lim;
+		}
+		else
+		{
+			output << std::setw(15) << " " << lim
+				<< std::setw(20) << " " << lim
+				<< std::setw(10) << " " << lim
+				<< std::setw(15) << " " << lim;
+		}
+		return output;
+	}
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ');
+		std::cout << std::setw(3) << ' ' << lim
+			<< std::setw(15) << "     ID" << lim
+			<< std::setw(20) << "        HO" << lim
+			<< std::setw(10) << " Ten" << lim
+			<< std::setw(15) << "    Diem" << lim;
+	}
+	static int getSizeTitle() { return 63; }
+	void setMark(std::string mark) { _strcopy(_Mark, 10, mark); }
+	std::string getMark() { return _Mark; }
+private:
+	char _Mark[10];
+};
+
 class EntityLopHoc {
 protected:
 	char _idclass[10] = "";
@@ -240,13 +339,13 @@ public:
 		output << std::left << std::setfill(' ');
 		if (Obj != NULL) {
 			output << std::setw(20) << Obj->getId() << lim
-				<< std::setw(30) << Obj->getName() << lim
+				<< std::setw(20) << Obj->getName() << lim
 				<< std::setw(20) << Obj->getSchoolYear() << lim;
 		}
 		else
 		{
 			output << std::setw(20) << ' ' << lim
-				<< std::setw(30) << ' ' << lim
+				<< std::setw(20) << ' ' << lim
 				<< std::setw(20) << ' ' << lim;
 		}
 		return output;
@@ -255,10 +354,11 @@ public:
 		std::cout << std::left << std::setfill(' ')
 			<< std::setw(3) << ' ' << lim
 			<< std::setw(20) << "         ID" << lim
-			<< std::setw(30) << "         Lop hoc" << lim
+			<< std::setw(20) << "         Lop hoc" << lim
 			<< std::setw(20) << "  Nien khoa" << lim;
 
 	}
+	static int getSizeTitle() { return 63; }
 	LopHoc() {}
 	LopHoc(std::string idclass, std::string nameclass, std::string schoolyear) {
 		_strcopy(_idclass, 10, idclass);
@@ -288,7 +388,7 @@ protected:
 };
 class SchoolYear :public EntitySchoolYear, public CompareData<int> {
 public:
-	SchoolYear(int idSchoolYear,std::string SchoolYear) {
+	SchoolYear(int idSchoolYear, std::string SchoolYear) {
 		_idSchoolYear = idSchoolYear;
 		_strcopy(_SchoolYear, 10, SchoolYear);
 	}
@@ -301,6 +401,7 @@ public:
 			<< std::setw(20) << "  Nien khoa" << lim;
 
 	}
+	static int getSizeTitle() { return 23; }
 	void setId(int idSchoolYear) { _idSchoolYear = idSchoolYear; }
 	void setLstLopHop(List<LopHoc>* lstLopHoc) { _lstLopHop = lstLopHoc; }
 	int getId()override { return _idSchoolYear; }
@@ -322,5 +423,61 @@ private:
 	List<LopHoc>* _lstLopHop = NULL;
 };
 
+class ModelAnswer :public CompareData<int> {
+public:
+	ModelAnswer(int id, char answer) {
+		_Answer = answer;
+		_id = id;
+	}
+	void setAnswer(char answer) { _Answer = answer; };
+	char getAnswer() { return _Answer; }
+	static void settitle() {
+		std::cout << std::left << std::setfill(' ')
+			<< std::setw(3) << ' ' << lim
+			<< std::setw(10) << "Anwser";
+	}
+	void setId(int id) { _id = id; }
+	int getId()override { return _id; }
+	static int getSizeTitle() { return 13; }
+	friend std::ostream& operator<<(std::ostream& output, ModelAnswer* Obj) {
+		//char lim = 179;
+		output << std::left << std::setfill(' ');
+		if (Obj != NULL) {
+			output << std::setw(20) << Obj->getAnswer();
+		}
+		else
+		{
+			output << std::setw(20) << ' ';
+		}
+		return output;
+	}
+private:
+	char _Answer;
+	int _id;
+};
+
+class EntityDetailAnswer {
+protected:
+	char _IdMhandSv[30];
+	long long int _idquest = '-1';
+	int _Answer;
+};
+class  ModelDetailQuestion :public EntityDetailAnswer, public CompareData<std::string> {
+public:
+	ModelDetailQuestion() {}
+	ModelDetailQuestion(std::string IdMhandSv, int answer, long long int idQuestion) {
+		_strcopy(_IdMhandSv, 30, IdMhandSv);
+		_Answer = answer;
+		_idquest = idQuestion;
+	}
+	void setMhandSv(std::string IdMhandSv) { _strcopy(_IdMhandSv, 30, IdMhandSv); }
+	std::string getMhAndSv() { return _IdMhandSv; }
+	std::string getId() override { return _IdMhandSv + std::to_string(_idquest); }
+	void setAnswer(int answer) { _Answer = answer; }
+	int getAnswer() { return _Answer; }
+	void setIdQuestion(long long int idQuestion) { _idquest = idQuestion; }
+	long long int getIdQuestion() { return _idquest; }
+private:
+};
 
 #endif // !DataBase_H

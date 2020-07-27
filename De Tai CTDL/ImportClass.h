@@ -22,15 +22,15 @@ public:
 		LBclass->setActionItemClick(bind(&importClass::actionListBox, this, _1));
 		*Events += LBclass;
 		//lable Ma lop
-		LIdClass = new Lable(10, 1, 0, 0);
+		LIdClass = new Label(10, 1, 0, 0);
 		LIdClass->settext(" Ma lop");
 		LIdClass->setColor(colorbk_white | color_grey);
 		//lable ten lop
-		LNameClass = new Lable(10, 1, 42, 0);
+		LNameClass = new Label(10, 1, 42, 0);
 		LNameClass->settext("Ten lop");
 		LNameClass->setColor(colorbk_white | color_grey);
 		//lable nien khoa
-		LSchoolYear = new Lable(10, 1, 0, 3);
+		LSchoolYear = new Label(10, 1, 0, 3);
 		LSchoolYear->settext("Nien Khoa");
 		LSchoolYear->setColor(colorbk_white | color_grey);
 		//inputbox idclass
@@ -145,7 +145,7 @@ private:
 	}
 private:
 	ListBox<LopHoc>* LBclass;
-	Lable* LIdClass, * LNameClass, * LSchoolYear;
+	Label* LIdClass, * LNameClass, * LSchoolYear;
 	InPutBox* IPidclass, * IPnameclass, * ISchoolYear;
 	Button* btnClear, * btnAdd, * btnDel, * btnSave, * btnExit;
 };

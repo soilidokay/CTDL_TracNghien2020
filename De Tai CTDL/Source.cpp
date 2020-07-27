@@ -7,6 +7,7 @@
 #include "EventController.h"
 #include"ArrayList.h"
 #include <exception>
+
 using namespace std;
 using namespace scl;
 
@@ -29,7 +30,7 @@ bool filterMonhoc(Monhoc* mh, int index) {
 //    }
 //};
 int main2() {
-	
+
 
 	List<Monhoc> testList;
 
@@ -159,16 +160,13 @@ int main2() {
 	return 0;
 }
 int main(int argc, char* argv[]) {
-
-
-
 	scl::DisableMaxiMize("tainguyen");
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 	Hour h{ systime.wHour,systime.wMinute,systime.wSecond - 1 };
 	//Hour h{ 0,0,20 };
 	TimeClock t{ h,colorbk_yellow | color_red,0,0 };
-	thread th{ [&t] {t.printClock(&TimeClock::changetimeMult); } };
+	thread th{ [&t] {t.printClock(&TimeClock::changetimePlus); } };
 	EventController* HandleEventController = EventController::getInstance();
 	thread* handleThreadMouse = HandleEventController->Start();
 

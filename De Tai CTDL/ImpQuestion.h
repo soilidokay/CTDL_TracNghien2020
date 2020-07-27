@@ -26,27 +26,27 @@ public:
 		CLObject->setActionCollapse(bind(&ImpQuestion::ActionListObject, this, _1));
 		*Events += CLObject;
 		//
-		Lquest = new Lable(10, 1, 0, 4);
+		Lquest = new Label(10, 1, 0, 4);
 		Lquest->settext("Cau hoi");
 		Lquest->setColor(colorbk_white | color_grey);
 		//
-		LanswerA = new Lable(10, 1, 0, 7);
+		LanswerA = new Label(10, 1, 0, 7);
 		LanswerA->settext("Dap an A");
 		LanswerA->setColor(colorbk_white | color_grey);
 		//
-		LanswerB = new Lable(10, 1, 0, 10);
+		LanswerB = new Label(10, 1, 0, 10);
 		LanswerB->settext("Dap an B");
 		LanswerB->setColor(colorbk_white | color_grey);
 		//
-		LanswerC = new Lable(10, 1, 0, 13);
+		LanswerC = new Label(10, 1, 0, 13);
 		LanswerC->settext("Dap an C");
 		LanswerC->setColor(colorbk_white | color_grey);
 		//
-		LanswerD = new Lable(10, 1, 0, 16);
+		LanswerD = new Label(10, 1, 0, 16);
 		LanswerD->settext("Dap an D");
 		LanswerD->setColor(colorbk_white | color_grey);
 		//
-		Lanswer = new Lable(10, 1, 0, 19);
+		Lanswer = new Label(10, 1, 0, 19);
 		Lanswer->settext("Dap An");
 		Lanswer->setColor(colorbk_white | color_grey);
 		//
@@ -70,10 +70,18 @@ public:
 		IPanswerD->setColor(colorbk_white | color_blue);
 		*Events += IPanswerD;
 		//
-		IPanswer = new InPutBox(76, 1, 12, 19);
-		IPanswer->setColor(colorbk_white | color_blue);
-		*Events += IPanswer;
-
+		CLanswer = new CheckList<ModelAnswer>(76, 12, 19, Events);
+		CLanswer->setColor(_bkcolor | color_grey);
+		CLanswer->setheightLB(15);
+		CLanswer->setStrTiltle("Answer");
+		CLanswer->setGroupEle(false);
+		*Events += CLanswer;
+		IList<ModelAnswer>* lstAnser = new ArrayList<ModelAnswer>(4);
+		lstAnser->InsertConst(new ModelAnswer(0, 'A'));
+		lstAnser->InsertConst(new ModelAnswer(1, 'B'));
+		lstAnser->InsertConst(new ModelAnswer(2, 'C'));
+		lstAnser->InsertConst(new ModelAnswer(3, 'D'));
+		CLanswer->setListObj(lstAnser);
 
 		LBQuestion = new ListBox<Question>(88, 30, 0, 24);
 		LBQuestion->setColor(_bkcolor | color_grey);
@@ -118,7 +126,7 @@ public:
 		Showobj[9] = IPanswerB;
 		Showobj[10] = IPanswerC;
 		Showobj[11] = IPanswerD;
-		Showobj[12] = IPanswer;
+		Showobj[12] = CLanswer;
 		Showobj[13] = LBQuestion;
 		Showobj[14] = btnClear;
 		Showobj[15] = btnAdd;
@@ -153,7 +161,7 @@ private:
 		IPanswerB->setText(temp->getanswerB());
 		IPanswerC->setText(temp->getanswerC());
 		IPanswerD->setText(temp->getanswerD());
-		IPanswer->setText(anwser);
+		CLanswer->SetChecked(anwser[0] - 65);
 	}
 	void ActionListObject(EventConsole& evt) {
 		if (_ObjectCurrent != CLObject->GetDataChecked()) {
@@ -164,7 +172,7 @@ private:
 	}
 
 	bool ValidateData() {
-		return !IPanswer->isEmpty() && !IPquest->isEmpty() && !IPanswerA->isEmpty() && !IPanswerB->isEmpty()
+		return CLanswer->GetDataChecked() != NULL && !IPquest->isEmpty() && !IPanswerA->isEmpty() && !IPanswerB->isEmpty()
 			&& !IPanswerC->isEmpty() && !IPanswerD->isEmpty();
 	}
 
@@ -198,6 +206,7 @@ private:
 		if (count < 0) {
 			count++;
 		}
+
 		Question* tempQuest = new Question(
 			idTemp,
 			IPquest->Gettext(),
@@ -205,7 +214,7 @@ private:
 			IPanswerB->Gettext(),
 			IPanswerC->Gettext(),
 			IPanswerD->Gettext(),
-			IPanswer->Gettext()[0]
+			CLanswer->GetDataChecked()->getAnswer()
 		);
 		tempQuest->setIdObject(_ObjectCurrent->getId());
 		_treeQuestion->InsertConst(tempQuest);
@@ -222,7 +231,7 @@ private:
 		if (temp == NULL) return;
 
 		temp->setQuest(IPquest->Gettext());
-		temp->setanswer(IPanswer->Gettext()[0]);
+		temp->setanswer(CLanswer->GetDataChecked()->getAnswer());
 		temp->setanswerA(IPanswerA->Gettext());
 		temp->setanswerB(IPanswerB->Gettext());
 		temp->setanswerC(IPanswerC->Gettext());
@@ -232,7 +241,7 @@ private:
 	}
 	void actionClear(EventConsole& evt) {
 		IPquest->setText("");
-		IPanswer->setText("");
+		CLanswer->SetChecked(-1);
 		IPanswerA->setText("");
 		IPanswerB->setText("");
 		IPanswerC->setText("");
@@ -243,8 +252,9 @@ private:
 	}
 private:
 	CheckList<Monhoc>* CLObject;
-	Lable* Lquest, * LanswerA, * LanswerB, * LanswerC, * LanswerD, * Lanswer;
-	InPutBox* IPquest, * IPanswerA, * IPanswerB, * IPanswerC, * IPanswerD, * IPanswer;
+	CheckList<ModelAnswer>* CLanswer;
+	Label* Lquest, * LanswerA, * LanswerB, * LanswerC, * LanswerD, * Lanswer;
+	InPutBox* IPquest, * IPanswerA, * IPanswerB, * IPanswerC, * IPanswerD;
 	Button* btnAdd, * btnUpdate, * btnClear, * btnExit;
 	ListBox<Question>* LBQuestion;
 	TreeAVL<Question>* _treeQuestion = NULL;

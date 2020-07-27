@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Formteach.h"
 #include "FormStudent.h"
+#include "ProfileUser.h"
 
 using namespace std::placeholders;
 using namespace std;
@@ -14,12 +15,12 @@ public:
 	void constructor() override {
 		nObj = 5;
 		//lable tai khoan
-		lbTaikhoan = new Lable(10, 1, 0, 1);
+		lbTaikhoan = new Label(10, 1, 0, 1);
 		lbTaikhoan->setColor(_bkcolor);
 		lbTaikhoan->settext("TAI KHOAN");
 		//lbTaikhoan->setFunProcessKey(&this->process);
 		//lable mat khau
-		lbMatkhau = new Lable(10, 1, 0, 5);
+		lbMatkhau = new Label(10, 1, 0, 5);
 		lbMatkhau->setColor(_bkcolor);
 		lbMatkhau->settext(" MAT KHAU");
 		//input ta khoan
@@ -80,8 +81,9 @@ private:
 		}
 
 		if (txtTaiKhoan->Gettext() == "GV" && txtMatkhau->Gettext() == "GV") {
-			FormTeach* Fteach = new FormTeach(this, 52, 25, colorbk_white);
+			FormTeach* Fteach = new FormTeach(this, colorbk_white);
 			Fteach->show();
+			ProfileUser::getInstance()->USerId = "GV";
 			return;
 		}
 		else {
@@ -90,8 +92,9 @@ private:
 			_LstStudent = _Context->SinhViens->ToList();
 			node<Sinhvien>* sv = _LstStudent->search(&svtemp);
 			if (sv != NULL && sv->info->getPass() == txtMatkhau->Gettext()) {
-				FormStudent* fstudent = new FormStudent(this, 52, 20,colorbk_white);
+				FormStudent* fstudent = new FormStudent(this, 52, 20, colorbk_white);
 				fstudent->show();
+				ProfileUser::getInstance()->USerId = sv->info->getId();
 				return;
 			}
 		}
@@ -99,7 +102,7 @@ private:
 
 	}
 private:
-	Lable* lbTaikhoan, * lbMatkhau;
+	Label* lbTaikhoan, * lbMatkhau;
 	InPutBox* txtMatkhau, * txtTaiKhoan;
 	Button* btnDangNhap;
 	List<Sinhvien>* _LstStudent = NULL;

@@ -5,6 +5,9 @@
 #include <Windows.h>
 #include <thread>
 #include "EventController.h"
+#include <functional>
+
+typedef std::function<void()>   ACTIONTIMECLOCK;
 
 typedef struct  Hour
 {
@@ -28,18 +31,30 @@ public:
 		_y = y;
 		_color = color;
 		_stop = 0;
+		actionEnd = NULL;
+	}
+	~TimeClock() {
+		_stop = 0;
 	}
 	void printClock(bool (TimeClock::* changetime)(pHour)) {
 		std::string _strHour = "00:00:00";
 		_stop = 1;
+		insertarray(_strHour, _hour);
+		WriteBlockChar(_strHour);
 		while (_stop)
 		{
+			Sleep(990);
 			if (!(this->*changetime)(_hour)) _stop = 0;
 			insertarray(_strHour, _hour);
 			WriteBlockChar(_strHour);
-			Sleep(990);
+		}
+		if (actionEnd != NULL) {
+			actionEnd();
 		}
 		return;
+	}
+	void SetOnEnd(ACTIONTIMECLOCK action) {
+		actionEnd = action;
 	}
 	bool changetimePlus(pHour hour) {
 		if (hour->_second < 59) ++hour->_second;
@@ -82,6 +97,7 @@ public:
 		Sleep(100);
 		_stop = 0;
 	}
+
 private:
 	void insertarray(std::string& strHour, pHour hour) {
 		int bait = 0;
@@ -132,7 +148,7 @@ private:
 		}
 
 	}
-
+	ACTIONTIMECLOCK actionEnd;
 	pHour _hour;
 	bool _stop;
 	int _x, _y, _color;

@@ -128,6 +128,7 @@
     <ClInclude Include="console.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="DBSet.h" />
+    <ClInclude Include="DetailQuestion.h" />
     <ClInclude Include="EventController.h" />
     <ClInclude Include="EventMouseOrKey.h" />
     <ClInclude Include="Form.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="ImportInfoTerm.h" />
     <ClInclude Include="ImportStudent.h" />
     <ClInclude Include="ImpQuestion.h" />
+    <ClInclude Include="PrintMarks.h" />
     <ClInclude Include="InPutBox.h" />
     <ClInclude Include="Lable.h" />
     <ClInclude Include="List.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="Login.h" />
     <ClInclude Include="outbuf.h" />
     <ClInclude Include="PrintClasses.h" />
+    <ClInclude Include="ProfileUser.h" />
     <ClInclude Include="Term.h" />
     <ClInclude Include="TimeClock.h" />
     <ClInclude Include="TreeAVL.h" />

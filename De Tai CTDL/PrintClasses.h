@@ -13,7 +13,7 @@ public:
 	}
 	void constructor() override {
 		//label title
-		_Title = new Lable(30, 1, 30, 0);
+		_Title = new Label(30, 1, 30, 0);
 		_Title->settext("Danh sach lop hoc");
 		_Title->setColor(colorbk_yellow | color_red);
 		//CheckList SchoolYear
@@ -43,7 +43,7 @@ public:
 		Showobj[1] = _CLSchoolYear;
 		Showobj[2] = _LBClasses;
 		Showobj[3] = BtnExit;
-		setlists(_Context->LopHocs->ToList());
+		setlists(_Context->LopHocs->ToArrayList(500));
 	}
 private:
 	void actionExit(EventConsole& evt) {
@@ -90,7 +90,7 @@ private:
 
 	CheckList<SchoolYear>* _CLSchoolYear;
 	ListBox<LopHoc>* _LBClasses;
-	Lable* _Title;
+	Label* _Title;
 	SchoolYear* _SchoolYearCurrent = NULL;
 	Button* BtnExit = NULL;
 };

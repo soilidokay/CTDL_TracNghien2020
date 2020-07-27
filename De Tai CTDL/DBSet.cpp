@@ -89,6 +89,31 @@ void DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Update(T* data)
 	delete dataIndex;
 }
 template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+bool DBSet<_TIdCompare, _TId, amount, _TEntity, T>::isExit(_TIdCompare id)
+{
+	DataIndex<_TIdCompare, _TId, amount> data;
+	data.setId(id);
+	auto temp = _dataId->search(&data);
+	return temp != NULL;
+}
+
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
+T* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::Seach(T* data)
+{
+	CompareData<_TIdCompare>* cmp = (CompareData<_TIdCompare>*)data;
+	DataIndex<_TIdCompare, _TId, amount>* dataId = new DataIndex<_TIdCompare, _TId, amount>();
+	dataId->setId(cmp->getId());
+	node<DataIndex<_TIdCompare, _TId, amount>>* temp = _dataId->search(dataId);
+	if (temp == NULL) return NULL;
+
+	_TEntity* tempData;
+	tempData = new T;
+	_fData->seekg(temp->info->sizeOffset);
+	_fData->read(reinterpret_cast<char*>(tempData), _SizeData);
+
+	return (T*)tempData;
+}
+template<typename _TIdCompare, typename _TId, int amount, typename _TEntity, class T>
 List<T>* DBSet<_TIdCompare, _TId, amount, _TEntity, T>::ToList()
 {
 	List<T>* data = new List<T>;

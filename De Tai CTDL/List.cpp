@@ -335,11 +335,13 @@ bool List<T>::AddFirt(nodePtr Value)
 }
 
 template<class T>
-void List<T>::Clear()
+void List<T>::Clear(bool isDeleteData)
 {
 	while (!isempty())
 	{
-		delete getfirst()->info;
+		if (isDeleteData) {
+			delete getfirst()->info;
+		}
 		Delfirst();
 	}
 }

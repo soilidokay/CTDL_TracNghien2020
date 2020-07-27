@@ -54,8 +54,11 @@ protected:
 		std::cout << std::left;
 		std::cout << std::setw(_width + 1) << ch1 << ch2;
 	}
-	void Draw() {
-		scl::TextColor(_hScreen,_color);
+	void Draw(int color = -1) {
+		if (color == -1) {
+			color = _color;
+		}
+		scl::TextColor(_hScreen, color);
 		gotoXY(_hScreen,_x, _y);
 		ouput((char)218, (char)191, (char)196);
 		for (int i = 0; i < _height;) {

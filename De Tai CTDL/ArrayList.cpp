@@ -19,6 +19,7 @@ inline ArrayList<T>::ArrayList(int size)
 template<typename T>
 ArrayList<T>::~ArrayList()
 {
+	delete[] _data;
 }
 
 template<typename T>
@@ -149,7 +150,7 @@ bool ArrayList<T>::isempty()
 template<typename T>
 void ArrayList<T>::forEach(const IList<T>::ACTION& action, int indexStart, int indexEnd)
 {
-	if (indexStart >= _amount || indexStart < 0) return;
+	if (indexStart < 0) return;
 
 	int indexEndTemp = _amount;
 	if (indexEnd > -1) {
@@ -192,7 +193,7 @@ int ArrayList<T>::getSize()
 }
 
 template<typename T>
-void ArrayList<T>::Clear()
+void ArrayList<T>::Clear(bool isDeleteData = false)
 {
 	for (int i = 0; i < _amount; i++)
 	{

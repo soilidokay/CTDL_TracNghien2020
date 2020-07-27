@@ -1,5 +1,5 @@
 #include "Form.h"
-
+#include "EventController.h"
 Form::Form(Form* Fbackup, int width, int height, int bkcolor)
 {
 	_Fbackup = Fbackup;
@@ -83,6 +83,8 @@ bool ShowWarning(HANDLE _hSCreen, std::string text, bool isCancel)
 	warning war(_hSCreen, Width - 2, row + 5, 0, 0, colorbk_darkgreen | color_red);
 	war.setBtnCancel(isCancel);
 	war.settext(text);
+	EventController::getInstance()->setIdLock(true);
 	war.action(evt);
+	EventController::getInstance()->setIdLock(false);
 	return war.GetOK();
 }

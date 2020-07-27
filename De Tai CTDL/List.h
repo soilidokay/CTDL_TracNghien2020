@@ -41,7 +41,7 @@ public:
 	//
 	bool Addlast(nodePtr value);
 	bool AddFirt(nodePtr Value);
-	void Clear() override;
+	void Clear(bool isDeleteData = false) override;
 	//
 	bool Delfirst();
 	/*bool Dellast() {

@@ -17,7 +17,7 @@ public:
 	virtual int Search(T* data) = 0;
 	virtual	int getSize() = 0;
 	virtual void RadixSort(const SelectString& select) = 0;
-	virtual void Clear() = 0;
+	virtual void Clear(bool isDeleteData = false) = 0;
 	virtual IList<T>* filter(const ACTION& action) = 0;
 };
 

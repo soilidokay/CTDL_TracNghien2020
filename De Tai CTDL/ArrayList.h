@@ -25,7 +25,7 @@ public:
 	IList<T>* filter(const IList<T>::ACTION& action) override;
 	T* GetData(int index) override;
 	int getSize() override;
-	void Clear() override;
+	void Clear(bool isDeleteData = false) override;
 private:
 	T** _data;
 	int _size;

@@ -5,28 +5,35 @@
 
 using namespace scl;
 
-class Lable : public window
+class Label : public window
 {
 public:
 	void setBoder(bool value) { _boder = value; }
 	void settext(std::string text) { _Text = text; }
+	void UpdateText(std::string text) {
+		_Text = text;
+		showText();
+	}
 	void show()override {
 
-		if(_boder) Draw();
+		if (_boder) Draw();
 		showText();
 	}
 	void showText() {
 		scl::TextColor(_hScreen, getcolor());
-		gotoXY(_hScreen, getx() + 1, gety()+1);
+		gotoXY(_hScreen, getx() + 1, gety() + 1);
+		std::cout<<std::setfill(' ');
+		std::cout << std::setw(getwidth()) << " ";
+		gotoXY(_hScreen, getx() + 1, gety() + 1);
 		std::cout << _Text.substr(0, getwidth());
 	}
-	Lable(int width, int height, int x, int y) : window(width,height,x,y)
+	Label(int width, int height, int x, int y) : window(width, height, x, y)
 	{
 		_boder = 0;
 		_Text = "lable!!";
 	}
 
-	~Lable()
+	~Label()
 	{
 	}
 private:

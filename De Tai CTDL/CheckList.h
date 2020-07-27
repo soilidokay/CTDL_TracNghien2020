@@ -56,6 +56,27 @@ public:
 	}*/
 	_T* GetDataChecked() { return _listObj->GetData(Checked); }
 	void SetListCheck(List<_T>* Lst) { ListChecked = Lst; }
+	void SetChecked(int index) {
+		Checked = index;
+		if (getheight() > 1) {
+			showLObj();
+		}
+		else {
+			_T* data = GetDataChecked();
+			if (data != NULL) {
+				ShowTitle(data, _T::getSizeTitle());
+			}
+			else {
+				std::string temp = "";
+				for (int i = 0; i < _T::getSizeTitle(); i++)
+				{
+					temp += " ";
+				}
+				ShowTitle(temp, _T::getSizeTitle());
+				ShowTitle(_strTiltle, _strTiltle.length());
+			}
+		}
+	}
 	List<_T>* GetListChecked() { return ListChecked; }
 	void setStrTiltle(std::string strTiltle)override {
 		_strTiltle = strTiltle;
@@ -158,6 +179,19 @@ public:
 			if (actionCollapse) {
 				actionCollapse(evt);
 			}
+			_T* data = GetDataChecked();
+			if (data != NULL) {
+				ShowTitle(data, _T::getSizeTitle());
+			}
+			else {
+				std::string temp = "";
+				for (int i = 0; i < _T::getSizeTitle(); i++)
+				{
+					temp += " ";
+				}
+				ShowTitle(temp, _T::getSizeTitle());
+				ShowTitle(_strTiltle, _strTiltle.length());
+			}
 			return;
 		}
 		else if (BclickBtn(evt) == 1) {
@@ -198,7 +232,7 @@ public:
 	}
 
 	void DrawCheckIndex(int index, int color = -1) {
-		if (index <0 || index < posPrintInt || index >= getSizeDisplay() + posPrintInt) return;
+		if (index < 0 || index < posPrintInt || index >= getSizeDisplay() + posPrintInt) return;
 		if (color < 0) color = getcolor();
 
 		gotoXY(_hScreen, gxShow, gyShow + index - posPrintInt);

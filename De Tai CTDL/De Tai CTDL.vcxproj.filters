@@ -114,6 +114,15 @@
     <ClInclude Include="Term.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProfileUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintMarks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DetailQuestion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp">

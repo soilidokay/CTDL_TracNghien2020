@@ -26,12 +26,23 @@ EventController* EventController::getInstance()
 	}
 	return Instance;
 }
+void EventController::setIdLock(bool isLock)
+{
+	_isLock = isLock;
+}
 void EventController::Process(EventController* handleOwn)
 {
 
 	EventConsole evt;
 	do {
+		if (_isLock) {
+			continue;
+		}
 		KeyMouse(&evt);
+		if (_isLock) {
+			Sleep(2000);
+			continue;
+		}
 		if (handleOwn->_container.isempty()) continue;
 
 		EventMouseOrKey* handle = handleOwn->_container.getfirst()->info;
@@ -83,9 +94,10 @@ void EventController::Process(EventController* handleOwn)
 				handle->controlActive = NULL;
 			}
 		}
-		
+
 
 		handle->ProcessAction(evt);
+		
 
 	} while (!isStop);
 
