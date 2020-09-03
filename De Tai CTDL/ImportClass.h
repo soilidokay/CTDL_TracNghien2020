@@ -118,6 +118,7 @@ private:
 			_Context->LopHocs->Add(temp);
 		}
 	}
+	// TODO
 	void ActionDel(EventConsole& evt) {
 		LopHoc* lh = LBclass->getSelected();
 		if (lh != NULL) {

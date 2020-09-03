@@ -104,10 +104,11 @@ private:
 			lstMark->Clear();
 			delete lstMark;
 		}
-
+		// create list temp have size equal for list SV on Class
 		lstMark = new ArrayList<ModelMarkSinhvien>(_lstTemp->getSize());
 		Diem diem;
 		_lstTemp->forEach([&](Sinhvien* sv, int index) {
+			// set properties for obj diem
 			diem.setObjectId(mon->getId());
 			diem.setStudentId(sv->getId());
 			node<Diem>* d = _lstDiem->search(&diem);
@@ -116,6 +117,7 @@ private:
 			temp->setidstudent(sv->getId());
 			temp->setfirstname(sv->getfirstname());
 			temp->setlastname(sv->getlastname());
+			// check SV have progress test Question
 			if (d == NULL) {
 				temp->setMark("Chua thi");
 			}

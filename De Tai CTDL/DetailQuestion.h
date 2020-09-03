@@ -104,8 +104,8 @@ private:
 			return;
 		}
 
+		// get BangDiems and filter nodeBangDiem for id MonHoc vs id SinhVien
 		std::string idMD = mh->getId() + sv->getId();
-
 		List<ModelDetailQuestion>* lstDetail = (List<ModelDetailQuestion>*) _Context->BangDiems
 			->ToList()
 			->filter([&](ModelDetailQuestion* md, int index) {return md->getMhAndSv() == idMD; });
@@ -124,7 +124,7 @@ private:
 			tempq.setId(md->getIdQuestion());
 			Question* q = _TreeQuestion->searchValue(&tempq);
 			ModelQuestion* mq = new ModelQuestion();
-
+			mq->setQuest(q->getQuest());
 			mq->setanswerA(q->getanswerA());
 			mq->setanswerB(q->getanswerB());
 			mq->setanswerC(q->getanswerC());

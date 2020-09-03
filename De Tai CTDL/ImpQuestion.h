@@ -140,6 +140,7 @@ private:
 	bool conditionfiltersv(Question* qs, int index, Monhoc* mh) {
 		return qs->getIdObject() == mh->getId();
 	}
+	// get all question with ObjectId
 	bool forEachMonHoc(Monhoc* mh, int index) {
 		IList<Question>* temps = _treeQuestion->filter([&](Question* qs, int index) {return this->conditionfiltersv(qs, index, mh); });
 		mh->setLstQuestion((IList<Question>*)temps);
@@ -147,6 +148,7 @@ private:
 	}
 	void setlists(IList<Monhoc>* lstObject) {
 		_treeQuestion = _Context->Questions->ToTree();
+		// Loop Object and call func get question with IdMonHoc
 		lstObject->forEach([&](Monhoc* mh, int index) {return this->forEachMonHoc(mh, index); });
 		CLObject->setListObj(lstObject);
 	}
@@ -197,15 +199,17 @@ private:
 		}
 		Question tempQuestion;
 		tempQuestion.setId(idTemp);
+		// check is valid equal Id Question
 		while (_treeQuestion->searchValue(&tempQuestion) != NULL)
 		{
 			++count;
 			idTemp = hash<string>{}(_ObjectCurrent->getId() + std::to_string(count));
 			tempQuestion.setId(idTemp);
 		}
-		if (count < 0) {
+		// TODO
+		/*if (count < 0) {
 			count++;
-		}
+		}*/
 
 		Question* tempQuest = new Question(
 			idTemp,

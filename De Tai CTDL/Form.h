@@ -71,11 +71,11 @@ protected:
 		return start;
 	}
 	void DrawToScreen();
+protected:
 	outbuf* _StreamBuff;
 	HANDLE _hSCreen;
-protected:
 	bool stop = 1;
-	window** Showobj;
+	window* *Showobj;
 	int nObj;
 	EventConsole evt;
 	int _bkcolor;
