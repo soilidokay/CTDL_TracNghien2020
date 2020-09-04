@@ -100,21 +100,22 @@ private:
 	void shuffle(int* arr, int n) {
 		srand(time(NULL));
 		int res = rand();
-		for (int i = n - 1; i > 0; i--) {
+		for (int i = n - 1; i >= 0; i--) {
 			int j = rand() % (n - i) + i; //Math.floor(Math.random() * (i + 1));
 			swap(arr[i], arr[j]);
 		}
 	}
 	IList<Question>* RandomQuestion(IList<Question>* lstQuestion, int amount) {
-		int* a = new int[amount];
-		for (int i = 0; i < amount; i++)
+		int size = lstQuestion->getSize();
+		int* a = new int[size];
+		for (int i = 0; i < size; i++)
 		{
 			a[i] = i;
 		}
-		shuffle(a, amount);
+		shuffle(a, size);
 		IList<Question>* lstTemp = new ArrayList<Question>(amount);
 
-		for (int i = 0; i < amount; i++)
+		for (int i = 0; i < amount && i < size; i++)
 		{
 			lstTemp->InsertConst(lstQuestion->GetData(a[i]));
 		}

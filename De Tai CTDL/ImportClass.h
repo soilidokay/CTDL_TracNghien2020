@@ -100,6 +100,7 @@ private:
 		if (lh == NULL) return;
 		IPidclass->setText(lh->getId());
 		IPnameclass->setText(lh->getName());
+		ISchoolYear->setText(lh->getSchoolYear());
 	}
 	//action button
 	void ActionClear(EventConsole& evt) {

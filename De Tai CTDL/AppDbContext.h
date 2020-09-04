@@ -7,12 +7,12 @@ class AppDbContext
 {
 public:
 	AppDbContext();
-	DBSet<std::string, char, 10, EntityMonHoc, Monhoc>* MonHocs;
-	DBSet<std::string, char, 20, EntiySinhvien, Sinhvien>* SinhViens;
+	DBSet<std::string, char, Len_IdMonHoc, EntityMonHoc, Monhoc>* MonHocs;
+	DBSet<std::string, char, Len_IdSV, EntiySinhvien, Sinhvien>* SinhViens;
 	DBSet<long long int, long long int, 1, EntityQuestion, Question>* Questions;
-	DBSet<std::string, char, 10, EntityLopHoc, LopHoc>* LopHocs;
-	DBSet<std::string, char, 10, EntityDiem, Diem>* Diems;
-	DBSet<std::string, char, 50, EntityDetailAnswer, ModelDetailQuestion>* BangDiems;
+	DBSet<std::string, char, Len_IdLop, EntityLopHoc, LopHoc>* LopHocs;
+	DBSet<std::string, char, Len_IdMonHoc + Len_IdSV, EntityDiem, Diem>* Diems;
+	DBSet<std::string, char, 31, EntityDetailAnswer, ModelDetailQuestion>* BangDiems;
 	static AppDbContext* getInstance();
 private:
 	static AppDbContext* Instance;
